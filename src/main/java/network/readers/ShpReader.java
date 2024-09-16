@@ -1,21 +1,10 @@
 package network.readers;
 
 import network.config.NetworkConverterConfigGroup;
-import network.core.NetworkElement;
-import network.tools.Utils;
-import org.matsim.api.core.v01.Coord;
-import org.matsim.core.utils.geometry.CoordUtils;
 import org.matsim.core.utils.gis.GeoFileReader;
 import org.opengis.feature.simple.SimpleFeature;
 
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public final class ShpReader extends Reader{

@@ -8,11 +8,11 @@ This repository contains models and scenarios using MATSim, developed by **Xande
 
 ## TODO
 
--[X] Add *Relation* process for OSM data, which is used for the `pt` network.
+-[x] Add *Relation* process for OSM data, which is used for the `pt` network.
 
--[X] Complete the interconversion between road network and shp & geojson
+-[x] Complete the interconversion between road network and shp & geojson
 
--[X] Develop a MATSim network-based `NetworkOptimizer` to process the link length (i.e., merge/split links that are too short/long)
+-[x] Develop a MATSim network-based `NetworkOptimizer` to process the link length (i.e., merge/split links that are too short/long)
 
 -[ ] A new `NetworkCleaner` to process the connectivity of the multimodal network.
 
