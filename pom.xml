@@ -2,6 +2,7 @@
             xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
+    <groupId>org.xander.peng</groupId>
     <artifactId>matsim-xp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
@@ -21,6 +22,12 @@
             <name>Geotools repository</name>
             <!-- <url>http://download.osgeo.org/webdav/geotools</url> -->
             <url>https://repo.osgeo.org/repository/release/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
         </repository>
         <repository>
             <!-- Repository for MATSim (MATSim is not on Maven central, releases and snapshots) -->
@@ -30,6 +37,12 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-geojson</artifactId>
+            <version>28.0</version>
+        </dependency>
+
         <!-- This is the matsim "core": -->
         <dependency>
             <groupId>org.matsim</groupId>

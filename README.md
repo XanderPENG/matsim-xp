@@ -1,6 +1,6 @@
 # matsim-xp
 
-This repository contains models and scenarios using MATSim, developed by @Xander Peng.
+This repository contains models and scenarios using MATSim, developed by **Xander Peng**.
 
 ## Features
 
@@ -8,11 +8,13 @@ This repository contains models and scenarios using MATSim, developed by @Xander
 
 ## TODO
 
--[ ] Add *Relation* process for OSM data, which is used for the PT network.
-- 
--[ ] Complete the interconversion between road network and shp & geojson
+-[X] Add *Relation* process for OSM data, which is used for the `pt` network.
 
--[ ] Develop a MATSim network-based `NetworkCleaner` to process the link length (i.e., merge/split links that are too short/long)
+-[X] Complete the interconversion between road network and shp & geojson
+
+-[X] Develop a MATSim network-based `NetworkOptimizer` to process the link length (i.e., merge/split links that are too short/long)
+
+-[ ] A new `NetworkCleaner` to process the connectivity of the multimodal network.
 
 -[ ] Check the reliability of cycling network using the converter. (check the consistence of the OSM network and the ***circulation plan***)
 
