@@ -8,11 +8,18 @@ import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.network.Network;
 import org.matsim.api.core.v01.network.Node;
 import org.matsim.core.network.NetworkUtils;
+import org.matsim.core.network.algorithms.NetworkSimplifier;
+import org.matsim.core.utils.collections.Tuple;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BiPredicate;
 
 /**
- * This class is used to optimize the MATSim's multimodal network, particularly considering the following aspects:
+ * This class is used to optimize the MATSim's multimodal network (based on {@link NetworkSimplifier}), particularly considering the following aspects:
  * 1. Split the links whose length is longer than a certain threshold (for the sake of drt mode)
  * 2. Merge the links whose length is shorter than a certain threshold (to ensure no link is too short to accommodate even one vehicle)
  * 3. Ensure the consistency of the allowed modes of the links after splitting/merging.
@@ -22,13 +29,20 @@ public class MultiModalNetworkOptimizer {
     private final Network network;
     private final double minThreshold;
     private final double maxThreshold;
-    private final Logger logger = LogManager.getLogger(MultiModalNetworkOptimizer.class);
-    private final List<Id<Link>> skippedLink = new ArrayList<>();
+    private final NetworkSimplifier networkSimplifier;
+    private final BiPredicate<Link, Link> customizedLinkMergeablePredicate;
+    private final BiConsumer<Tuple<Link, Link>, Link> customizedLinkAttrConsumer;
 
-    public MultiModalNetworkOptimizer(Network network, double minThreshold, double maxThreshold) {
+    private final Logger logger = LogManager.getLogger(MultiModalNetworkOptimizer.class);
+
+    public MultiModalNetworkOptimizer(Network network, double minThreshold, double maxThreshold, NetworkSimplifier networkSimplifier,
+                                      BiPredicate<Link, Link> customizedLinkMergeablePredicate, BiConsumer<Tuple<Link, Link>, Link> customizedLinkAttrConsumer) {
         this.network = network;
         this.minThreshold = minThreshold;
         this.maxThreshold = maxThreshold;
+        this.networkSimplifier = networkSimplifier;
+        this.customizedLinkMergeablePredicate = customizedLinkMergeablePredicate;
+        this.customizedLinkAttrConsumer = customizedLinkAttrConsumer;
     }
 
     // Split a long link into multiple links
@@ -91,129 +105,6 @@ public class MultiModalNetworkOptimizer {
         return coords;
     }
 
-    // Merge the links whose length is shorter than a certain threshold
-    /* Now, there is a problem when merging the links at intersections. The links are merged based on the length, but the intersection is not considered.
-       TODO: The merging should be based on the intersection, not only the length.
-             1. When the fromNode of the current link if an intersection node, it can only be merged with the outLinks
-             2. When the toNode of the current link if an intersection node, it can only be merged with the inLinks
-    * */
-    void mergeShortLinks() {
-        List<Link> linksToBeMerged = new ArrayList<>();
-        List<Id<Link>> mergedLinks= new ArrayList<>();
-        // Find all the links whose length is shorter than the threshold
-        for (Link link : network.getLinks().values()) {
-            if (link.getLength() < minThreshold) {
-                linksToBeMerged.add(link);
-            }
-        }
-        // Merge the links
-        for (Link link : linksToBeMerged) {
-            if (mergedLinks.contains(link.getId())) {
-                logger.info("Link {} has been merged. Skip merging.", link.getId());
-                continue;
-            }
-            // find the adjacent links (in & out) of the current link
-            Set<Link> inLinks = new HashSet<>(link.getFromNode().getInLinks().values());
-            Set<Link> outLinks = new HashSet<>(link.getToNode().getOutLinks().values());
-
-            // Filter out the adjacent links that are not supported for the allowed modes of the current link
-            inLinks.removeIf(inLink -> !inLink.getAllowedModes().containsAll(link.getAllowedModes()));
-            outLinks.removeIf(outLink -> !outLink.getAllowedModes().containsAll(link.getAllowedModes()));
-            // Also, the inverse way should be removed from the in/out links
-            Set<Link> duplicateLinks = new HashSet<>(inLinks);
-            duplicateLinks.retainAll(outLinks);
-            inLinks.removeAll(duplicateLinks);
-            outLinks.removeAll(duplicateLinks);
-            if (inLinks.isEmpty() && outLinks.isEmpty()) {
-                this.logger.warn("No adjacent links containing the same allowed modes are found for link {}. Skip merging.", link.getId());
-                this.skippedLink.add(link.getId());
-                continue;
-            }
-            // Filter and get the adjacent links that have the same allowed modes as the current link
-            List<Link> candidateInLinks = new ArrayList<>();
-            List<Link> candidateOutLinks = new ArrayList<>();
-            for (Link inLink : inLinks) {
-                if (link.getAllowedModes().containsAll(inLink.getAllowedModes())) {
-                    candidateInLinks.add(inLink);
-                }
-            }
-            for (Link outLink : outLinks) {
-                if (link.getAllowedModes().containsAll(outLink.getAllowedModes())) {
-                    candidateOutLinks.add(outLink);
-                }
-            }
-            // find the one with the shortest length to merge
-            List<Link> mergedLinksList = new ArrayList<>();
-            if (!candidateInLinks.isEmpty() && !candidateOutLinks.isEmpty()) {
-                // Compare the shortest link among the inLinks and outLinks, and add to the mergedLinksList with sequence
-                Link inShortestLink = candidateInLinks.stream().min(Comparator.comparingDouble(Link::getLength)).get();
-                Link outShortestLink = candidateOutLinks.stream().min(Comparator.comparingDouble(Link::getLength)).get();
-                if (inShortestLink.getLength() < outShortestLink.getLength()) {
-                    mergedLinksList.add(inShortestLink);
-                    mergedLinksList.add(link);
-                } else {
-                    mergedLinksList.add(link);
-                    mergedLinksList.add(outShortestLink);
-                }
-            } else if (!candidateInLinks.isEmpty()) {
-                Link inShortestLink = candidateInLinks.stream().min(Comparator.comparingDouble(Link::getLength)).get();
-                mergedLinksList.add(inShortestLink);
-                mergedLinksList.add(link);
-            } else if (!candidateOutLinks.isEmpty()) {
-                Link outShortestLink = candidateOutLinks.stream().min(Comparator.comparingDouble(Link::getLength)).get();
-                mergedLinksList.add(link);
-                mergedLinksList.add(outShortestLink);
-            } else {
-                // If there is no candidate links, merge the link with the shortest length among the adjacent links
-                this.logger.warn("No candidate links with the same allowed modes found for link {}. " +
-                        "Merging the link with the shortest length containing these modes .", link.getId());
-                if (inLinks.isEmpty()) {
-                    Link outShortestLink = outLinks.stream().min(Comparator.comparingDouble(Link::getLength)).get();
-                    mergedLinksList.add(link);
-                    mergedLinksList.add(outShortestLink);
-                } else if (outLinks.isEmpty()) {
-                    Link inShortestLink = inLinks.stream().min(Comparator.comparingDouble(Link::getLength)).get();
-                    mergedLinksList.add(inShortestLink);
-                    mergedLinksList.add(link);
-                } else {
-                    Link inShortestLink = inLinks.stream().min(Comparator.comparingDouble(Link::getLength)).get();
-                    Link outShortestLink = outLinks.stream().min(Comparator.comparingDouble(Link::getLength)).get();
-                    if (inShortestLink.getLength() < outShortestLink.getLength()) {
-                        mergedLinksList.add(inShortestLink);
-                        mergedLinksList.add(link);
-                    } else {
-                        mergedLinksList.add(link);
-                        mergedLinksList.add(outShortestLink);
-                    }
-                }
-            }
-            // Merge the links
-            logger.info("Merging the links of {}; the current link {}", mergedLinksList.stream().map(Link::getId).toArray(), link.getId());
-            mergeLinks(mergedLinksList);
-            mergedLinks.add(link.getId());
-            mergedLinksList.remove(link);
-            mergedLinks.add(mergedLinksList.get(0).getId());
-        }
-    }
-
-
-    void mergeLinks(List<Link> links) {
-        Link firstLink = links.get(0);
-        Node fromNode = firstLink.getFromNode();
-        Node toNode = links.get(links.size() - 1).getToNode();
-
-        double totalLength = links.stream().mapToDouble(Link::getLength).sum();
-
-        // Create a new link
-        Link newLink = NetworkUtils.createLink(Id.createLinkId("merged_" + firstLink.getId() + "_" + links.get(links.size() - 1).getId()),
-                fromNode, toNode, this.network, totalLength, firstLink.getFreespeed(), firstLink.getCapacity(), firstLink.getNumberOfLanes());
-        newLink.setAllowedModes(firstLink.getAllowedModes());
-        firstLink.getAttributes().getAsMap().forEach(newLink.getAttributes()::putAttribute);
-        network.addLink(newLink);
-        // Remove the original links
-        links.forEach(link -> network.removeLink(link.getId()));
-    }
-
     public void optimize(){
         logger.info("Optimizing the multimodal network...");
         // Get the links whose length is longer than the threshold
@@ -223,46 +114,126 @@ public class MultiModalNetworkOptimizer {
                 linksToBeSplit.add(link);
             }
         }
-        // Get the links whose length is shorter than the threshold
-        boolean hasShortLinks = false;
-        for (Link link : network.getLinks().values()) {
-            if (link.getLength() < minThreshold && !this.skippedLink.contains(link.getId())) {
-                hasShortLinks = true;
-                break;
-            }
-        }
-        int count = 0;
-        while (!linksToBeSplit.isEmpty() || hasShortLinks){
-            // Split the long links
-            linksToBeSplit.forEach(this::splitLink);
-
-            // Merge the short links
-            mergeShortLinks();
-
-            // Update the links to be split and the existence of short links
-            linksToBeSplit.clear();
-            for (Link link : network.getLinks().values()) {
-                if (link.getLength() > maxThreshold) {
-                    linksToBeSplit.add(link);
-                }
-            }
-            hasShortLinks = false;
-            for (Link link : network.getLinks().values()) {
-                if (link.getLength() < minThreshold && !this.skippedLink.contains(link.getId())) {
-                    hasShortLinks = true;
-                    break;
-                }
-            }
-            count++;
-            logger.info("Optimizing the multimodal network, iteration: {}", count);
-        }
-    }
-
-    public List<Id<Link>> getSkippedLink() {
-        return this.skippedLink;
+        // Split the long links
+        linksToBeSplit.forEach(this::splitLink);
+        // Merge the short links using NetworkSimplifier
+        networkSimplifier.run(this.network, this.customizedLinkMergeablePredicate, this.customizedLinkAttrConsumer);
     }
 
     public Network getNetwork() {
         return this.network;
     }
+
+    public static class Builder {
+        private Network network;
+        private double minThreshold;
+        private double maxThreshold;
+        private NetworkSimplifier networkSimplifier;
+        private BiPredicate<Link, Link> customizedLinkMergeablePredicate;
+        private BiConsumer<Tuple<Link, Link>, Link> customizedLinkAttrConsumer;
+
+        // A default predicate to check if two links are mergeable, based on the allowed modes
+        private BiPredicate<Link, Link> defaultLinkMergeablePredicate() {
+            return (link1, link2) -> {
+                if (link1.getLength() <= this.minThreshold || link2.getLength() <= this.minThreshold) {
+                    Set<String> allowedModes1 = link1.getAllowedModes();
+                    Set<String> allowedModes2 = link2.getAllowedModes();
+                    return allowedModes1.containsAll(allowedModes2) || allowedModes2.containsAll(allowedModes1);
+                } else {
+                    return false;
+                }
+            };
+        }
+
+        // A default consumer to set the attributes of the merged link
+        private BiConsumer<Tuple<Link, Link>, Link> defaultLinkAttrConsumer() {
+            return (tuple, link) -> {
+                Link inLink = tuple.getFirst();
+                Link outLink = tuple.getSecond();
+                // Set the allowed modes of the merged link
+                Set<String> tmpAllowedModes = new HashSet<>();
+                if (inLink.getAllowedModes().containsAll(outLink.getAllowedModes())) {
+                    tmpAllowedModes.addAll(inLink.getAllowedModes());
+                } else {
+                    tmpAllowedModes.addAll(outLink.getAllowedModes());
+                }
+                link.setAllowedModes(tmpAllowedModes);
+
+                // Set the attributes of the merged link
+                for (String key : inLink.getAttributes().getAsMap().keySet()) {
+                    String inLinkValue = inLink.getAttributes().getAttribute(key).toString();
+                    String outLinkValue = outLink.getAttributes().getAttribute(key).toString();
+                    if (inLinkValue.equals(outLinkValue)) {
+                        link.getAttributes().putAttribute(key, inLinkValue);
+                    } else {
+                        link.getAttributes().putAttribute(key, inLinkValue + "_" + outLinkValue);
+                    }
+                }
+            };
+        }
+
+        public Builder setNetwork(Network network) {
+            this.network = network;
+            return this;
+        }
+
+        public Builder setMinThreshold(double minThreshold) {
+            this.minThreshold = minThreshold;
+            return this;
+        }
+
+        public Builder setMaxThreshold(double maxThreshold) {
+            this.maxThreshold = maxThreshold;
+            return this;
+        }
+
+        public Builder setNetworkSimplifier(NetworkSimplifier networkSimplifier) {
+            this.networkSimplifier = networkSimplifier;
+            return this;
+        }
+
+        public BiConsumer<Tuple<Link, Link>, Link> getCustomizedLinkAttrConsumer() {
+            return this.customizedLinkAttrConsumer;
+        }
+
+        public Builder setCustomizedLinkAttrConsumer(BiConsumer<Tuple<Link, Link>, Link> customizedLinkAttrConsumer) {
+            this.customizedLinkAttrConsumer = customizedLinkAttrConsumer;
+            return this;
+        }
+
+        public BiPredicate<Link, Link> getCustomizedLinkMergeablePredicate() {
+            return this.customizedLinkMergeablePredicate;
+        }
+
+        public Builder setCustomizedLinkMergeablePredicate(BiPredicate<Link, Link> customizedLinkMergeablePredicate) {
+            this.customizedLinkMergeablePredicate = customizedLinkMergeablePredicate;
+            return this;
+        }
+
+        private void setDefaultValues() {
+            if (this.minThreshold == 0) {
+                this.minThreshold = 5;
+            }
+            if (this.maxThreshold == 0) {
+                this.maxThreshold = 200;
+            }
+            if (this.networkSimplifier == null) {
+                this.networkSimplifier = new NetworkSimplifier();
+            }
+            if (this.customizedLinkMergeablePredicate == null) {
+                this.customizedLinkMergeablePredicate = this.defaultLinkMergeablePredicate();
+            }
+            if (this.customizedLinkAttrConsumer == null) {
+                this.customizedLinkAttrConsumer = this.defaultLinkAttrConsumer();
+            }
+        }
+
+        public MultiModalNetworkOptimizer build() {
+            this.setDefaultValues();
+            return new MultiModalNetworkOptimizer(this.network, this.minThreshold, this.maxThreshold, this.networkSimplifier,
+                    this.customizedLinkMergeablePredicate, this.customizedLinkAttrConsumer);
+        }
+
+    }
+
 }
