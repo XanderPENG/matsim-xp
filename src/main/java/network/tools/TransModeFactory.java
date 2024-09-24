@@ -4,6 +4,7 @@ import network.core.ModeKeyValueMapping;
 import network.core.TransMode;
 
 import java.util.Map;
+import java.util.Set;
 
 public class TransModeFactory {
     public static TransMode CAR = new TransMode(TransMode.Mode.CAR, new ModeKeyValueMapping.Builder()
@@ -24,7 +25,7 @@ public class TransModeFactory {
             .addKeyValueMapping(Map.of("highway", "living_street"))
             .addKeyValueMapping(Map.of("highway", "track"))
             .addKeyValueMapping(Map.of("highway", "primary"))
-            .build(), 130 / 3.6, 0.242, 3.5, 2);
+            .build(), Set.of(Map.of("oneway", "yes")), 130 / 3.6, 0.242, 3.5, 2);
 
     public static TransMode PT = new TransMode(TransMode.Mode.PT, new ModeKeyValueMapping.Builder()
             .setMode(TransMode.Mode.PT)
@@ -35,12 +36,12 @@ public class TransModeFactory {
             .addKeyValueMapping(Map.of("route", "subway"))
             .addKeyValueMapping(Map.of("route", "tram"))
             .addKeyValueMapping(Map.of("*", "busway"))
-            .build(), 40 / 3.6, 0.142, 3.5, 1);
+            .build(), Set.of(Map.of("oneway", "yes")),40 / 3.6, 0.142, 3.5, 1);
 
     public static TransMode TRAIN = new TransMode(TransMode.Mode.TRAIN, new ModeKeyValueMapping.Builder()
             .setMode(TransMode.Mode.TRAIN)
             .addKeyValueMapping(Map.of("route", "train"))
-            .build(), 100 / 3.6, 0.542, 5, 1);
+            .build(), Set.of(Map.of("oneway", "yes")),100 / 3.6, 0.542, 5, 1);
 
     public static TransMode BIKE = new TransMode(TransMode.Mode.BIKE, new ModeKeyValueMapping.Builder()
             .setMode(TransMode.Mode.BIKE)
@@ -77,7 +78,9 @@ public class TransModeFactory {
             .addKeyValueMapping(Map.of("cycleway:right", "*"))
             .addKeyValueMapping(Map.of("cycleway:both", "*"))
             .addKeyValueMapping(Map.of("cyclestreet", "yes"))
-            .build(), 20 / 3.6, 0, 2, 1);
+            .build(),
+            Set.of(Map.of("oneway:bicycle", "yes"), Map.of("highway", "cycleway", "oneway", "yes")),
+            20 / 3.6, 0, 2, 1);
 
     public static TransMode WALK = new TransMode(TransMode.Mode.WALK, new ModeKeyValueMapping.Builder()
             .setMode(TransMode.Mode.WALK)
@@ -88,15 +91,15 @@ public class TransModeFactory {
             .addKeyValueMapping(Map.of("highway", "track"))
             .addKeyValueMapping(Map.of("highway", "service"))
             .addKeyValueMapping(Map.of("highway", "living_street"))
-            .build(), 5 / 3.6, 0, 1, 1);
+            .build(), Set.of(Map.of("oneway:foot", "yes"), Map.of("highway","path", "oneway", "yes")), 5 / 3.6, 0, 1, 1);
 
     public static TransMode SHIP = new TransMode(TransMode.Mode.SHIP, new ModeKeyValueMapping.Builder()
             .setMode(TransMode.Mode.SHIP)
             .addKeyValueMapping(Map.of("route", "ferry"))
-            .build(), 20 / 3.6, 0.142,  10, 1);
+            .build(), Set.of(Map.of("oneway", "yes")), 20 / 3.6, 0.142,  10, 1);
 
     public static TransMode OTHER = new TransMode(TransMode.Mode.OTHER, new ModeKeyValueMapping.Builder()
             .setMode(TransMode.Mode.OTHER)
             .addKeyValueMapping(Map.of("highway", "*"))
-            .build(), 20 / 3.6, 0.142, 3.5, 1);
+            .build(), Set.of(Map.of("oneway", "yes")),20 / 3.6, 0.142, 3.5, 1);
 }

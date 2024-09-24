@@ -28,48 +28,12 @@ class RunCreateConfig {
                 "NA", "NA",
                 true,  Map.of("oneway", "yes"));
 
-        // Create customized TransMode
-        TransMode bikeMode = new TransMode(TransMode.Mode.BIKE, new ModeKeyValueMapping.Builder()
-                .addKeyValueMapping(Map.of("highway", "cycleway"))
-                .addKeyValueMapping(Map.of("bicycle", "yes"))
-                .build(),
-                20 / 3.6, 0,  2, 1);
-
-        TransMode carMode = new TransMode(TransMode.Mode.CAR, new ModeKeyValueMapping.Builder()
-                .addKeyValueMapping(Map.of("highway", "motorway"))
-                .addKeyValueMapping(Map.of("highway", "trunk"))
-                .build(),
-                130 / 3.6, 0.242,  3.5, 2);
-
-        TransMode ptMode = new TransMode(TransMode.Mode.PT, new ModeKeyValueMapping.Builder()
-                .addKeyValueMapping(Map.of("route", "bus"))
-                .addKeyValueMapping(Map.of("route", "trolleybus"))
-                .addKeyValueMapping(Map.of("route", "share_taxi"))
-                .addKeyValueMapping(Map.of("route", "train"))
-                .addKeyValueMapping(Map.of("route", "light_rail"))
-                .addKeyValueMapping(Map.of("route", "subway"))
-                .addKeyValueMapping(Map.of("route", "tram"))
-                .build(),
-                40 / 3.6, 0.142, 3.5, 1);
-
-        TransMode walkMode = new TransMode(TransMode.Mode.WALK, new ModeKeyValueMapping.Builder()
-                .addKeyValueMapping(Map.of("highway", "footway"))
-                .addKeyValueMapping(Map.of("highway", "pedestrian"))
-                .addKeyValueMapping(Map.of("highway", "steps"))
-                .build(),
-                5 / 3.6, 0, 1, 1);
-
-        TransMode otherMode = new TransMode(TransMode.Mode.OTHER, new ModeKeyValueMapping.Builder()
-                .addKeyValueMapping(Map.of("highway", "*"))
-                .build(),
-                20 / 3.6, 0, 2, 1);
-
         // Create the default TransModes quickly
-        bikeMode = TransModeFactory.BIKE;
-        carMode = TransModeFactory.CAR;
-        ptMode = TransModeFactory.PT;
-        walkMode = TransModeFactory.WALK;
-        otherMode = TransModeFactory.OTHER;
+        TransMode bikeMode = TransModeFactory.BIKE;
+        TransMode carMode = TransModeFactory.CAR;
+        TransMode ptMode = TransModeFactory.PT;
+        TransMode walkMode = TransModeFactory.WALK;
+        TransMode otherMode = TransModeFactory.OTHER;
 
         // create customized ModeParamSets
         ModeParamSet bikeParamSet = new ModeParamSet(bikeMode);

@@ -17,7 +17,7 @@
 		<param name="ONEWAY_KEY_VALUE_PAIR" value="oneway:yes" />
 		<param name="OUTPUT_CRS" value="EPSG:31370" />
 		<param name="OUTPUT_GEOJSON_FILE" value="NA" />
-		<param name="OUTPUT_NETWORK_FILE" value="../../data/intermediate/test/GemeenteLeuvenTest.xml.gz" />
+		<param name="OUTPUT_NETWORK_FILE" value="../../data/intermediate/test/GemeenteLeuvenTestV2.xml.gz" />
 		<!-- Fill in the file path if you want to output the network in the shp/geojson format. -->
 		<param name="OUTPUT_SHP_FILE" value="NA" />
 		<parameterset type="connectedNetworkParamSet" >
@@ -26,33 +26,34 @@
 				2. `insert`: connect all the isolated nodes/links to the nearest node/link;
 				3. `adapt_mode`: adapt and add TransMode for some links to make the (sub)network strongly connected. (e.g., add a bike mode for the car-tagged links) -->
 			<param name="METHOD" value="reduce" />
-			<param name="MODE" value="other, car, bike, walk, pt," />
+			<param name="MODE" value="other, walk, pt, car, bike," />
 			<!-- If true, the network will be processed to be strongly connected, which means that each node/link can be reached from any other node/link. -->
 			<param name="STRONGLY_CONNECTED" value="false" />
 		</parameterset>
 		<parameterset type="linkAttrParamSet" >
 			<param name="CAPACITY_FIELD" value="capacity" />
 			<!-- The unit of the input parameters; which could be (m or km; m/s or km/h); However, It is highly recommended to convert them to the meter-based units (i.e., m, m/s.) before running the converter. -->
-			<param name="INPUT_PARAM_UNIT" value="WIDTH_FIELD:m,MAX_SPEED_FIELD:km/h,LENGTH_FIELD:m" />
+			<param name="INPUT_PARAM_UNIT" value="WIDTH_FIELD:m,LENGTH_FIELD:m,MAX_SPEED_FIELD:km/h" />
 			<param name="LANES_FIELD" value="lanes" />
 			<param name="LANE_WIDTH_FIELD" value="width" />
 			<param name="LENGTH_FIELD" value="length" />
 			<param name="MAX_SPEED_FIELD" value="max_speed" />
 			<!-- The reserved fields in the link attributes, the value of these fields will be reserved as link attributes in the output network. -->
-			<param name="RESERVED_LINK_FIELDS" value="surface, lit, highway" />
+			<param name="RESERVED_LINK_FIELDS" value="surface, highway, lit" />
 		</parameterset>
 		<parameterset type="modeParamSet" >
 			<!-- The emission factor of the mode. -->
 			<param name="EMISSION_FACTOR" value="0.0" />
 			<!-- The max speed of the mode-related link (unit: m/s) -->
 			<param name="FREE_SPEED" value="5.555555555555555" />
-			<param name="KEY_VALUE_MAPPING" value="{highway=track}; {ramp=yes}; {bicycle=private}; {cyclestreet=yes}; {ramp:bicycle=yes}; {bicycle=destination}; {highway=path}; {bicycle=designated}; {highway=*,cycleway:both=lane}; {cycleway=crossing}; {segregated=*}; {cycleway=shared_lane}; {highway=*,cycleway=lane}; {cycleway=shared_busway}; {highway=unclassified}; {bicycle=customers}; {bicycle=yes}; {highway=cycleway}; {highway=*,cycleway:left=lane}; {highway=footway}; {highway=pedestrian}; {cycleway:left=*}; {cycleway:both=*}; {highway=service}; {highway=residential}; {highway=*,cycleway:right=lane}; {highway=tertiary}; {highway=living_street}; {bicycle=optional_sidepath}; {highway=*,cycleway:right=track}; {bicycle=permissive}; {cycleway:right=*}; {cycleway=shared};" />
+			<param name="KEY_VALUE_MAPPING" value="{highway=track}; {ramp=yes}; {bicycle=private}; {cyclestreet=yes}; {ramp:bicycle=yes}; {bicycle=destination}; {highway=path}; {bicycle=designated}; {cycleway:both=lane,highway=*}; {cycleway=crossing}; {segregated=*}; {cycleway=shared_lane}; {cycleway=lane,highway=*}; {cycleway=shared_busway}; {highway=unclassified}; {bicycle=customers}; {bicycle=yes}; {highway=cycleway}; {highway=*,cycleway:left=lane}; {highway=footway}; {highway=pedestrian}; {cycleway:left=*}; {cycleway:both=*}; {highway=service}; {highway=residential}; {highway=*,cycleway:right=lane}; {highway=tertiary}; {highway=living_street}; {bicycle=optional_sidepath}; {highway=*,cycleway:right=track}; {bicycle=permissive}; {cycleway:right=*}; {cycleway=shared};" />
 			<param name="LANES" value="1.0" />
 			<!-- The default single-lane width (unit: meter) -->
 			<param name="LANE_WIDTH" value="2.0" />
 			<!-- The name of the mode, which should be one of the following: 
 			[car, pt, train, bike, walk, ship, other.]. see @TransMode.Mode for more details. -->
 			<param name="MODE_NAME" value="bike" />
+			<param name="ONEWAY_KEY_VALUE_MAPPING" value="{oneway:bicycle=yes}; {oneway=yes,highway=cycleway};" />
 		</parameterset>
 		<parameterset type="modeParamSet" >
 			<param name="EMISSION_FACTOR" value="0.242" />
@@ -61,6 +62,7 @@
 			<param name="LANES" value="2.0" />
 			<param name="LANE_WIDTH" value="3.5" />
 			<param name="MODE_NAME" value="car" />
+			<param name="ONEWAY_KEY_VALUE_MAPPING" value="{oneway=yes};" />
 		</parameterset>
 		<parameterset type="modeParamSet" >
 			<param name="EMISSION_FACTOR" value="0.142" />
@@ -69,6 +71,7 @@
 			<param name="LANES" value="1.0" />
 			<param name="LANE_WIDTH" value="3.5" />
 			<param name="MODE_NAME" value="pt" />
+			<param name="ONEWAY_KEY_VALUE_MAPPING" value="{oneway=yes};" />
 		</parameterset>
 		<parameterset type="modeParamSet" >
 			<param name="EMISSION_FACTOR" value="0.0" />
@@ -77,6 +80,7 @@
 			<param name="LANES" value="1.0" />
 			<param name="LANE_WIDTH" value="1.0" />
 			<param name="MODE_NAME" value="walk" />
+			<param name="ONEWAY_KEY_VALUE_MAPPING" value="{oneway:foot=yes}; {oneway=yes,highway=path};" />
 		</parameterset>
 		<parameterset type="modeParamSet" >
 			<param name="EMISSION_FACTOR" value="0.142" />
@@ -85,6 +89,7 @@
 			<param name="LANES" value="1.0" />
 			<param name="LANE_WIDTH" value="3.5" />
 			<param name="MODE_NAME" value="other" />
+			<param name="ONEWAY_KEY_VALUE_MAPPING" value="{oneway=yes};" />
 		</parameterset>
 	</module>
 

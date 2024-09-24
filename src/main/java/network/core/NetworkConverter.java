@@ -170,18 +170,38 @@ public final class NetworkConverter {
 
     // Process the oneway attribute of the link
     private NetworkElement.Link processOneway(NetworkElement.Link link) {
-        String onewayKey = (String) config.ONEWAY_KEY_VALUE_PAIR.keySet().toArray()[0];
-        String onewayValue = config.ONEWAY_KEY_VALUE_PAIR.get(onewayKey);
         NetworkElement.Link reversedLink;
-        // check if the link is one-way based on the key-value pairs
-        if (link.getKeyValuePairs().containsKey(onewayKey) && link.getKeyValuePairs().get(onewayKey).equals(onewayValue)) {
+        Set<TransMode.Mode> reversedLinkModes = new HashSet<>();
+        Set<TransMode.Mode> reversedLinkUnsupportedModes = new HashSet<>();
+        // Check if the link is oneway based on the key-value pairs
+        configuredTransModes.forEach(transMode -> {
+            if (!link.getAllowedModes().contains(transMode.getMode())) {
+                return;
+            }
+            if (!transMode.matchLinkOneway(link)) {
+                reversedLinkModes.add(transMode.getMode());
+            } else {
+                reversedLinkUnsupportedModes.add(transMode.getMode());
+            }
+        });
+        if (!reversedLinkModes.isEmpty()) {
             reversedLink = new NetworkElement.Link(link.getId()+"_r", link.getToNode(), link.getFromNode());
-            reversedLink.setKeyValuePairs(link.getKeyValuePairs());
-            reversedLink.addAllowedModes(link.getAllowedModes());
+            reversedLink.addAllowedModes(reversedLinkModes);
+            // filter out the oneway key-value pairs of unsupported modes
+            Map<String, String> reversedLinkKeyValuePairs = new HashMap<>(link.getKeyValuePairs());
+            Set<String> unsupportedModesOnewayKeys = new HashSet<>();
+            for (TransMode.Mode mode : reversedLinkUnsupportedModes){
+                TransMode currentTransMode = configuredTransModes.stream().filter(transMode -> transMode.getMode().name.equals(mode.name)).findFirst().orElse(null);
+                assert currentTransMode != null;
+                for (Map<String, String> onewayKeyValueMapping : currentTransMode.getOnewayKeyValueMapping()){
+                    unsupportedModesOnewayKeys.addAll(onewayKeyValueMapping.keySet());
+                }
+            }
+            reversedLinkKeyValuePairs.keySet().removeAll(unsupportedModesOnewayKeys);
+            reversedLink.setKeyValuePairs(reversedLinkKeyValuePairs);
             reversedLink.addComposedNodes(Utils.reverseLinkedHashMap(link.getComposedNodes()));
             return reversedLink;
         } else {
-            // if the oneway key is not found in the key-value pairs, or the value is not equal to the specified value
             return null;
         }
     }

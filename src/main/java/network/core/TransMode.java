@@ -3,10 +3,12 @@ package network.core;
 import org.matsim.api.core.v01.TransportMode;
 
 import java.util.Map;
+import java.util.Set;
 
 public final class TransMode {
     private final Mode mode;
     private final ModeKeyValueMapping keyValueMapping;
+    private final Set<Map<String, String>> onewayKeyValueMapping;
 
     private final double defaultMaxSpeed;
     private final double defaultEmissionFactor;
@@ -15,7 +17,7 @@ public final class TransMode {
     private final double defaultLanes;
 
 
-    public TransMode(Mode mode, ModeKeyValueMapping keyValueMapping,
+    public TransMode(Mode mode, ModeKeyValueMapping keyValueMapping, Set<Map<String, String>> onewayKeyValueMapping,
                      double defaultMaxSpeed, double defaultEmissionFactor,
                      double defaultLaneWidth, double defaultLanes) {
         this.mode = mode;
@@ -25,6 +27,7 @@ public final class TransMode {
 //        this.defaultLaneCapacity = defaultLaneCapacity;
         this.defaultLaneWidth = defaultLaneWidth;
         this.defaultLanes = defaultLanes;
+        this.onewayKeyValueMapping = onewayKeyValueMapping;
     }
 
 
@@ -34,6 +37,10 @@ public final class TransMode {
 
     public ModeKeyValueMapping getModeKeyValueMapping() {
         return this.keyValueMapping;
+    }
+
+    public Set<Map<String, String>> getOnewayKeyValueMapping() {
+        return this.onewayKeyValueMapping;
     }
 
     public double getDefaultMaxSpeed() {
@@ -53,10 +60,18 @@ public final class TransMode {
     }
 
     public boolean matchLinkTransMode(NetworkElement.Link link) {
+        return matchLinkKeyValues(link, this.keyValueMapping.getKeyValueMapping());
+    }
+
+    public boolean matchLinkOneway(NetworkElement.Link link) {
+        return matchLinkKeyValues(link, this.onewayKeyValueMapping);
+    }
+
+    private boolean matchLinkKeyValues(NetworkElement.Link link, Set<Map<String, String>> mappings){
         Map<String, String> keyValuePairs = link.getKeyValuePairs();
         final boolean[] match = {false};
         // outer loop for each mapping
-        for (Map<String, String> mapping : this.keyValueMapping.getKeyValueMapping()) {
+        for (Map<String, String> mapping : mappings) {
             // inner loop for each key-value pair in the mapping
             for (Map.Entry<String, String> entry : mapping.entrySet()) {
                 String key = entry.getKey().trim();

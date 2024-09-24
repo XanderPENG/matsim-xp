@@ -37,6 +37,9 @@ public class ModeParamSet extends ReflectiveConfigGroup implements MatsimParamet
     @Comment("The key-value mapping for the specific mode")
     public Set<Map<String, String>> KEY_VALUE_MAPPING = new HashSet<>();
 
+    @Comment("The key-value mapping for the oneway")
+    public Set<Map<String, String>> ONEWAY_KEY_VALUE_MAPPING = new HashSet<>();
+
     public ModeParamSet() {
         super(GROUP_NAME);
     }
@@ -50,13 +53,14 @@ public class ModeParamSet extends ReflectiveConfigGroup implements MatsimParamet
         this.LANE_WIDTH = transMode.getDefaultLaneWidth();
         this.LANES = transMode.getDefaultLanes();
         this.KEY_VALUE_MAPPING = transMode.getModeKeyValueMapping().getKeyValueMapping();
+        this.ONEWAY_KEY_VALUE_MAPPING = transMode.getOnewayKeyValueMapping();
     }
 
 
     // Constructor for totally customized params
     public ModeParamSet(TransMode.Mode mode, double freeSpeed, double emissionFactor,
                         double laneWidth, double lanes,
-                        Set<Map<String, String>> keyValueMapping) {
+                        Set<Map<String, String>> keyValueMapping, Set<Map<String, String>> onewayKeyValueMapping) {
         super(GROUP_NAME);
         this.MODE_NAME = mode.name;
         this.FREE_SPEED = freeSpeed;
@@ -64,6 +68,7 @@ public class ModeParamSet extends ReflectiveConfigGroup implements MatsimParamet
         this.LANE_WIDTH = laneWidth;
         this.LANES = lanes;
         this.KEY_VALUE_MAPPING = keyValueMapping;
+        this.ONEWAY_KEY_VALUE_MAPPING = onewayKeyValueMapping;
     }
 
     // @StringGetter and @StringSetter for the KEY_VALUE_MAPPING
@@ -112,55 +117,101 @@ public class ModeParamSet extends ReflectiveConfigGroup implements MatsimParamet
         this.KEY_VALUE_MAPPING = set;
     }
 
+    @StringGetter("ONEWAY_KEY_VALUE_MAPPING")
+    public String getOnewayKeyValMappingString() {
+        StringBuilder sb = new StringBuilder();
+        for (Map<String, String> map : ONEWAY_KEY_VALUE_MAPPING) {
+            sb.append("{");
+
+            map.forEach((key, value) -> sb.append(key).append("=").append(value).append(","));
+            if (!map.isEmpty()) {
+                sb.deleteCharAt(sb.length() - 1); // delete the last comma
+            }
+            sb.append("}; ");
+        }
+        return sb.toString().trim(); // remove the last space
+    }
+
+    @StringSetter("ONEWAY_KEY_VALUE_MAPPING")
+    public void setOnewayKeyValMappingString(String onewayKeyValMappingString) {
+        // Create a new HashSet to store the parsed key-value mappings
+        Set<Map<String, String>> set = new HashSet<>();
+        // Split the input string by semicolons to get individual map strings
+        String[] mapStrings = onewayKeyValMappingString.split(";");
+
+        for (String mapString : mapStrings) {
+            // Check if the map string is not empty after trimming whitespace
+            if (!mapString.trim().isEmpty()) {
+                // Remove curly braces and trim whitespace from the map string
+                mapString = mapString.trim().replace("{", "").replace("}", "");
+                // Split the map string by commas to get individual key-value pairs
+                String[] keyValuePairs = mapString.split(",");
+                Map<String, String> map = new HashMap<>();
+
+                for (String keyValue : keyValuePairs) {
+                    // Split the key-value pair by colon to separate key and value
+                    String[] keyValueArray = keyValue.split("=");
+                    // Check if the key-value pair has exactly two elements (key and value)
+                    if (keyValueArray.length == 2) {
+                        map.put(keyValueArray[0].trim(), keyValueArray[1].trim());
+                    }
+                }
+                set.add(map);
+            }
+        }
+        this.ONEWAY_KEY_VALUE_MAPPING = set;
+    }
+
+
     public TransMode getTransMode() {
         switch (MODE_NAME) {
             case "car" -> {
                 return new TransMode(TransMode.Mode.CAR, new ModeKeyValueMapping.Builder()
                         .setMode(TransMode.Mode.CAR)
                         .setKeyValueMapping(KEY_VALUE_MAPPING)
-                        .build(),
+                        .build(), ONEWAY_KEY_VALUE_MAPPING,
                         FREE_SPEED, EMISSION_FACTOR, LANE_WIDTH, LANES);
             }
             case "pt" -> {
                 return new TransMode(TransMode.Mode.PT, new ModeKeyValueMapping.Builder()
                         .setMode(TransMode.Mode.PT)
                         .setKeyValueMapping(KEY_VALUE_MAPPING)
-                        .build(),
+                        .build(), ONEWAY_KEY_VALUE_MAPPING,
                         FREE_SPEED, EMISSION_FACTOR, LANE_WIDTH, LANES);
             }
             case "train" -> {
                 return new TransMode(TransMode.Mode.TRAIN, new ModeKeyValueMapping.Builder()
                         .setMode(TransMode.Mode.TRAIN)
                         .setKeyValueMapping(KEY_VALUE_MAPPING)
-                        .build(),
+                        .build(), ONEWAY_KEY_VALUE_MAPPING,
                         FREE_SPEED, EMISSION_FACTOR, LANE_WIDTH, LANES);
             }
             case "bike" -> {
                 return new TransMode(TransMode.Mode.BIKE, new ModeKeyValueMapping.Builder()
                         .setMode(TransMode.Mode.BIKE)
                         .setKeyValueMapping(KEY_VALUE_MAPPING)
-                        .build(),
+                        .build(), ONEWAY_KEY_VALUE_MAPPING,
                         FREE_SPEED, EMISSION_FACTOR, LANE_WIDTH, LANES);
             }
             case "walk" -> {
                 return new TransMode(TransMode.Mode.WALK, new ModeKeyValueMapping.Builder()
                         .setMode(TransMode.Mode.WALK)
                         .setKeyValueMapping(KEY_VALUE_MAPPING)
-                        .build(),
+                        .build(), ONEWAY_KEY_VALUE_MAPPING,
                         FREE_SPEED, EMISSION_FACTOR, LANE_WIDTH, LANES);
             }
             case "ship" -> {
                 return new TransMode(TransMode.Mode.SHIP, new ModeKeyValueMapping.Builder()
                         .setMode(TransMode.Mode.SHIP)
                         .setKeyValueMapping(KEY_VALUE_MAPPING)
-                        .build(),
+                        .build(), ONEWAY_KEY_VALUE_MAPPING,
                         FREE_SPEED, EMISSION_FACTOR, LANE_WIDTH, LANES);
             }
             case "other" -> {
                 return new TransMode(TransMode.Mode.OTHER, new ModeKeyValueMapping.Builder()
                         .setMode(TransMode.Mode.OTHER)
                         .setKeyValueMapping(KEY_VALUE_MAPPING)
-                        .build(),
+                        .build(), ONEWAY_KEY_VALUE_MAPPING,
                         FREE_SPEED, EMISSION_FACTOR, LANE_WIDTH, LANES);
             }
         }
