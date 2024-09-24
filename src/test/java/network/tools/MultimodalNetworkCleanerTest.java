@@ -3,7 +3,6 @@ package network.tools;
 import network.core.TransMode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hsqldb.persist.Log;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -32,7 +31,7 @@ class MultimodalNetworkCleanerTest {
         MatsimNetworkReader matsimNetworkReader = new MatsimNetworkReader(scenario.getNetwork());
         matsimNetworkReader.readFile("../../data/intermediate/test/GemeenteLeuvenOptimizedV2.xml.gz");
         // Network Stats of the bike subnetwork
-        Network bikeNetwork = deriveBikeNetwork(scenario.getNetwork());
+        Network bikeNetwork = deriveSubNetwork(scenario.getNetwork(), TransMode.Mode.BIKE);
         LOG.info("Network Stats (pre-cleaning): ");
         networkTopoCalculator.run(bikeNetwork);
 
@@ -40,27 +39,51 @@ class MultimodalNetworkCleanerTest {
         LOG.info("Cleaning the network");
         Assertions.assertDoesNotThrow(() -> networkCleaner.clean(TransMode.Mode.BIKE, Set.of(TransMode.Mode.CAR, TransMode.Mode.PT)));
         LOG.info("Network Stats (post-cleaning): ");
-        bikeNetwork = deriveBikeNetwork(scenario.getNetwork());
+        bikeNetwork = deriveSubNetwork(scenario.getNetwork(), TransMode.Mode.BIKE);
         networkTopoCalculator.run(bikeNetwork);
         //write the cleaned network
 //        NetworkUtils.writeNetwork(scenario.getNetwork(), "../../data/intermediate/test/GemeenteLeuvenCleanedV1.xml.gz");
     }
 
-    Network deriveBikeNetwork(Network network) {
-        Network bikeNetwork = NetworkUtils.createNetwork();
+    @Test
+    void cleanAllModes(){
+        LOG.info("Testing multimodal network cleaner");
+        Config config = ConfigUtils.createConfig();
+        Scenario scenario = ScenarioUtils.createScenario(config);
+        // Read the MATSim network
+        MatsimNetworkReader matsimNetworkReader = new MatsimNetworkReader(scenario.getNetwork());
+        matsimNetworkReader.readFile("../../data/intermediate/test/GemeenteLeuvenOptimizedV2.xml.gz");
+        // Network Stats of the bike subnetwork
+        Network bikeNetwork = deriveSubNetwork(scenario.getNetwork(), TransMode.Mode.BIKE);
+        LOG.info("Network Stats (pre-cleaning): ");
+        networkTopoCalculator.run(bikeNetwork);
+
+        MultimodalNetworkOrganizer cleaner = new MultimodalNetworkOrganizer(scenario.getNetwork());
+        LOG.info("Cleaning the whole network");
+        cleaner.clean(Set.of(TransMode.Mode.BIKE, TransMode.Mode.CAR, TransMode.Mode.PT));
+        LOG.info("Network Stats (post-cleaning): ");
+        bikeNetwork = deriveSubNetwork(scenario.getNetwork(), TransMode.Mode.BIKE);
+        networkTopoCalculator.run(bikeNetwork);
+        //write the cleaned network
+        NetworkUtils.writeNetwork(scenario.getNetwork(), "../../data/intermediate/test/GemeenteLeuvenCleanedAllModesV1.xml.gz");
+
+    }
+
+    Network deriveSubNetwork(Network network, TransMode.Mode mode) {
+        Network subNetwork = NetworkUtils.createNetwork();
         for (Link link : network.getLinks().values()) {
-            if (link.getAllowedModes().contains(TransMode.Mode.BIKE.name)) {
-                if (!bikeNetwork.getNodes().containsValue(link.getFromNode())) {
-                    bikeNetwork.addNode(link.getFromNode());
+            if (link.getAllowedModes().contains(mode.name)) {
+                if (!subNetwork.getNodes().containsValue(link.getFromNode())) {
+                    subNetwork.addNode(link.getFromNode());
                 }
-                if (!bikeNetwork.getNodes().containsValue(link.getToNode())) {
-                    bikeNetwork.addNode(link.getToNode());
+                if (!subNetwork.getNodes().containsValue(link.getToNode())) {
+                    subNetwork.addNode(link.getToNode());
                 }
-                if (!bikeNetwork.getLinks().containsValue(link)) {
-                    bikeNetwork.addLink(link);
+                if (!subNetwork.getLinks().containsValue(link)) {
+                    subNetwork.addLink(link);
                 }
             }
         }
-        return bikeNetwork;
+        return subNetwork;
     }
 }

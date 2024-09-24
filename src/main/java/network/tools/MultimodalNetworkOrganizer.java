@@ -53,7 +53,7 @@ public class MultimodalNetworkOrganizer {
 
     public void clean(Set<TransMode.Mode> allModes){
         final MultimodalNetworkCleaner cleaner = new MultimodalNetworkCleaner(this.network);
-        Set<String> allModesString = allModes.stream().map(Enum::name).collect(Collectors.toSet());
+        Set<String> allModesString = allModes.stream().map(mode-> mode.name).collect(Collectors.toSet());
         Iterator<String> iterator = allModesString.iterator();
         while (iterator.hasNext()) {
             String mode = iterator.next();
