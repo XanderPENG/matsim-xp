@@ -13,6 +13,7 @@ import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.network.NetworkUtils;
 import org.matsim.core.network.algorithms.NetworkCalcTopoType;
+import org.matsim.core.network.algorithms.TransportModeNetworkFilter;
 import org.matsim.core.network.io.MatsimNetworkReader;
 import org.matsim.core.scenario.ScenarioUtils;
 
@@ -32,15 +33,16 @@ class MultimodalNetworkCleanerTest {
         matsimNetworkReader.readFile("../../data/intermediate/test/GemeenteLeuvenOptimizedV2.xml.gz");
         // Network Stats of the bike subnetwork
         Network bikeNetwork = deriveSubNetwork(scenario.getNetwork(), TransMode.Mode.BIKE);
-        LOG.info("Network Stats (pre-cleaning): ");
+        LOG.info("Network Stats (pre-cleaning-V1): ");
         networkTopoCalculator.run(bikeNetwork);
 
         MultimodalNetworkOrganizer networkCleaner = new MultimodalNetworkOrganizer(scenario.getNetwork());
         LOG.info("Cleaning the network");
-        Assertions.assertDoesNotThrow(() -> networkCleaner.clean(TransMode.Mode.BIKE, Set.of(TransMode.Mode.CAR, TransMode.Mode.PT)));
-        LOG.info("Network Stats (post-cleaning): ");
+        Assertions.assertDoesNotThrow(() -> networkCleaner.clean(TransMode.Mode.BIKE, Set.of(TransMode.Mode.CAR)));
+        LOG.info("Network Stats (post-cleaningV1): ");
         bikeNetwork = deriveSubNetwork(scenario.getNetwork(), TransMode.Mode.BIKE);
         networkTopoCalculator.run(bikeNetwork);
+
         //write the cleaned network
 //        NetworkUtils.writeNetwork(scenario.getNetwork(), "../../data/intermediate/test/GemeenteLeuvenCleanedV1.xml.gz");
     }
@@ -54,36 +56,47 @@ class MultimodalNetworkCleanerTest {
         MatsimNetworkReader matsimNetworkReader = new MatsimNetworkReader(scenario.getNetwork());
         matsimNetworkReader.readFile("../../data/intermediate/test/GemeenteLeuvenOptimizedV2.xml.gz");
         // Network Stats of the bike subnetwork
-        Network bikeNetwork = deriveSubNetwork(scenario.getNetwork(), TransMode.Mode.BIKE);
+        Network carNetwork = deriveSubNetwork(scenario.getNetwork(), TransMode.Mode.CAR);
         LOG.info("Network Stats (pre-cleaning): ");
-        networkTopoCalculator.run(bikeNetwork);
+        networkTopoCalculator.run(carNetwork);
 
         MultimodalNetworkOrganizer cleaner = new MultimodalNetworkOrganizer(scenario.getNetwork());
         LOG.info("Cleaning the whole network");
-        cleaner.clean(Set.of(TransMode.Mode.BIKE, TransMode.Mode.CAR, TransMode.Mode.PT));
+        cleaner.clean(Set.of(TransMode.Mode.BIKE, TransMode.Mode.CAR));
         LOG.info("Network Stats (post-cleaning): ");
-        bikeNetwork = deriveSubNetwork(scenario.getNetwork(), TransMode.Mode.BIKE);
-        networkTopoCalculator.run(bikeNetwork);
+        carNetwork = deriveSubNetwork(scenario.getNetwork(), TransMode.Mode.BIKE);
+        networkTopoCalculator.run(carNetwork);
         //write the cleaned network
         NetworkUtils.writeNetwork(scenario.getNetwork(), "../../data/intermediate/test/GemeenteLeuvenCleanedAllModesV1.xml.gz");
 
     }
 
+    @Test
+    void checkConnection(){
+        LOG.info("Testing multimodal network cleaner");
+        Config config = ConfigUtils.createConfig();
+        Scenario scenario = ScenarioUtils.createScenario(config);
+        // Read the MATSim network
+        MatsimNetworkReader matsimNetworkReader = new MatsimNetworkReader(scenario.getNetwork());
+        matsimNetworkReader.readFile("../../data/intermediate/test/GemeenteLeuvenCleanedAllModesV1.xml.gz");
+        // Network Stats of the car subnetwork
+        Network carNetwork = NetworkUtils.createNetwork();
+        TransportModeNetworkFilter filter = new TransportModeNetworkFilter(scenario.getNetwork());
+        filter.filter(carNetwork, Set.of(TransMode.Mode.CAR.name));
+        LOG.info("Network Stats (pre-cleaning): ");
+        networkTopoCalculator.run(carNetwork);
+        MultimodalNetworkOrganizer cleaner = new MultimodalNetworkOrganizer(scenario.getNetwork());
+        cleaner.clean(TransMode.Mode.CAR, Set.of(TransMode.Mode.BIKE, TransMode.Mode.WALK, TransMode.Mode.PT));
+        LOG.info("Network Stats (post-cleaning): ");
+        carNetwork = NetworkUtils.createNetwork();
+        filter.filter(carNetwork, Set.of(TransMode.Mode.CAR.name));
+        networkTopoCalculator.run(carNetwork);
+    }
+
     Network deriveSubNetwork(Network network, TransMode.Mode mode) {
+        TransportModeNetworkFilter filter = new TransportModeNetworkFilter(network);
         Network subNetwork = NetworkUtils.createNetwork();
-        for (Link link : network.getLinks().values()) {
-            if (link.getAllowedModes().contains(mode.name)) {
-                if (!subNetwork.getNodes().containsValue(link.getFromNode())) {
-                    subNetwork.addNode(link.getFromNode());
-                }
-                if (!subNetwork.getNodes().containsValue(link.getToNode())) {
-                    subNetwork.addNode(link.getToNode());
-                }
-                if (!subNetwork.getLinks().containsValue(link)) {
-                    subNetwork.addLink(link);
-                }
-            }
-        }
+        filter.filter(subNetwork, Set.of(mode.name));
         return subNetwork;
     }
 }

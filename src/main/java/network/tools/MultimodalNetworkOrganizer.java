@@ -18,34 +18,6 @@ public class MultimodalNetworkOrganizer {
         this.network = network;
     }
 
-//    private Network clean(TransMode.Mode mode) {
-//        // create a new  network with only the links that match the given mode
-//        Network tmpNetwork = NetworkUtils.createNetwork();
-//        for (Link link : this.network.getLinks().values()) {
-//            if (link.getAllowedModes().contains(mode.name)) {
-//                tmpNetwork.addLink(link);
-//                // add the nodes
-//                tmpNetwork.addNode(link.getFromNode());
-//                tmpNetwork.addNode(link.getToNode());
-//            }
-//        }
-//        // clean the network
-//        this.networkCleaner.run(tmpNetwork);
-//        return tmpNetwork;
-//    }
-//
-//    public Network clean(Set<TransMode.Mode> modes){
-//        Network network = NetworkUtils.createNetwork();
-//        for (TransMode.Mode mode : modes){
-//            Network currentModeNetwork = this.clean(mode);
-//
-//            // add the links and nodes to the network
-//            currentModeNetwork.getLinks().values().forEach(network::addLink);
-//            currentModeNetwork.getNodes().values().forEach(network::addNode);
-//        }
-//        return network;
-//    }
-
     public void clean(TransMode.Mode mode, Set<TransMode.Mode> retainModes){
         final MultimodalNetworkCleaner cleaner = new MultimodalNetworkCleaner(this.network);
         cleaner.run(Set.of(mode.name), retainModes.stream().map(Enum::name).collect(Collectors.toSet()));
