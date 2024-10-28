@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<carriers xmlns="http://www.matsim.org/files/dtd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.matsim.org/files/dtd http://www.matsim.org/files/dtd/carriersDefinitions_v2.1.xsd">
+	<carrier id="Carrier1">
+		<attributes>
+			<attribute name="jspritIterations" class="java.lang.Integer">100</attribute>
+		</attributes>
+		<capabilities fleetSize="INFINITE">
+			<vehicles>
+				<vehicle id="van_0" depotLinkId="27566523_r_10" typeId="van" earliestStart="00:00:00" latestEnd="596523:14:07"/>
+				<vehicle id="van_1" depotLinkId="333784189_1" typeId="van" earliestStart="00:00:00" latestEnd="596523:14:07"/>
+				<vehicle id="van_2" depotLinkId="333784189_r_2" typeId="van" earliestStart="00:00:00" latestEnd="596523:14:07"/>
+				<vehicle id="van_3" depotLinkId="333784188_r_2" typeId="van" earliestStart="00:00:00" latestEnd="596523:14:07"/>
+				<vehicle id="van_4" depotLinkId="27566523_r_9" typeId="van" earliestStart="00:00:00" latestEnd="596523:14:07"/>
+				<vehicle id="van_5" depotLinkId="333784188_0" typeId="van" earliestStart="00:00:00" latestEnd="596523:14:07"/>
+				<vehicle id="van_6" depotLinkId="333784189_2" typeId="van" earliestStart="00:00:00" latestEnd="596523:14:07"/>
+				<vehicle id="van_7" depotLinkId="27566523_10" typeId="van" earliestStart="00:00:00" latestEnd="596523:14:07"/>
+				<vehicle id="van_8" depotLinkId="333784188_1" typeId="van" earliestStart="00:00:00" latestEnd="596523:14:07"/>
+				<vehicle id="van_9" depotLinkId="27566523_11" typeId="van" earliestStart="00:00:00" latestEnd="596523:14:07"/>
+				<vehicle id="van_10" depotLinkId="333784189_r_3" typeId="van" earliestStart="00:00:00" latestEnd="596523:14:07"/>
+				<vehicle id="van_11" depotLinkId="333784188_r_3" typeId="van" earliestStart="00:00:00" latestEnd="596523:14:07"/>
+			</vehicles>
+		</capabilities>
+		<shipments>
+			<shipment id="shipment_37" from="27566523_r_9" to="17976690_2" size="23" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_38" from="27566523_10" to="303392607_r_1" size="13" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_39" from="333784188_1" to="32805008_3" size="23" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_33" from="333784188_r_3" to="310650089_1" size="21" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_34" from="27566523_r_10" to="784533362_r_15" size="23" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_35" from="333784189_2" to="93203094_r_0" size="17" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_36" from="333784189_1" to="234630683_0-234630683_1" size="21" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_30" from="333784188_0" to="92145368_2" size="6" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_31" from="333784188_1" to="139705263_8" size="7" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_32" from="333784189_r_3" to="14506241_1" size="10" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_48" from="27566523_11" to="125835607_r_1-125835607_r_2" size="6" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_49" from="333784188_r_2" to="192559657_r_1" size="14" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_44" from="333784188_0" to="112566019_r_3" size="18" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_45" from="333784188_1" to="631979426_r_6" size="10" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_46" from="333784189_r_2" to="104794393_r_1" size="9" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_47" from="27566523_11" to="104794406_3" size="8" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_40" from="27566523_r_9" to="722950836_3" size="17" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_41" from="333784189_r_3" to="935329995_r_12" size="9" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_42" from="333784188_1" to="814322476_r_1" size="24" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_43" from="333784188_1" to="3450240_2" size="10" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_19" from="27566523_r_10" to="92511622_r_3" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_15" from="333784188_r_2" to="781845496_0" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_16" from="333784188_1" to="296480717_r_4" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_17" from="27566523_r_9" to="4014048_0-4014048_1" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_18" from="333784188_r_2" to="133617176_0" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_1" from="333784188_r_3" to="137831628_r_4" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_11" from="333784188_r_3" to="71176156_r_14" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_0" from="333784189_2" to="764125752_0" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_12" from="333784189_r_2" to="86614478_8" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_13" from="333784189_r_2" to="22906072_0" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_14" from="333784189_r_3" to="38158912_12" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_5" from="333784189_1" to="87240817_r_2" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_4" from="333784188_r_3" to="844466432_r_0" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_3" from="27566523_r_10" to="23035341_5" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_2" from="27566523_11" to="96582766_1" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_10" from="333784188_0" to="406156457_r_2" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_9" from="27566523_r_10" to="23119518_r_3" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_8" from="27566523_r_10" to="962526798_16" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_7" from="333784188_r_3" to="286125264_2" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_6" from="333784189_2" to="90712963_r_4" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_26" from="333784188_r_3" to="876292404_r_0" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_27" from="333784188_1" to="24336615_r_15" size="23" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_28" from="333784189_1" to="23926665_4" size="7" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_29" from="27566523_11" to="139898734_r_1" size="6" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_22" from="333784188_r_3" to="1235806081_11" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_23" from="333784189_r_2" to="11994544_5" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_24" from="27566523_10" to="281829135_r_1" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_25" from="333784188_1" to="25629738_r_0" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_20" from="333784189_r_2" to="8130896_0" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+			<shipment id="shipment_21" from="333784188_r_3" to="608715598_r_1" size="25" startPickup="00:00:00" endPickup="596523:14:07" startDelivery="00:00:00" endDelivery="596523:14:07" pickupServiceTime="00:00:00" deliveryServiceTime="00:00:00"/>
+		</shipments>
+		<plans>
+			<plan score="-2405.911424059447" selected="true">
+				<attributes>
+					<attribute name="jspritScore" class="java.lang.Double">-2281.878054803233</attribute>
+				</attributes>
+				<tour tourId="1" vehicleId="van_5">
+					<act type="start" end_time="00:00:00"/>
+					<leg expected_dep_time="00:00:00" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_10"/>
+					<leg expected_dep_time="00:00:00" expected_transp_time="00:00:08">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_25"/>
+					<leg expected_dep_time="00:00:08" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_45"/>
+					<leg expected_dep_time="00:00:08" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_39"/>
+					<leg expected_dep_time="00:00:08" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_27"/>
+					<leg expected_dep_time="00:00:08" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_31"/>
+					<leg expected_dep_time="00:00:08" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_42"/>
+					<leg expected_dep_time="00:00:08" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_43"/>
+					<leg expected_dep_time="00:00:08" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_16"/>
+					<leg expected_dep_time="00:00:08" expected_transp_time="00:00:08">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_49"/>
+					<leg expected_dep_time="00:00:17" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_15"/>
+					<leg expected_dep_time="00:00:17" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_18"/>
+					<leg expected_dep_time="00:00:17" expected_transp_time="00:00:02">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_7"/>
+					<leg expected_dep_time="00:00:19" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_26"/>
+					<leg expected_dep_time="00:00:19" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_4"/>
+					<leg expected_dep_time="00:00:19" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_21"/>
+					<leg expected_dep_time="00:00:19" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_22"/>
+					<leg expected_dep_time="00:00:19" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_11"/>
+					<leg expected_dep_time="00:00:19" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_33"/>
+					<leg expected_dep_time="00:00:19" expected_transp_time="00:00:02">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_44"/>
+					<leg expected_dep_time="00:00:21" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_30"/>
+					<leg expected_dep_time="00:00:21" expected_transp_time="00:00:01">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_32"/>
+					<leg expected_dep_time="00:00:23" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_14"/>
+					<leg expected_dep_time="00:00:23" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_41"/>
+					<leg expected_dep_time="00:00:23" expected_transp_time="00:00:01">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_5"/>
+					<leg expected_dep_time="00:00:24" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_28"/>
+					<leg expected_dep_time="00:00:24" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_36"/>
+					<leg expected_dep_time="00:00:24" expected_transp_time="00:00:02">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_6"/>
+					<leg expected_dep_time="00:00:27" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_35"/>
+					<leg expected_dep_time="00:00:27" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_0"/>
+					<leg expected_dep_time="00:00:27" expected_transp_time="00:00:02">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_12"/>
+					<leg expected_dep_time="00:00:29" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_20"/>
+					<leg expected_dep_time="00:00:29" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_46"/>
+					<leg expected_dep_time="00:00:29" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_13"/>
+					<leg expected_dep_time="00:00:29" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_23"/>
+					<leg expected_dep_time="00:00:29" expected_transp_time="00:00:02">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_1"/>
+					<leg expected_dep_time="00:00:32" expected_transp_time="00:01:49">
+						<route>326736776_r_5 326736776_r_6 326736776_r_7 326736776_r_8 326736776_r_9 326736797_0-326736797_1 326736797_2 326736797_3 326736797_4 807751753_0-807751753_1 807751754_0 807751754_1 807751754_2 807751754_3 182723456_0 182723456_1-182723456_2 182723456_3 807751738_r_1 807751738_r_2 807751738_r_3 182723461_7-182723461_8 182723461_9 182723461_10 182723461_11-182723461_12 182723461_13 182723458_0 810580966_r_0-810580966_r_1 325260116_3 184346173_0 184346173_1 184346173_2 810580965_0-810580965_1-810580965_2 184344076_0 184344076_1 184344076_2 184344076_3 184344076_4 184344076_5 184344076_6 184344076_7 326736773_r_3 326736773_r_4 1084192716_0 1084192716_1 1084192716_2 32805008_0 32805008_1 32805008_2</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_39"/>
+					<leg expected_dep_time="00:02:21" expected_transp_time="00:03:36">
+						<route>160134509_0-160134509_1 160134509_2 160134509_3 160134509_4 160134509_5 160134509_6-160134509_7 160134509_8 160134509_9 160134509_10 1084192715_0 1084192715_1 326736773_r_4 345596705_r_0 345596705_r_1 225605573_r_0 608715549_r_0 345596706_r_0 345596706_r_1 225605572_r_0 225605572_r_1 225605572_r_2 8128795_0 8128795_1 8128795_2 192559654_0 192559654_1 192559654_2 192559654_3-192559654_4 192559654_5-192559654_6-192559654_7 192559654_8-192559654_9-192559654_10 1001151697_0 225605633_0 225605633_1 225605633_2 225605633_3 225605633_4 225605633_5 225605633_6 225605633_7 225605633_8 225605633_9 225605633_10 78568454_0 78568454_1 78568454_2 78568454_3 8131119_0 8131119_1 8131119_2 8131119_3 947161958_0 681081955_0 681081955_1 681081955_2 681081955_3 28982660_0 28982660_1 813979473_0 192559626_0 192559626_1 192559626_2 192559626_3-192559626_4 192559626_5 813979469_0 813979469_1 813979469_2 192559627_0 192559627_1-192559627_2 192559627_3 192559627_4-192559627_5 192559627_6 3677945_0 3677945_1 3677945_2 521193383_0 521193382_0 813979466_0 813979466_1 80194318_0 80194318_1 80194318_2 80194318_3 80194318_4 80194318_5 80194318_6 814322832_0 229044194_1-229044194_2-229044194_3 3677944_2 608715521_0 608715520_0 174338458_0 174338458_1 174338458_2 174338458_3 174338458_4 174338458_5 174338458_6-174338458_7 814322474_r_0 814322474_r_1-814322475_r_0 814322477_r_0 814322476_r_0</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_42"/>
+					<leg expected_dep_time="00:05:57" expected_transp_time="00:03:26">
+						<route>814322476_0 814322476_1 814322477_0 814322475_0-814322474_0 814322474_1 174338458_8 174338458_9 97175693_0 97175693_1 3999689_0 813983393_0 813983392_0 455505771_0 455505771_1 813983390_0 813983389_0 813983388_0 813983391_0 813983391_1 813983387_0 813983386_0 439142855_0 439142855_1 439142855_2 17336304_0 17336304_1 17336304_2 17336304_3 461159369_7 461159369_8 8127971_0 8127971_1 8127971_2 8127971_3 8127971_4 8127971_5 8127971_6 8127971_7-8127971_8 8127971_9 8127971_10 695832819_r_0 3450250_r_0-125472517_r_0-125472517_r_1 125472517_r_2 125472517_r_3 125472517_r_4 125472517_r_5 125472517_r_6 125472517_r_7 125472517_r_8 125472517_r_9 3390203_r_0 8302412_0 3390204_0-3390204_1 3390204_2 3390204_3 3390204_4 3390204_5 24471494_0 24471494_1 24471494_2 24471494_3 24471494_4 24471494_5 24471494_6 24471494_7 24471494_8 24471494_9 24471494_10 24471494_11 24471494_12 3752565_0-3752565_1 3752565_2 3752565_3</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_21"/>
+					<leg expected_dep_time="00:09:23" expected_transp_time="00:03:18">
+						<route>608715598_7 608715598_8 608715597_0-95890227_0 95890227_1 95890227_2 95890227_3 95890227_4 95890227_5 95890227_6 13066183_0 88634858_0-88634858_1-88634858_2-3990532_0 3990532_1 567873927_0 567873927_1 567873927_2 567873927_3 567873927_4 567873927_5 567873927_6 567873927_7 567873924_0 567873922_0 567873922_1 567873918_0 567873918_1 3991611_0 3991611_1 3991611_2-3991611_3 23435867_0 23435867_1 23435867_2 23435867_3 23435867_4 23435867_5 23435867_6 3991610_0 3991610_1-3991610_2 3991610_3-3991610_4 446474263_5 446474263_6 446474263_7 446474263_8 16767290_r_0-16767290_r_1 16767290_r_2 16767290_r_3-16767290_r_4 16767290_r_5 3343975_0-3343975_1 3343975_2 3343975_3 3343975_4 3343975_5 3343975_6 3343975_7 3343975_8 3343975_9-3343975_10 3343975_11 3343975_12 8130897_0-8130897_1-8130897_2 8130897_3 8130893_r_1 3991680_r_2</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_20"/>
+					<leg expected_dep_time="00:12:42" expected_transp_time="00:05:05">
+						<route>8130895_r_1 3991681_r_0 8130893_r_0 8130897_r_0 8130897_r_1-8130897_r_2-8130897_r_3 3343975_13 3343975_14 3343975_15 3343975_16 3343975_17 3343975_18 3343975_19 19793199_r_0 1003492531_0 185988814_0 185988814_1 19793223_r_0 19793223_r_1 81522744_r_0 81522744_r_1 1115244401_r_0 89574079_0 84696751_0 79193581_0 79193580_0 258936980_0 949439843_0 79193579_0 78568409_0 80371128_0 23000060_0 23000060_1 14970554_0-323245644_0 323245648_0 323245648_1 323245648_2 323245642_0-323245647_0 323245647_1 198559166_r_1 584356745_r_0 584356749_r_0 663770966_r_0 663770966_r_1 61556877_r_0 61556877_r_1 61556877_r_2 61556877_r_3-61556877_r_4 12715116_0 12715116_1-12715116_2 12715116_3 12715116_4 12715116_5 23707244_0 23707244_1 23707244_2 23707244_3 23707243_0 23707243_1 23707243_2 23707243_3 940912606_0-940912606_1-940912606_2 940912606_3-940912606_4-940912606_5 940912606_6 940912606_7 940912606_8 61596289_0 61596289_1 61596289_2 608715553_0 608715553_1 608715553_2 608715553_3 608715553_4 608715553_5 15081933_0 15081933_1 286591669_0 286591669_1 27566528_2 27566528_3 27566528_4-27566528_5 27566528_6 1012971579_0 1012971579_1-1012971579_2 1012971579_3 286591662_0 286591662_1 1012971580_0 27566523_r_7 27566523_r_8</route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_37"/>
+					<leg expected_dep_time="00:17:48" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_40"/>
+					<leg expected_dep_time="00:17:48" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_17"/>
+					<leg expected_dep_time="00:17:48" expected_transp_time="00:00:03">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_19"/>
+					<leg expected_dep_time="00:17:51" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_9"/>
+					<leg expected_dep_time="00:17:51" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_34"/>
+					<leg expected_dep_time="00:17:51" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_3"/>
+					<leg expected_dep_time="00:17:51" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_8"/>
+					<leg expected_dep_time="00:17:51" expected_transp_time="00:00:03">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_38"/>
+					<leg expected_dep_time="00:17:55" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_24"/>
+					<leg expected_dep_time="00:17:55" expected_transp_time="00:00:01">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_29"/>
+					<leg expected_dep_time="00:17:56" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_48"/>
+					<leg expected_dep_time="00:17:56" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_2"/>
+					<leg expected_dep_time="00:17:56" expected_transp_time="00:00:00">
+						<route></route>
+					</leg>
+					<act type="pickup" shipmentId="shipment_47"/>
+					<leg expected_dep_time="00:17:56" expected_transp_time="00:01:09">
+						<route>27566523_12 27566523_13 27566523_14 27566523_15 27566523_16 27566523_17 27566523_18-27566523_19 27566523_20 521257409_r_6 521257409_r_7 521257409_r_8 521257409_r_9 521257409_r_10 521257409_r_11 126304955_0 126304955_1-126304955_2 126304955_3 126304955_4 116692564_0 116692564_1 406156457_r_0 406156457_r_1</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_10"/>
+					<leg expected_dep_time="00:19:05" expected_transp_time="00:10:27">
+						<route>406156457_r_3 406156457_r_4 406156457_r_5 406156457_r_6 540002287_6 479381631_r_4 479381631_r_5 479381631_r_6 479381631_r_7 479381631_r_8 479381631_r_9 479381631_r_10 479381631_r_11 541467950_1 126304967_r_3 126304967_r_4 126304967_r_5 126304967_r_6-126304967_r_7-126304967_r_8 126304967_r_9 61596289_r_0 61596289_r_1 61596289_r_2 940912606_r_0 940912606_r_1 940912606_r_2 940912606_r_3-940912606_r_4-940912606_r_5 940912606_r_6-940912606_r_7-940912606_r_8 23707243_r_0 23707243_r_1 23707243_r_2 23707243_r_3 23707244_r_0 23707244_r_1 23707244_r_2 23707244_r_3 125835524_0 125835524_1 125835524_2 125835524_3 125835524_4 125835524_5 125835524_6 125835524_7-125835524_8 125835524_9 4061640_0-4061640_1 4061640_2 4061640_3 4061640_4 23691160_0 23691160_1 23691160_2 61540068_0 254801390_0 340265962_0 340265962_1 340265962_2 949615544_0-949615544_1 949615544_2-949615544_3 98825484_0 701316142_0 723344593_0 98940622_0 98940622_1-98940623_0 98940623_1-701316141_0 701316141_1 3869819_r_1 3869819_r_2 622063652_r_0 622063652_r_1 622063652_r_2 622063652_r_3 622063652_r_4 622063652_r_5 splitLink_126304935_0_1 splitLink_126304935_0_2 126304935_1 126304935_2 126304935_3 126304935_4 126304935_5-126304935_6 126304935_7 126304935_8 126304935_9 126304935_10 126304935_11 126304935_12 126304935_13 126304935_14 126304935_15 126304935_16 126304935_17 126304935_18 126304935_19 126304935_20 126304935_21 126304935_22 126304935_23 192559613_0 192559613_1 192559612_0 192559611_0 192559611_1 192559611_2 192559611_3 192559611_4 192559611_5 192559611_6 192559611_7 23041938_0 23041938_1 79022474_0 79022474_1 98807509_0 98807509_1 98807509_2 98807509_3 98807526_0 98807526_1 98807526_2 98807526_3 98807526_4 98807526_5 126304934_0 131423018_r_0 159192280_r_0 159192280_r_1 159192280_r_2 splitLink_159192281_r_0_1 splitLink_159192281_r_0_2 22907822_r_0 22907822_r_1 splitLink_22907822_r_2_1 splitLink_22907822_r_2_2 splitLink_22907822_r_2_3 splitLink_22907822_r_2_4 splitLink_22907822_r_3_1 splitLink_22907822_r_3_2 splitLink_22907822_r_3_3 22907822_r_4 22907822_r_5 22907822_r_6 22907822_r_7 22907822_r_8 22907822_r_9 22907822_r_10 22907822_r_11 22907822_r_12 splitLink_22906019_r_0_1 splitLink_22906019_r_0_2 22906019_r_1 22906019_r_2 22906019_r_3 22906019_r_4 splitLink_22906019_r_5_1 splitLink_22906019_r_5_2 438252644_r_0-438252644_r_1 1220326199_r_0 125835600_0 1177334481_0 1177334480_0 1177334480_1 1177334480_2 1177334480_3 1177334480_4 1177334480_5 1177334480_6 1177334480_7</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_13"/>
+					<leg expected_dep_time="00:29:33" expected_transp_time="00:02:49">
+						<route>22906072_r_26 1177334480_r_0 1177334480_r_1 1177334480_r_2 1177334480_r_3 1177334480_r_4 1177334480_r_5 1177334480_r_6 1177334480_r_7 1177334481_r_0 125835600_r_0 39319844_r_0 39319843_r_0 534238939_r_0 438252635_r_0 438252635_r_1 4390631_r_0 4390631_r_1 439397681_0 439397681_1 splitLink_439397681_2_1 splitLink_439397681_2_2 439397681_3 439397680_0 439397680_1 439397680_2 8402612_0 8402612_1 8402612_2 8402612_3 8402612_4 8402612_5 8402612_6 8402612_7 8402612_8 8402612_9 39593715_r_0 39593715_r_1 39593715_r_2 23035341_0 23035341_1 23035341_2 23035341_3 23035341_4</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_3"/>
+					<leg expected_dep_time="00:32:22" expected_transp_time="00:02:04">
+						<route>23035341_r_7 23035342_0 23035342_1 23035342_2 23035342_3 23035342_4 23035342_5 23035342_6 23035342_7 23035342_8 23035342_9 23035342_10 23035342_11 23035342_12 283982809_11 283982809_12 283982809_13-283982809_14 53507802_0 962526798_0 962526798_1 962526798_2 962526798_3 962526798_4 962526798_5 962526798_6 962526798_7 962526798_8 962526798_9 962526798_10 962526798_11 962526798_12 962526798_13 962526798_14 962526798_15</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_8"/>
+					<leg expected_dep_time="00:34:26" expected_transp_time="00:05:26">
+						<route>962526798_r_19 962526798_r_20 962526798_r_21 962526798_r_22 962526798_r_23 962526798_r_24 962526798_r_25 962526798_r_26 962526798_r_27 962526798_r_28 962526798_r_29 962526798_r_30 962526798_r_31 962526798_r_32 962526798_r_33 962526798_r_34 962526798_r_35 53507802_r_5 283982809_r_0-283982809_r_1 283982809_r_2 283982809_r_3 283982809_r_4 283982809_r_5 283982809_r_6 283982809_r_7 283982809_r_8 283982809_r_9 283982809_r_10 283982809_r_11 283982809_r_12 283982809_r_13 283982809_r_14 10588771_r_0 283982806_r_0 206745397_r_0 206745397_r_1 206745397_r_2 954327788_r_0 954327788_r_1 79022466_r_0 79022466_r_1 13841629_0 13841629_1-13841629_2 13841629_3 13841629_4 13841629_5 13841629_6 13841629_7 13841629_8 13841629_9 13841629_10 79022472_0 79022472_1 79022472_2 79022472_3 4393272_0 4393272_1 37713110_0 185368110_0 181252213_0 181252213_1 181252213_2 30770261_0 243947504_0 243947503_0 243947503_1 79022444_0 79022444_1 79022444_2-79022444_3-79022444_4-79022444_5 79022444_6-79022444_7-79022444_8 79022444_9-79022444_10-79022444_11 23002199_0 23001796_0 23001796_1 15215854_0 15215854_1 15215853_0 15215853_1 23032186_r_0 23032186_r_1 23032186_r_2 23032186_r_3 23032186_r_4 38158912_0 38158912_1 38158912_2 38158912_3 38158912_4 38158912_5 38158912_6 38158912_7 38158912_8 38158912_9 38158912_10 38158912_11</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_14"/>
+					<leg expected_dep_time="00:39:53" expected_transp_time="00:01:01">
+						<route>38158912_r_3 38158912_r_4 38158912_r_5 38158912_r_6 38158912_r_7 38158912_r_8 38158912_r_9 38158912_r_10 38158912_r_11 38158912_r_12 38158912_r_13 38158912_r_14 38158912_r_15 631979429_r_0 631979429_r_1 splitLink_631979429_r_2_1 splitLink_631979429_r_2_2 631979426_r_0 631979426_r_1-631979426_r_2 631979426_r_3 631979426_r_4 631979426_r_5</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_45"/>
+					<leg expected_dep_time="00:40:54" expected_transp_time="00:02:44">
+						<route>631979426_10 631979426_11 631979426_12 631979426_13 631979426_14-631979426_15 631979426_16 51517761_r_0-51517760_r_0 23010602_r_0-23010602_r_1 13884501_0-13884501_1 13884501_2 13884501_3 13884501_4 13884501_5 13884501_6 13884501_7 441681617_r_0 441681617_r_1 441681617_r_2 441681617_r_3 23002269_r_0 23002269_r_1 23002269_r_2 14329668_0 14329668_1 14329668_2 14329668_3-14329668_4 14329668_5 14329668_6 14329668_7 14329668_8 16201617_r_0 16201617_r_1 38772276_r_0-38772276_r_1 38772276_r_2 38772276_r_3 38772276_r_4 38772276_r_5 345381446_0 345381446_1 658907060_0 658907060_1 658907060_2 1152979460_0 1152979461_0 1152979461_1 310650088_r_0 310650088_r_1 310650088_r_2 310650088_r_3 310650088_r_4 310650088_r_5 310650088_r_6 310650088_r_7 310650087_0 310650087_1 310650087_2 310650087_3-310650087_4 25955968_0-25955968_1 25955968_2 310650089_0</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_33"/>
+					<leg expected_dep_time="00:43:39" expected_transp_time="00:03:46">
+						<route>310650089_r_5 310650089_r_6 25955969_0 25955969_1 25955969_2 25955969_3 310650088_0 310650088_1 310650088_2 310650088_3 310650088_4 310650088_5 310650088_6 310650088_7 1152979461_r_0 1152979461_r_1 1152979460_r_0 658907060_r_0 658907060_r_1 658907060_r_2 345381446_r_0 345381446_r_1 38772276_0 38772276_1 38772276_2 38772276_3 38772276_4-38772276_5 16201617_5 16201617_6 38159437_0 38159437_1 38159437_2-38159437_3 780600573_0 780600572_0 780600572_1 38159440_0 38159440_1-38159440_2 38159440_3 1239799671_0 1239799671_1 1239799671_2 345381434_0 345381434_1 79299306_0 345381435_r_0 345381435_r_1 863731643_r_0-863731643_r_1 863731643_r_2 863731643_r_3 15215915_0 15215915_1-15215915_2 15215915_3 25629774_r_0 25629774_r_1 25629774_r_2 25629774_r_3 25629774_r_4 25629774_r_5 25629774_r_6 25629774_r_7 25629774_r_8 25629774_r_9 25629774_r_10 25629774_r_11 25629774_r_12 25629774_r_13 25629774_r_14 25629774_r_15 25629774_r_16 25629774_r_17 26125249_0 26125249_1 26125249_2 25629738_0-25629738_1-25629738_2-25629738_3 25629738_4</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_25"/>
+					<leg expected_dep_time="00:47:26" expected_transp_time="00:04:23">
+						<route>25929263_0 25929263_1 25929263_2 34340869_r_6 34340869_r_7 34340869_r_8 34340869_r_9 34340869_r_10 34340869_r_11 34340869_r_12 34340869_r_13 34340869_r_14 863731643_r_11 863731643_r_12 863731643_r_13 631979428_r_0-631979428_r_1 37713149_r_0 37713149_r_1 37713149_r_2 37713149_r_3 37713149_r_4 37713149_r_5 377918608_r_0 377918608_r_1 1155226687_r_0 377918607_r_0 345381437_r_0 345381437_r_1 440732691_r_0 351000218_r_0 351000218_r_1 351000218_r_2 13882237_r_0 4004855_0 4004855_1 345381453_0 345381453_1 345381452_0 345381452_1 225497053_0 949701270_0 345381449_0 315666515_0-315666515_1 315666515_2 315666515_3 315666515_4 315666514_0 17540932_0 17540932_1 17540932_2 17540932_3 17540907_0 149117671_0 149117671_1 149117671_2 149117671_3 149117671_4 149117671_5 149117671_6 149117671_7 149117671_8 149117671_9 149117671_10 192559635_0 192559635_1 192559635_2-192559635_3 125835620_r_0-125835620_r_1-125835620_r_2 112565996_r_0-112565996_r_1-112565996_r_2 112566006_r_0-112566006_r_1-112566006_r_2 112566013_0 112566013_1 112566013_2 112566013_3 112566013_4 125835556_r_0 125835556_r_1 125835556_r_2 125835556_r_3 125835556_r_4-125835556_r_5 125835556_r_6 149116003_r_0 149116003_r_1 149116003_r_2 149116003_r_3 149116003_r_4 149116003_r_5 149116003_r_6 149116003_r_7 149116003_r_8 149116003_r_9 149116003_r_10 149116003_r_11 112566019_r_0 112566019_r_1 112566019_r_2</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_44"/>
+					<leg expected_dep_time="00:51:49" expected_transp_time="00:02:06">
+						<route>112566019_r_4 112566019_r_5 149116016_r_0 149116016_r_1 149116020_3-149116020_4-149116020_5-149116020_6-149116020_7 149116020_8-149116020_9-149116020_10-149116020_11-149116020_12-149116020_13 149116006_0 149116006_1 149116006_2-149116006_3 23950586_r_1-23950586_r_2 125835530_r_0 125835530_r_1 125835530_r_2 125835530_r_3 125835530_r_4 125835530_r_5 125835530_r_6 125835530_r_7 125835530_r_8 125835530_r_9 125835530_r_10 125835530_r_11 125835530_r_12 179193418_r_0-179193418_r_1 179193418_r_2 179193418_r_3 179193418_r_4 179193418_r_5 38211415_r_0 38211415_r_1 13823567_r_0-13823567_r_1 13823567_r_2 13823567_r_3 38211413_r_0 38211413_r_1 13823566_r_0 13823568_r_0 13823568_r_1 13823568_r_2 125835607_r_0</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_48"/>
+					<leg expected_dep_time="00:53:56" expected_transp_time="00:01:35">
+						<route>79366166_0 79366166_1 79366166_2 79366166_3-79366166_4 79366166_5 79366166_6 79366166_7 79366166_8 79366166_9 28352298_0 28352298_1 28352298_2 28352298_3 28352298_4 28352298_5 28352298_6 296480717_0 296480717_1 296480717_2 296480717_3</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_16"/>
+					<leg expected_dep_time="00:55:32" expected_transp_time="00:04:32">
+						<route>296480717_r_5 296480717_r_6 296480717_r_7 28352298_r_3 28352298_r_4 28352298_r_5 28352298_r_6 28352298_r_7 28352298_r_8 28352363_0 79366166_12 79366166_13 79366166_14 79366166_15-79366166_16 79366166_17 79366166_18 79366166_19 79366166_20 188277171_0 188277171_1 188277171_2 188277171_3 188277171_4 188277171_5 splitLink_188277171_6_1 splitLink_188277171_6_2 188277171_7 188277171_8 12373443_0 23163396_0 23163396_1 23163396_2 23163396_3 23163396_4 23163396_5 23163396_6 23163396_7 23163396_8 23163396_9 23163396_10 23163396_11 23163396_12 894837496_0 894837496_1 894837498_0 28352486_0 28352486_1 23926665_r_0 23926665_r_1 23926665_r_2</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_28"/>
+					<leg expected_dep_time="01:00:04" expected_transp_time="00:01:55">
+						<route>23926665_5 23926665_6 22476419_0 22476419_1 22476419_2 22476417_0 15081937_0 15081937_1 15081937_2 318878530_0 17974344_0 17974344_1 17974344_2 17974344_3 17974344_4 17974344_5 17974344_6 17974344_7 17974344_8 17974344_9 17974344_10 35575571_0 35575571_1 35575571_2 35575571_3 35575571_4 35575571_5 35575571_6 35575571_7 35575571_8 35575571_9 35575571_10 17976690_r_0 17976690_r_1 17976690_r_2 17976690_r_3 17976690_r_4 17976690_r_5 17976690_r_6 17976690_r_7 17976690_r_8 17976690_r_9 17976690_r_10</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_37"/>
+					<leg expected_dep_time="01:01:59" expected_transp_time="00:05:21">
+						<route>17976690_r_10 17976690_r_11 17976690_r_12 17976693_r_0 17976693_r_1 17976693_r_2 17976693_r_3 17976693_r_4 17976693_r_5 17976693_r_6 17976693_r_7 27626085_r_0 18582225_r_0 18582225_r_1 18582225_r_2 18582225_r_3-18582225_r_4 18582225_r_5 694554098_r_0 694554098_r_1 18582094_r_0 18582094_r_1 18582094_r_2 18582094_r_3 18582094_r_4 694554097_0 694554097_1 694554097_2 694554097_3 694554097_4 694554097_5 694554097_6 694554096_0 80563847_0 133801038_0-133801038_1 133801038_2 133801038_3 133801038_4-133801038_5 133801038_6-133801038_7 133801038_8 133801038_9 133801037_0 133801037_1 133801037_2 133801037_3 133801037_4 133801037_5-133801037_6-133801037_7 133801037_8 192359870_0 192359870_1 192359870_2 192359870_3 192359870_4 192359870_5 87384540_0 23949624_r_0 23949624_r_1-23949624_r_2 23949624_r_3 23949624_r_4 23949624_r_5 23949624_r_6 23949624_r_7 23949624_r_8 23949624_r_9 23949624_r_10 126304972_0-126304972_1-126304972_2 126304972_3 192706273_0 318216947_0 318216947_1 318216947_2 318216947_3 318216947_4 318216947_5 318216947_6 318216947_7 318216947_8 318216947_9 318216947_10 318216947_11 318216947_12 318216947_13 318216947_14 318216947_15 318216947_16 318216947_17 318216947_18 318216947_19 318216947_20-318216947_21 318216947_22 79801758_0 79801758_1 79801759_0 789176775_0 789176775_1 789176775_2 789176775_3 789176775_4 789176775_5 789176775_6 789176775_7 789176775_8 79801759_11 79801759_12 79801759_13 79801759_14 79801759_15 79801759_16 79801759_17 15238490_r_0 15238490_r_1 15238490_r_2 234630683_r_0 234630683_r_1-234630683_r_2-234630683_r_3 234630683_r_4-234630683_r_5</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_36"/>
+					<leg expected_dep_time="01:07:21" expected_transp_time="00:05:12">
+						<route>234630683_2-234630683_3-234630683_4 234630683_5 15238490_7 15238490_8 15238490_9 79801759_r_0 79801759_r_1 79801759_r_2 79801759_r_3 79801759_r_4 79801759_r_5 79801759_r_6 789176775_r_0 789176775_r_1 789176775_r_2 789176775_r_3 789176775_r_4 789176775_r_5 789176775_r_6 789176775_r_7 789176775_r_8 79801759_r_17 79801758_r_0 79801758_r_1 318216947_r_0 318216947_r_1-318216947_r_2 318216947_r_3 318216947_r_4 318216947_r_5 318216947_r_6 318216947_r_7 318216947_r_8 318216947_r_9 318216947_r_10 318216947_r_11 318216947_r_12 318216947_r_13 318216947_r_14 318216947_r_15 318216947_r_16 318216947_r_17 318216947_r_18 318216947_r_19 318216947_r_20 318216947_r_21 318216947_r_22 192706273_r_0 126304972_r_0 126304972_r_1-126304972_r_2-126304972_r_3 23949622_r_0 23949622_r_1 23949622_r_2 23949622_r_3 23949622_r_4 23949622_r_5 23949622_r_6 23949622_r_7 23949622_r_8 89541111_r_0 89541111_r_1 89541111_r_2 89541111_r_3 89541111_r_4 89541111_r_5 89541111_r_6 89541111_r_7 14359727_r_0 14359727_r_1 14359727_r_2 14359727_r_3 14359727_r_4 14359727_r_5 14359727_r_6 14359727_r_7 14359727_r_8 14359727_r_9 14359727_r_10 14359727_r_11 14359727_r_12 14359727_r_13 87240811_r_0 87240811_r_1 87240811_r_2-87240811_r_3 87240811_r_4-87240811_r_5 87240811_r_6 87240811_r_7 87240811_r_8 87240818_r_5 87240818_r_6 87240817_r_0 87240817_r_1</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_5"/>
+					<leg expected_dep_time="01:12:33" expected_transp_time="00:02:29">
+						<route>87240817_r_3 87240817_r_4 87240821_r_15 87240824_r_0 87240824_r_1 87240815_r_0 87240824_r_10 87240824_r_11 87240824_r_12 126304950_r_8-126304950_r_9 688347308_r_0-688347308_r_1 688347308_r_2 688347308_r_3 688347308_r_4 688347308_r_5-688347308_r_6 126304957_r_0-126304957_r_1 126304957_r_2-126304957_r_3-126304957_r_4 23889534_r_0 23889534_r_1-23889534_r_2 23889534_r_3 23889533_0 23889533_1 23889533_2 23889533_3 23889533_4 31058513_r_0 31058513_r_1 31058513_r_2 31058513_r_3 87304285_0 87304285_1 31058502_r_3 10657957_r_0 10657957_r_1 10657957_r_2 10657957_r_3 10657957_r_4 10657957_r_5 10657957_r_6 10657957_r_7 10657957_r_8 10657957_r_9 10657957_r_10 10657957_r_11 10657957_r_12 10657957_r_13 10657957_r_14-10657957_r_15 10657957_r_16 61596558_0-61596558_1 281829135_0</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_24"/>
+					<leg expected_dep_time="01:15:02" expected_transp_time="00:03:34">
+						<route>61596558_r_8-61596558_r_9 25155107_r_0 25155107_r_1 25155107_r_2 12195285_0-12195285_1-12195285_2 112917227_0-112917227_1 112917227_2-112917227_3-112917227_4 112917227_5-112917227_6 35731415_0 35731415_1 35731415_2 35731415_3 35731415_4 35731415_5 35731415_6 35731415_7 35731415_8 35731415_9 35731415_10 35731415_11 35731415_12 35731415_13 35731415_14 35731415_15 35731415_16-35731415_17 1011801187_0 35731426_0 35731426_1 35731426_2 35731426_3 35731426_4 11256343_11 11256343_12 11256343_13 11256343_14 10649854_0 10649854_1 10649854_2 10649854_3 10649854_4 10649854_5 10649854_6 10649854_7 10649854_8 10649854_9 10649854_10 10649854_11 419978206_0 79940703_0 79940703_1 79940703_2 79940703_3 79940703_4 79940703_5 419978207_0 419978207_1 419978207_2-419978207_3 79940705_0 79940705_1 79940705_2 79940705_3 79940705_4 79940705_5 79940705_6 79940705_7 11028286_r_0 11028286_r_1 11028286_r_2 11028286_r_3 11028286_r_4 96705555_0 96705555_1 96705555_2 11994293_r_0 11994293_r_1-11994293_r_2 11994293_r_3 11994544_0 11994544_1 11994544_2 11994544_3 11994544_4</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_23"/>
+					<leg expected_dep_time="01:18:37" expected_transp_time="00:02:29">
+						<route>11994544_r_5 11994544_r_6 11994544_r_7 11994544_r_8 11994544_r_9 11994544_r_10 11994293_10 11994293_11-11994293_12 11994293_13 11970466_0 11970466_1 11970466_2 385918862_r_0 385918862_r_1 385918862_r_2 385918862_r_3 385918862_r_4 385918862_r_5 385918862_r_6 385918862_r_7 385918862_r_8 385918862_r_9 385918862_r_10 385918862_r_11 19429650_0 19429650_1 19429650_2 19429650_3 19429650_4 19429650_5 19429650_6 19429650_7 19429650_8 146972248_0 146972248_1 146972248_2 146972248_3 146972248_4 139705265_0 139705265_1 139705263_0 139705263_1 139705263_2 139705263_3 139705263_4-139705263_5 139705263_6 139705263_7</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_31"/>
+					<leg expected_dep_time="01:21:07" expected_transp_time="00:01:35">
+						<route>139705263_9 splitLink_20547596_0_1 splitLink_20547596_0_2 20547596_1 11296124_r_0-11296124_r_1 9904031_0-9904031_1 9904031_2 93337264_0 93337266_0-93337266_1-93337266_2 794686347_0 794686347_1 794686347_2 794686347_3 9904025_0 9904025_1 9904025_2 9904025_3 9904025_4 9904025_5 139898734_0 139898734_1</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_29"/>
+					<leg expected_dep_time="01:22:43" expected_transp_time="00:01:30">
+						<route>139898734_r_2 9904025_r_0 9904025_r_1 9904025_r_2 9904025_r_3 9904025_r_4 9904025_r_5 794686347_r_0 794686347_r_1 794686347_r_2 794686347_r_3 93337262_r_0-93337262_r_1 93337257_r_0 145611539_r_0 145611539_r_1 145611539_r_2 145611539_r_3 145611539_r_4 145611539_r_5 145611539_r_6 145611539_r_7 263756793_0 263756793_1 90638331_r_0-90638331_r_1 90638335_21 90638335_22 90638335_23 90638335_24 90638335_25 90638335_26 90638335_27 92511622_0 92511622_1 92511622_2 92511622_3 92511622_4 92511622_5 92511622_6</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_19"/>
+					<leg expected_dep_time="01:24:13" expected_transp_time="00:01:46">
+						<route>92511622_r_4 92511622_r_5 92511622_r_6 92511622_r_7 92511622_r_8 92511622_r_9 90638335_28 90638335_29 92511608_0 92511608_1 92511608_2 92511608_3-92511608_4 92511608_5 92511608_6 92511612_3 92511612_4 92511612_5 92511612_6 92511612_7 92511612_8 90638335_r_21 90638335_r_22 90638335_r_23 90638335_r_24 90638335_r_25 90638335_r_26 90638335_r_27 90638335_r_28 90638335_r_29 89687983_0 89687983_1 89687983_2 10575879_r_1 10575879_r_2 10575879_r_3 10575879_r_4 622063628_r_0 11064172_r_11 11064172_r_12 11064172_r_13 11064172_r_14 11064172_r_15 11064172_r_16 11064172_r_17 11064172_r_18 11064172_r_19 11064172_r_20 11064172_r_21 11064172_r_22 90712963_5 90712963_6 90712960_r_0 90712963_r_2-90712963_r_3</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_6"/>
+					<leg expected_dep_time="01:26:00" expected_transp_time="00:01:08">
+						<route>90712963_r_5 90712963_r_6 90712963_r_7 90712963_r_8 90712963_r_9 90712963_r_10 90712963_r_11 90712963_r_12 569358044_0 569358044_1 569358044_2 569358044_3 569358044_4 569358044_5 569358044_6 569358044_7 135146324_3 135146324_4 1084279279_7 1084279279_8 1084279279_9 1084279279_10 1084279279_11 1084279279_12 1084279279_13 1084279279_14 1084279279_15 96582766_r_0</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_2"/>
+					<leg expected_dep_time="01:27:09" expected_transp_time="00:01:05">
+						<route>1084279279_16 1084279279_17 1084279279_18 1084279279_19 1084279279_20 1084279279_21 114697802_0 114697802_1 114697802_2-114697802_3 114697802_4 114697802_5 114697802_6 114697802_7 114697802_8 114697802_9 114697802_10 114697802_11 114697802_12 10575878_0 10575878_1 10575878_2 10575878_3 92145368_0 92145368_1</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_30"/>
+					<leg expected_dep_time="01:28:14" expected_transp_time="00:03:32">
+						<route>92145368_r_1 92145368_r_2 92145368_r_3 10575878_r_8 10575878_r_9 10575878_r_10 10575878_r_11 114697802_r_0 114697802_r_1 114697802_r_2 114697802_r_3 114697802_r_4 114697802_r_5 114697802_r_6 114697802_r_7 114697802_r_8 114697802_r_9-114697802_r_10 114697802_r_11 114697802_r_12 254801120_r_0 254801120_r_1 254801120_r_2 254801120_r_3 254801120_r_4 254801120_r_5 254801120_r_6 254801120_r_7 254801120_r_8 254801120_r_9 254801122_r_0 22966634_r_0 22966634_r_1 22966634_r_2 22966634_r_3 22966634_r_4 22966634_r_5 10575877_0 10575877_1 90634062_0 90634062_1 90634062_2 344507809_0 344507809_1 344507803_0 344507803_1 344507798_0 344507798_1 344507786_3 1085376888_0-1085376889_0-100006229_0 100006229_1-1085376891_0 653482598_0 11995095_r_0 11995095_r_1 11995095_r_2 11995095_r_3-11995095_r_4-11995095_r_5-11995095_r_6-11995095_r_7-11995095_r_8 11995095_r_9 11995095_r_10-11995095_r_11-11995095_r_12-11995095_r_13 11995095_r_14 11995095_r_15 11995095_r_16 11995095_r_17 11995095_r_18 11995095_r_19 11995095_r_20 653480977_0 653480977_1 653480977_2 653480977_3 653480977_4 653480977_5 137831628_0 137831628_1 137831628_2-137831628_3 137831628_4</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_1"/>
+					<leg expected_dep_time="01:31:46" expected_transp_time="00:01:19">
+						<route>137831628_4 137831628_5 137831628_6 137831628_7 137831628_8 1293581717_0 1293581717_1 1293581717_2 1293581717_3 1293581717_4 793543657_0 793543657_1 793543657_2 793543657_3 793543657_4-793543657_5-793543657_6 114869072_0 104923745_0 104923745_1 104923745_2 104794406_1 104794406_2</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_47"/>
+					<leg expected_dep_time="01:33:06" expected_transp_time="00:00:19">
+						<route>104794406_4 104794406_5 104794406_6 104794406_7 192658996_r_0 104794393_r_0</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_46"/>
+					<leg expected_dep_time="01:33:25" expected_transp_time="00:02:31">
+						<route>104794393_8 104794393_9 192658996_8 96768814_0 96768814_1 96768814_2 96768814_3 96768814_4 96768814_5 96768814_6 96768814_7 96768814_8 96768814_9 96768814_10 281817948_0 79002200_0 79002200_1 79002200_2 79002200_3 79002200_4 79002196_r_0 79002196_r_1 79002196_r_2 23157748_0 23157748_1 23157748_2 23157748_3 23157748_4 9923835_0-23121879_0 85798761_0 79299308_0 88965272_0 88965272_1 88965272_2 88965272_3 88965272_4 79299307_0 79299307_1 107477250_0 107477250_1 107477250_2 107477250_3 107477250_4 184632766_r_0 1068261821_r_4</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_26"/>
+					<leg expected_dep_time="01:35:57" expected_transp_time="00:01:48">
+						<route>876292404_r_1 876292404_r_2 876292404_r_3 876292404_r_4 876292404_r_5 876292404_r_6 1102893928_0-11884051_0 11884051_1 11884051_2 11884051_3 11884051_4-11884051_5-11884051_6 79299307_r_2 3373100_0 3373100_1 3373100_2 3373100_3 3373100_4 3373100_5 3373100_6 3373100_7-3373100_8 3373100_9 3373100_10 3373100_11 3373100_12 301636906_0 301636906_1 301636906_2 301636906_3-301636906_4 301636906_5 301636906_6 301636906_7 301636906_8 301636906_9 301636906_10 301636906_11 301636906_12 301636906_13 301636906_14-301636906_15 263541943_0 263541943_1 263541943_2 95571479_0 95571485_0-95571485_1-95571485_2 303392599_r_0 303392599_r_1 303392604_r_0-303392606_r_0 303392607_r_0</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_38"/>
+					<leg expected_dep_time="01:37:46" expected_transp_time="00:02:24">
+						<route>303392607_1 303392607_2 303392606_0-303392604_0 303392599_r_2 48446149_r_0-48446149_r_1 48446149_r_2 48446149_r_3 48446149_r_4 1139085577_r_3-1139085577_r_4 1277900479_r_0 978148215_r_5 616174250_r_0 616174234_r_0 3328222_4 3328222_5 3677328_0 3677330_0 3677330_1 3677330_2 608715562_0 608715561_0 608715561_1 23237287_0 23237287_1 23237287_2 23237287_3 23237287_4 23237287_5 3389261_0 3389261_1-3389261_2 3389261_3 3389261_4 3389261_5 3389261_6 722950862_0 722950862_1 722950862_2 722950862_3 722950862_4 722950862_5 722950862_6 722950862_7-722950862_8 40403656_0 40403656_1-40403656_2 40403656_3-40403656_4 40403656_5 40403656_6-40403656_7 722950836_0-722950836_1 722950836_2</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_40"/>
+					<leg expected_dep_time="01:40:10" expected_transp_time="00:03:30">
+						<route>722950836_4-722950836_5 40403663_2-40403663_3 40403663_4 40403663_5 40403663_6-40403663_7 40403663_8-40403663_9 3389261_r_0 3389261_r_1 3389261_r_2 3389261_r_3 3389261_r_4-3389261_r_5 3389261_r_6 23237287_6 23237287_7 90168773_0 90168773_1 3677332_0 3677332_1 3677332_2 88361307_0 55067675_0 55067675_1 55067675_2 55067675_3 3677329_0 3677329_1 90168774_0 4009887_0 4009887_1-4009887_2 4009887_3 4009887_4 78622408_0-78622408_1 1026390042_0 70787877_12 70787877_13 70787877_14 70787877_15 70787877_16 70787877_17 70787877_18 70787877_19 941557139_0 941557139_1 131757263_1-131757263_2 131757263_3 564392134_4 133801033_0 133801033_1 133801033_2 133801033_3 133801033_4 133801033_5-133801033_6 783823607_0 564392130_0-564392130_1 564392130_2 85799069_0 85799069_1 85799069_2 85799069_3 608715635_0 608715632_0 608715634_0 608715630_0 301552213_0 301552213_1 301552213_2 956394198_0 956394198_1 956394198_2-956394198_3 301552215_0 301552215_1 578662083_0 578662084_0-174886295_0-578662085_0 120086151_0-120086151_1 120086151_2 120086151_3 564556445_0 23119517_0-23119517_1 23119517_2 23119517_3 23119517_4 23119517_5 23119517_6-956394173_0 956394173_1 301552216_0-301552216_1-301552216_2 301552216_3 1279360892_r_0 1279360892_r_1-1279360891_r_0 1279360891_r_1 1279360891_r_2 1279360891_r_3 1279360891_r_4 1279360891_r_5 1279360891_r_6 1279360891_r_7 192659001_r_0 192659001_r_1 192659001_r_2 3701206_0 3701206_1-3701206_2 3701206_3 3701206_4 3701206_5 3701206_6 3701206_7 3701206_8 3701206_9 3701206_10 3701206_11 3701206_12 3701206_13 3701206_14 3701206_15 3701206_16 3701206_17 3701206_18 3701206_19 3701206_20 3701206_21 3701206_22 3701206_23 3701206_24 3701206_25-3701206_26 3701206_27 764125752_r_0 764125752_r_1</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_0"/>
+					<leg expected_dep_time="01:43:41" expected_transp_time="00:00:10">
+						<route>764125752_1 3701206_28 3701206_29 3701206_30 3701206_31 3701206_32 781845496_r_0</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_15"/>
+					<leg expected_dep_time="01:43:51" expected_transp_time="00:01:41">
+						<route>3701206_33 3701206_34 3701206_35 3701206_36 3701206_37 3701206_38 3701206_39 3701206_40 3701206_41 3701206_42 3701206_43 3701206_44 3701206_45 3701206_46 3701206_47 3701206_48 3701206_49 3701206_50 3701206_51 3701206_52 3701206_53 3701206_54 3701206_55 3701206_56 3701206_57 3701206_58 3701206_59 3701206_60 3701206_61 3701206_62 3701210_0 3701210_1-3701210_2 3701210_3 3701210_4 3701210_5 3701210_6 463634004_0 463634004_1 463634004_2 463634004_3 967543683_0 967543683_1 967543683_2 967543683_3 967543683_4 967543683_5 81457876_0 81457876_1 81457876_2 81457876_3 81457876_4 81457876_5 81457876_6 81457876_7 81457876_8 81457876_9 81457876_10 81457876_11 81457877_0 81457877_1 81457877_2 81457877_3-23157645_0 23157645_1-350992065_0 350992065_1 4416156_0 4416156_1 4416156_2 23157644_0 192658999_0 93203094_0 93203094_1</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_35"/>
+					<leg expected_dep_time="01:45:33" expected_transp_time="00:02:11">
+						<route>93203094_r_1 192658999_r_14 23157644_r_0 4416156_r_0 4416156_r_1 4416156_r_2 982974944_0 982974944_1 982974944_2 982974944_3 982974944_4 982974944_5 982974944_6 982974944_7 982974944_8 982974944_9 982974944_10 982974944_11 982974944_12 982974944_13 982974944_14 982974944_15 982974944_16 982974944_17 3372475_0 630232395_r_0 630232395_r_1-630232395_r_2-630232395_r_3-630232394_r_0 630232394_r_1-630232394_r_2 630232394_r_3 975931306_0 279710603_17-279710603_18-279710603_19-279710603_0-279710603_1-279710603_2 279710604_r_0 71175604_r_0 71175604_r_1 71175604_r_2 71175604_r_3 71175603_r_0 71175603_r_1 71175603_r_2 71175603_r_3 71175603_r_4 636897130_8 636897130_9 636897130_10 636897130_11 636897130_12 636897130_13 636897130_14-806787288_0 806787288_1 279710605_0 71176157_r_0 71176157_r_1 71176157_r_2-71176157_r_3 71176157_r_4 71176156_r_7 71176156_r_8 71176156_r_9 71176156_r_10-71176156_r_11 71176156_r_12 71176156_r_13</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_11"/>
+					<leg expected_dep_time="01:47:44" expected_transp_time="00:02:05">
+						<route>71176156_2 71176156_3 71176156_4 71176156_5-71176156_6 71176156_7 71176156_8 71176156_9 71176156_10 71176156_11 71176156_12-71176156_13 71176156_14 71176156_15 71176156_16 569969136_15 569969136_16 569969136_17-569969136_18-569969136_19-569969136_20 258369821_3 258363837_0 103917268_0 24374859_0 24374859_1 24374859_2 24374859_3 24374859_4 24374859_5 24374859_6 24374859_7 114787997_0 114787997_1-114787997_2 114787997_3 114787997_4 114787997_5 310838958_0 286125264_0-286125264_1</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_7"/>
+					<leg expected_dep_time="01:49:50" expected_transp_time="00:06:08">
+						<route>286125264_r_1 286125264_r_2-286125264_r_3 310838958_1 119490062_0 284251319_0 284251319_1 364819994_r_0 364819994_r_1 364819994_r_2 119490089_r_0 119490089_r_1 20274129_0 20274129_1 268835766_0 268835766_1 85389808_0 splitLink_119490052_0_1 splitLink_119490052_0_2 268835765_0 268835765_1 268835765_2 splitLink_25093894_r_0_1 splitLink_25093894_r_0_2 120515600_r_0 splitLink_120515600_r_1_1 splitLink_120515600_r_1_2 73537703_r_0 222338142_r_0 222338142_r_1 222338142_r_2 222338142_r_3 222338142_r_4 222338142_r_5 222338142_r_6 222338142_r_7 222338142_r_8 222338142_r_9 222338142_r_10 222338142_r_11 222338142_r_12 874830771_r_0 874830771_r_1 874830771_r_2 splitLink_874830771_r_3_1 splitLink_874830771_r_3_2 874830771_r_4 splitLink_959545993_r_0_1 splitLink_959545993_r_0_2 959545993_r_1 333047260_0 333047260_1 333047260_2 333047260_3 333047260_4 333047260_5 333047260_6 333047260_7 333047260_8 333047260_9 333047260_10 333047260_11 333047260_12 61919413_34 784533362_0 784533362_1 784533362_2 784533362_3 784533362_4 784533362_5 784533362_6 784533362_7 784533362_8 784533362_9 784533362_10 784533362_11 784533362_12 784533362_13</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_34"/>
+					<leg expected_dep_time="01:55:58" expected_transp_time="00:07:43">
+						<route>784533362_r_16 784533362_r_17 784533362_r_18 784533362_r_19 784533362_r_20 784533362_r_21 784533362_r_22 784533362_r_23 784533362_r_24 784533362_r_25 784533362_r_26 784533362_r_27 784533362_r_28 61919413_r_0 333047260_r_0 333047260_r_1 333047260_r_2 333047260_r_3 333047260_r_4 333047260_r_5 333047260_r_6 333047260_r_7 333047260_r_8 333047260_r_9 333047260_r_10 333047260_r_11 333047260_r_12 959545993_0 splitLink_959545993_1_1 splitLink_959545993_1_2 874830771_0 splitLink_119260144_r_1_1 splitLink_119260144_r_1_2 119260144_r_2 119260144_r_3 119260144_r_4 119260144_r_5 119260144_r_6 119260144_r_7 119260144_r_8 117926049_r_0-117926049_r_1 117926049_r_2 117926049_r_3 784533363_r_0 784533363_r_1 784533363_r_2 784533363_r_3 784533363_r_4 784533363_r_5 117926054_r_0 117926054_r_1 117926054_r_2 117926054_r_3 splitLink_85016135_r_0_1 splitLink_85016135_r_0_2 splitLink_85016135_r_0_3 85016135_r_1 10363038_r_1 10363038_r_2 571659535_r_25-571659535_r_26 571659535_r_27 571659535_r_28 1227563098_r_0 1227563098_r_1-1227563098_r_2 1227563099_r_0 874846058_r_0 114788001_r_0 114788001_r_1 114788001_r_2 114788001_r_3 114788001_r_4 114788001_r_5 114788001_r_6 114788001_r_7 114788001_r_8 114788001_r_9 114788001_r_10 114788001_r_11 114788001_r_12 114788001_r_13 114788001_r_14 114788001_r_15 3450234_r_0 3450234_r_1 3450234_r_2 3450234_r_3 3450234_r_4 131711638_r_1 131711638_r_2 131711638_r_3 131711638_r_4 131711638_r_5 131711638_r_6 131711638_r_7</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_18"/>
+					<leg expected_dep_time="02:03:42" expected_transp_time="00:01:24">
+						<route>133617176_r_0 131711638_r_8-131711638_r_9 131711638_r_10 131711638_r_11 131711638_r_12 131711638_r_13-131711638_r_14 splitLink_192658998_0_1 splitLink_192658998_0_2 192658998_1 86985644_0 86985644_1 86985644_2 3450240_0 3450240_1</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_43"/>
+					<leg expected_dep_time="02:05:07" expected_transp_time="00:01:26">
+						<route>114787999_0 114787999_1 114787999_2 114788006_0 114788006_1 114788006_2 114788006_3 114788006_4 114788006_5 114788006_6 114788006_7 192659024_r_2 192659024_r_3 3358663_r_0 3358663_r_1 23119518_r_0 23119518_r_1 23119518_r_2</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_9"/>
+					<leg expected_dep_time="02:06:34" expected_transp_time="00:00:57">
+						<route>23119518_r_4 23119518_r_5 3328634_r_0 3328634_r_1 48284227_r_0 4003911_0 105427068_0-105427068_1-105427068_2 72903736_0 43858755_0-43858755_1 43858755_2-43858755_3 43858755_4 43858755_5 48164678_0 48164678_1 48164678_2 48164678_3 48164678_4 3373674_0 229768922_0 229768922_1 229768922_2 257483984_0 257483984_1 257483984_2 257483984_3 50431575_0 50431575_1 86614478_r_0</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_12"/>
+					<leg expected_dep_time="02:07:31" expected_transp_time="00:02:20">
+						<route>86614478_r_0 86614478_r_1 86614478_r_2 86614478_r_3 86614478_r_4 86614478_r_5 86614478_r_6 86614478_r_7 86614478_r_8 1084093048_0 77864410_0-77864410_1-77864410_2-77864410_3 1084093047_0 3373670_0 77864413_0 77864413_1 77864400_r_0 77864400_r_1 48918816_r_0 43858761_r_0 43858761_r_1 43858761_r_2 43858761_r_3 1147771469_0 77864411_0 4003909_0 4003909_1 4003909_2 45816886_r_0 767720581_r_0-77453619_r_0 767720580_r_0 77453620_r_0 4003919_r_0 4003919_r_1 4003919_r_2 4003919_r_3 104622409_r_0 104622444_r_0 3999752_r_0 3999752_r_1 3999752_r_2 23237294_0 3730653_0 3730653_1 3730653_2 3730653_3 1051885431_r_0 1051885431_r_1 351276438_5 443972008_0 3424507_r_0 3424507_r_1 3424507_r_2 3424507_r_3 3424507_r_4 3424507_r_5 3424507_r_6 3424507_r_7 3424507_r_8 3424507_r_9 3424507_r_10 4009880_0 299048100_0 299048100_1</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_4"/>
+					<leg expected_dep_time="02:09:52" expected_transp_time="00:00:30">
+						<route>844466432_0 299048100_r_4 299048100_r_5 4009880_r_0 3424507_0 3424507_1 3424507_2 3424507_3 1235806081_r_0 1235806081_r_1 1235806081_r_2</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_22"/>
+					<leg expected_dep_time="02:10:22" expected_transp_time="00:01:00">
+						<route>1235806081_12 1235806081_13 3424507_4 3424507_5 3424507_6 3424507_7 3424507_8 3424507_9 3424507_10 406841190_r_0 406841190_r_1 83604458_r_0-200669251_r_0 200669251_r_1 200669251_r_2-200669251_r_3 117340196_0 117340196_1 117340196_2 858446052_0 858446052_1 1255976785_0 1255976785_1 4014048_r_0 4014048_r_1 4014048_r_2 4014048_r_3-4014048_r_4</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_17"/>
+					<leg expected_dep_time="02:11:23" expected_transp_time="00:02:42">
+						<route>4014048_r_3-4014048_r_4 126304917_13-126304917_14-126304917_15-126304917_16 126304917_17-126304917_18-126304917_0-126304917_1 126304917_2-126304917_3 126304917_4-126304917_5 126304920_0 126304920_1 126304920_2 126304920_3 126304920_4 126304920_5 126304920_6 126304920_7 126304920_8-126304920_9-126304920_10-126304920_11-126304920_12 126304920_13-126304920_14-126304920_15 126304920_16-126304920_17-126304920_18-126304920_19-126304920_20 126304920_21-126304920_22 254742533_0 254742533_1 947594504_0 splitLink_134969633_0_1 splitLink_134969633_0_2 134969633_1 134969633_2 134969633_3 134969633_4 134969633_5 134969633_6 134969633_7 134969633_8 340093680_0 340093680_1 340093680_2-340093680_3 340093680_4 14675712_0 93647804_0 93647804_1 93647804_2 192659018_0 1159503591_0 1247386497_r_0 1247386497_r_1-1247386497_r_2-1247386497_r_3 1247386497_r_4-1247386497_r_5 44949039_r_0-44949039_r_1 44949039_r_2-44949039_r_3-44949039_r_4 44949039_r_5-44949039_r_6-44949039_r_7 44949039_r_8 44949039_r_9-44949039_r_10 44949039_r_11 44949039_r_12 44949039_r_13 44949039_r_14 44949039_r_15 44949039_r_16 44949039_r_17 44949039_r_18 44949039_r_19 44949039_r_20 44949039_r_21 44949039_r_22 44949039_r_23 44949039_r_24 44949039_r_25 44949039_r_26 44949039_r_27-44949039_r_28 44949039_r_29 24336615_0 24336615_1 24336615_2 24336615_3 24336615_4</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_27"/>
+					<leg expected_dep_time="02:14:05" expected_transp_time="00:03:51">
+						<route>24336615_r_16 24336615_r_17 24336615_r_18 24336615_r_19 532706676_r_0 532706676_r_1 532706676_r_2 532706676_r_3 27509535_r_0 27509535_r_1 27509536_r_0 532706675_r_0 532706674_r_0 532706674_r_1 532706674_r_2 99598443_r_0 99598443_r_1 99598443_r_2 99598443_r_3 99598443_r_4 99598443_r_5 99598443_r_6-99598443_r_7 99598443_r_8 125835593_0 23593370_0 609991304_0 99598433_0 99598433_1 99598433_2 609991316_0 609991306_0 1220326196_0 27656281_r_0-27656281_r_1-27656281_r_2 27656281_r_3 27656281_r_4 793560510_0 793560510_1 793560510_2 27656282_0 27656282_1 27656282_2 793560511_0 793560511_1 447959154_r_0 935329996_r_0 935329996_r_1 935329996_r_2 935329995_r_0 935329995_r_1 935329995_r_2 935329995_r_3 935329995_r_4 935329995_r_5 935329995_r_6 935329995_r_7 935329995_r_8 935329995_r_9 935329995_r_10 935329995_r_11</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_41"/>
+					<leg expected_dep_time="02:17:56" expected_transp_time="00:03:29">
+						<route>935329995_r_13 935329995_r_14 935329995_r_15 935329995_r_16 935329995_r_17 935329995_r_18 935329995_r_19 935329995_r_20 935329995_r_21 935329995_r_22 935329995_r_23 935329995_r_24 16925276_r_0 16925276_r_1-16925276_r_2 16925276_r_3 16925276_r_4 16925276_r_5 16925276_r_6 16925276_r_7 16925276_r_8 16925276_r_9 16925276_r_10 16925276_r_11 16925276_r_12 16925276_r_13 16925276_r_14 16925276_r_15 16925276_r_16 16925276_r_17 16925276_r_18 16925276_r_19 16925276_r_20 9388954_0 9388954_1 9388954_2 815032440_0 815032440_1 9388723_0 340265960_0 15215371_0 126304958_0 126304958_1 609188305_0 609188305_1 609188305_2 609188305_3 609188305_4 609188305_5 609188305_6 609188302_0 609188302_1 572469211_0 572469211_1 572469211_2 572469211_3 572469211_4-572469211_5 572469211_6-572469211_7 572469211_8-572469211_9-572469211_10 572469211_11-572469211_12 572469211_13-572469211_14-572469211_15-572469211_16 572469211_17 572469211_18 572469211_19-572469211_20 536950064_0 536950064_1 536950064_2 536950064_3 536950064_4 572470967_0 572470967_1 572470967_2 572470967_3 53203693_0 53203693_1-53203693_2 53203693_3-53203693_4 53203693_5 53203693_6 53203693_7 53203693_8 53203693_9 53203693_10 972117960_r_0 972117960_r_1 972117960_r_2 199586554_r_0 199586554_r_1 199586554_r_2 199586554_r_3-199586554_r_4 199586554_r_5 199586554_r_6 199586554_r_7 199586554_r_8 199586554_r_9 199586554_r_10 199586554_r_11 199586554_r_12 199586554_r_13 199586554_r_14 199586554_r_15 199586554_r_16 97197348_r_0 70729588_r_0 70729588_r_1 70729588_r_2 70729588_r_3 70729588_r_4 70729588_r_5 70729588_r_6 14506241_0</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_32"/>
+					<leg expected_dep_time="02:21:26" expected_transp_time="00:01:55">
+						<route>14506241_2 14506241_3-318878531_0 318878531_1 109267438_r_0 14508734_r_0 636246771_0-636246771_1 133526185_6 133526265_0 1243139509_0 1243139509_1 1243139509_2 1243139509_3 1271835332_r_0 1271835332_r_1 1271835334_2 1271835334_3 1271835334_4 972117967_r_2 972117966_0-972117966_1-972117966_2-972117966_3 972117966_4-972117966_5 972117966_6 972117966_7 972117966_8 53204039_0-53204039_1-53204039_2-53204039_3-53204039_4-53204039_5-53204039_6 53204039_7-53204039_8 53204039_9 129459883_r_1 1120987588_14-1120987588_15-1120987588_16 1120987588_17 972117961_6 112917238_r_0 112917238_r_1-112917238_r_2 112917238_r_3 112917238_r_4 112917238_r_5 112917238_r_6 112917238_r_7 112917238_r_8 112917238_r_9 112917238_r_10 112917238_r_11 112917238_r_12 192559657_0</route>
+					</leg>
+					<act type="delivery" shipmentId="shipment_49"/>
+					<leg expected_dep_time="02:23:21" expected_transp_time="00:00:30">
+						<route>112917238_r_13-608754690_r_0 333580518_0 333580518_1 333580518_2-333580518_3 333580518_4 333580518_5 333580518_6 333580518_7 333580518_8 333580518_9 333580518_10 333580518_11 333580518_12 333580518_13 333580518_14 333580518_15 333580518_16 326736776_0 326736776_1 326736776_2 326736776_3 326736776_4</route>
+					</leg>
+					<act type="end"/>
+				</tour>
+			</plan>
+		</plans>
+	</carrier>
+</carriers>
