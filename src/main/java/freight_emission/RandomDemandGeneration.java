@@ -10,6 +10,7 @@ import org.matsim.core.utils.collections.Tuple;
 import org.matsim.freight.carriers.CarrierShipment;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 class RandomDemandGeneration {
     private final Network multimodalNetwork;
@@ -21,8 +22,8 @@ class RandomDemandGeneration {
 
     public RandomDemandGeneration(Network multimodalNetwork) {
         this.multimodalNetwork = multimodalNetwork;
-        this.demandAmount = 1000;  // kg
-        this.numDemandPoints = 50;
+        this.demandAmount = 3000;  // kg
+        this.numDemandPoints = 200;
         this.demandRange = new Tuple<>(5, 25);  // kg
         this.boundary = new Boundary(172161.734, 174265.856, 173412.828, 175444.093);
     }
@@ -40,8 +41,9 @@ class RandomDemandGeneration {
     public Set<CarrierShipment> generateDemandWithoutTimeWindow(Set<String> transportModes) {
         // Get the depot links
         Set<Link> depotLinks = findDepotLinks(transportModes);
-
         Set<Link> filteredLinks = filterLinksWithAllowedTransportModes(transportModes);
+        // Filter links within the boundary, based on the nodes
+        filteredLinks = filteredLinks.stream().filter(link -> isWithinBoundary(link.getFromNode()) && isWithinBoundary(link.getToNode())).collect(Collectors.toSet());
         // Randomly select demand points
         List<Link> selectedLinks = new ArrayList<>();
         for (int i = 0; i < numDemandPoints; i++) {
@@ -111,12 +113,12 @@ class RandomDemandGeneration {
         Set<Link> depotLinks = new HashSet<>();
         for (Id<Node> depotId : depots) {
             Node depotNode = multimodalNetwork.getNodes().get(depotId);
-            // Add in links
-            for (Link link : depotNode.getInLinks().values()) {
-                if (link.getAllowedModes().containsAll(transportModes)) {
-                    depotLinks.add(link);
-                }
-            }
+            // Add in links (it seems not necessary to add in links)
+//            for (Link link : depotNode.getInLinks().values()) {
+//                if (link.getAllowedModes().containsAll(transportModes)) {
+//                    depotLinks.add(link);
+//                }
+//            }
             // add out links
             for (Link link : depotNode.getOutLinks().values()) {
                 if (link.getAllowedModes().containsAll(transportModes)) {

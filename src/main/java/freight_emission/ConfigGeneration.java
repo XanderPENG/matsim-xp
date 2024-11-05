@@ -9,7 +9,7 @@ import org.matsim.freight.carriers.FreightCarriersConfigGroup;
 
 public class ConfigGeneration {
 
-    private final static String outputDir = "../../data/intermediate/test/freight_emission/freightEmissionConfig.xml";
+    private final static String outputDir = "../../data/intermediate/test/freight_emission/freightEmissionConfig4CargoBike.xml";
 
     public static void main(String[] args) {
         // Create and output a default emissions config
@@ -44,19 +44,27 @@ public class ConfigGeneration {
         // Emissions Config Group
         EmissionsConfigGroup ecg = ConfigUtils.addOrGetModule(config, EmissionsConfigGroup.class);
 
-        config.vehicles().setVehiclesFile("emissionVanTest.xml");
+        config.vehicles().setVehiclesFile("testBikeTypes.xml");
+
+
+//        String scenarioString = "Van";
+//        String scenarioString = "Cargo Bike";
 
         ecg.setHbefaVehicleDescriptionSource(EmissionsConfigGroup.HbefaVehicleDescriptionSource.asEngineInformationAttributes);
         ecg.setAverageWarmEmissionFactorsFile("EFA_HOT_vehcat_2025average.csv");
         ecg.setAverageColdEmissionFactorsFile("EFA_ColdStart_vehcat_2025average.csv");
-        ecg.setDetailedWarmEmissionFactorsFile("EFA_HOT_SubSegm_2025detailed.csv");
-        ecg.setDetailedColdEmissionFactorsFile("EFA_ColdStart_SubSegm_2025detailed.csv");
+        ecg.setDetailedWarmEmissionFactorsFile("EFA_HOT_SubSegm_MC2025detailed.csv");
+        ecg.setDetailedColdEmissionFactorsFile("EFA_ColdStart_SubSegm_MC2025detailed.csv");
+        ecg.setDetailedVsAverageLookupBehavior(EmissionsConfigGroup.DetailedVsAverageLookupBehavior.tryDetailedThenTechnologyAverageThenAverageTable);
+        // skip the consistency check, since the new HBEFA tables are not consistent
+        ecg.setHbefaTableConsistencyCheckingLevel(EmissionsConfigGroup.HbefaTableConsistencyCheckingLevel.none);
         ecg.setHandlesHighAverageSpeeds(true);
+        ecg.setWritingEmissionsEvents(true);
 
         // Freight Config Group
         FreightCarriersConfigGroup fccg = ConfigUtils.addOrGetModule(config, FreightCarriersConfigGroup.class);
-        fccg.setCarriersFile("testCarrierPlanWithRoute.xml");
-        fccg.setCarriersVehicleTypesFile("testCarrierVehicleTypes.xml");
+        fccg.setCarriersFile("testCarrierPlanWithRoute4CargoBike.xml");
+        fccg.setCarriersVehicleTypesFile("testBikeTypes.xml");
 
         // Output the config to the directory
         ConfigUtils.writeConfig(config, outputDir);

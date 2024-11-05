@@ -1,0 +1,4 @@
+﻿title: 'Dynamic Response Shared Taxis'
+description: 'Inaktive Sammeltaxis (Quadräte); Aktive Sammeltaxis (gelb)'
+network: GemeenteLeuvenWithHbefaType.xml.gz # slower: output_network.json.gz
+carriers: output_carriers.xml.gz

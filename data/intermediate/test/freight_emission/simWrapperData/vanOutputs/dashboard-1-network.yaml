@@ -1,0 +1,27 @@
+header:
+  tab: "Leuven Van Emissions Scenario"
+  title: "Overview of the Leuven Van Emissions Scenario"
+  description: "One carrier one van with 200 shipments."
+
+layout:
+  map:
+      type: "links"
+      title: "Overview"
+      description: "Simulated emissions of a van in Leuven, with 200 shipments"
+      height: 12
+      csvFile: "link_co2e.csv"
+      geojsonFile: "GemeenteLeuvenWithHbefaTypeWgs84.geojson.gz"
+      zoom: 11
+      display:
+          color:
+            dataset: csvFile
+            columnName: sum
+            colorRamp:
+              ramp: Viridis
+              reverse: false
+              steps: 5
+          width:
+            dataset: csvFile
+            columnName: sum
+            scaleFactor: 500
+

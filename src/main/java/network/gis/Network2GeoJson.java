@@ -1,6 +1,7 @@
 package network.gis;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.geojson.feature.FeatureJSON;
 import org.matsim.api.core.v01.network.Network;
 import org.opengis.feature.simple.SimpleFeature;
@@ -36,13 +37,23 @@ public class Network2GeoJson {
     void writeGeoJson(Collection<SimpleFeature> features, String outputFilePath) throws IOException {
         // Create a FeatureJSON object which will handle the conversion
         FeatureJSON featureJSON = new FeatureJSON();
-        // Create a FileWriter to write the output to a GeoJSON file
-        try (FileWriter writer = new FileWriter(new File(outputFilePath))) {
-            // Write the feature collection to the GeoJSON file
-            for (SimpleFeature feature : features) {
-                featureJSON.writeFeature(feature, writer);
-            }
+
+        // Create a SimpleFeatureCollection to hold all the features
+        DefaultFeatureCollection featureCollection = new DefaultFeatureCollection();
+        featureCollection.addAll(features);
+
+        // Write the entire feature collection to a GeoJSON file
+        try (FileWriter writer = new FileWriter(outputFilePath)) {
+            featureJSON.writeFeatureCollection(featureCollection, writer);
         }
+
+//        // Create a FileWriter to write the output to a GeoJSON file
+//        try (FileWriter writer = new FileWriter(new File(outputFilePath))) {
+//            // Write the feature collection to the GeoJSON file
+//            for (SimpleFeature feature : features) {
+//                featureJSON.writeFeature(feature, writer);
+//            }
+//        }
     }
 
     public void write(String file) {

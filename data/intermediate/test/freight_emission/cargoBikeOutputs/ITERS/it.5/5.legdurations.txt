@@ -1,0 +1,9 @@
+pattern	0+	5+	10+	15+	20+	25+	30+	35+	40+	45+	50+	55+	60+
+delivery---delivery	156	1	0	0	0	0	0	0	0	0	0	0	0
+delivery---end	1	1	0	0	0	0	0	0	0	0	0	0	0
+delivery---pickup	31	10	0	0	0	0	0	0	0	0	0	0	0
+pickup---delivery	28	15	0	0	0	0	0	0	0	0	0	0	0
+pickup---pickup	157	0	0	0	0	0	0	0	0	0	0	0	0
+start---pickup	2	0	0	0	0	0	0	0	0	0	0	0	0
+
+average leg duration: 97.98756218905473 seconds = 00:01:37

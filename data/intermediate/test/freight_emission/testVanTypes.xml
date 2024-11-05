@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<vehicleDefinitions xmlns="http://www.matsim.org/files/dtd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.matsim.org/files/dtd http://www.matsim.org/files/dtd/vehicleDefinitions_v2.0.xsd">
+
+	<vehicleType id="van">
+
+		<capacity seats="1" standingRoomInPersons="0" other="3000.0">
+
+		</capacity>
+		<length meter="7.5"/>
+		<width meter="1.0"/>
+		<engineInformation>
+			<attributes>
+				<attribute name="HbefaEmissionsConcept" class="java.lang.String">LCV-P-Euro-3</attribute>
+				<attribute name="HbefaSizeClass" class="java.lang.String">&amp;lt;1,6L</attribute>
+				<attribute name="HbefaTechnology" class="java.lang.String">petrol</attribute>
+				<attribute name="HbefaVehicleCategory" class="java.lang.String">LIGHT_COMMERCIAL_VEHICLE</attribute>
+			</attributes>
+		</engineInformation>
+		<costInformation fixedCostsPerDay="1168.0" costsPerMeter="0.00422" costsPerSecond="0.089">
+
+		</costInformation>
+		<passengerCarEquivalents pce="1.0"/>
+		<networkMode networkMode="car"/>
+		<flowEfficiencyFactor factor="1.0"/>
+	</vehicleType>
+
+	<vehicle id="van_4" type="van"/>
+
+</vehicleDefinitions>
