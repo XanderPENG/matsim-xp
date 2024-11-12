@@ -5,69 +5,176 @@ import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.config.groups.ReplanningConfigGroup;
 import org.matsim.core.config.groups.ScoringConfigGroup;
+import org.matsim.core.controler.OutputDirectoryHierarchy;
 import org.matsim.freight.carriers.FreightCarriersConfigGroup;
 
 public class ConfigGeneration {
 
-    private final static String outputDir = "../../data/intermediate/test/freight_emission/freightEmissionConfig4CargoBike.xml";
+    private final String configOutputPath;  // the root path is the script directory
+    private final int lastIteration;
+    private final String inputNetworkPath;
+    private final String scenarioOutputPath;
+    private final String vehicleFilePath;
+    private final EmissionsConfigGroup.HbefaVehicleDescriptionSource hbefaVehicleDescriptionSource;
+    private final String averageWarmEmissionFactorsFilePath;
+    private final String averageColdEmissionFactorsFilePath;
+    private final String detailedWarmEmissionFactorsFilePath;
+    private final String detailedColdEmissionFactorsFilePath;
+    private final EmissionsConfigGroup.DetailedVsAverageLookupBehavior detailedVsAverageLookupBehavior;
+    private final EmissionsConfigGroup.HbefaTableConsistencyCheckingLevel hbefaTableConsistencyCheckingLevel;
+    private final boolean handlesHighAverageSpeeds;
+    private final boolean writingEmissionsEvents;
+    private final String carrierPlanFile;
 
-    public static void main(String[] args) {
-        // Create and output a default emissions config
+    ConfigGeneration(String configOutputPath, int lastIteration,
+                     String inputNetworkPath, String scenarioOutputPath, String vehicleFilePath,
+                     EmissionsConfigGroup.HbefaVehicleDescriptionSource hbefaVehicleDescriptionSource,
+                     String averageWarmEmissionFactorsFilePath, String averageColdEmissionFactorsFilePath,
+                     String detailedWarmEmissionFactorsFilePath, String detailedColdEmissionFactorsFilePath,
+                     EmissionsConfigGroup.DetailedVsAverageLookupBehavior detailedVsAverageLookupBehavior,
+                     EmissionsConfigGroup.HbefaTableConsistencyCheckingLevel hbefaTableConsistencyCheckingLevel,
+                     boolean handlesHighAverageSpeeds, boolean writingEmissionsEvents, String carrierPlanFile) {
+        this.configOutputPath = configOutputPath;
+        this.lastIteration = lastIteration;
+        this.inputNetworkPath = inputNetworkPath;
+        this.scenarioOutputPath = scenarioOutputPath;
+        this.vehicleFilePath = vehicleFilePath;
+        this.hbefaVehicleDescriptionSource = hbefaVehicleDescriptionSource;
+        this.averageWarmEmissionFactorsFilePath = averageWarmEmissionFactorsFilePath;
+        this.averageColdEmissionFactorsFilePath = averageColdEmissionFactorsFilePath;
+        this.detailedWarmEmissionFactorsFilePath = detailedWarmEmissionFactorsFilePath;
+        this.detailedColdEmissionFactorsFilePath = detailedColdEmissionFactorsFilePath;
+        this.detailedVsAverageLookupBehavior = detailedVsAverageLookupBehavior;
+        this.hbefaTableConsistencyCheckingLevel = hbefaTableConsistencyCheckingLevel;
+        this.handlesHighAverageSpeeds = handlesHighAverageSpeeds;
+        this.writingEmissionsEvents = writingEmissionsEvents;
+        this.carrierPlanFile = carrierPlanFile;
+    }
+
+    public void writeConfig(){
         Config config = ConfigUtils.createConfig();
-
-        // Set the output directory and the first and last iteration
-        config.controller().setOutputDirectory("./");
+        config.controller().setOutputDirectory(scenarioOutputPath);
         config.controller().setFirstIteration(0);
-        config.controller().setLastIteration(5);
-
-        // Set the plan calc score config group
-        ScoringConfigGroup.ActivityParams homeP = new ScoringConfigGroup.ActivityParams("home");
-        homeP.setTypicalDuration(12 * 3600);
-        config.scoring().addActivityParams(homeP);
-        ScoringConfigGroup.ActivityParams workP = new ScoringConfigGroup.ActivityParams("work");
-        workP.setTypicalDuration(8 * 3600);
-        config.scoring().addActivityParams(workP);
-
-        // Strategy
-        ReplanningConfigGroup scg = config.replanning();
-        ReplanningConfigGroup.StrategySettings strategySettings = new ReplanningConfigGroup.StrategySettings();
-        strategySettings.setStrategyName("ChangeExpBeta");
-        strategySettings.setWeight(1.0);
-        scg.addStrategySettings(strategySettings);
-
-        // Network
-        config.network().setInputFile("GemeenteLeuvenWithHbefaType.xml.gz");
-
-        // plans
-//        config.plans().setInputFile("../../raw/test/emissions/sample_population.xml");
-
-        // Emissions Config Group
+        config.controller().setLastIteration(lastIteration);
+        config.network().setInputFile(inputNetworkPath);
+        config.vehicles().setVehiclesFile(vehicleFilePath);
+        config.controller().setOverwriteFileSetting(OutputDirectoryHierarchy.OverwriteFileSetting.overwriteExistingFiles);
+        // add emissions config group
         EmissionsConfigGroup ecg = ConfigUtils.addOrGetModule(config, EmissionsConfigGroup.class);
-
-        config.vehicles().setVehiclesFile("testBikeTypes.xml");
-
-
-//        String scenarioString = "Van";
-//        String scenarioString = "Cargo Bike";
-
-        ecg.setHbefaVehicleDescriptionSource(EmissionsConfigGroup.HbefaVehicleDescriptionSource.asEngineInformationAttributes);
-        ecg.setAverageWarmEmissionFactorsFile("EFA_HOT_vehcat_2025average.csv");
-        ecg.setAverageColdEmissionFactorsFile("EFA_ColdStart_vehcat_2025average.csv");
-        ecg.setDetailedWarmEmissionFactorsFile("EFA_HOT_SubSegm_MC2025detailed.csv");
-        ecg.setDetailedColdEmissionFactorsFile("EFA_ColdStart_SubSegm_MC2025detailed.csv");
-        ecg.setDetailedVsAverageLookupBehavior(EmissionsConfigGroup.DetailedVsAverageLookupBehavior.tryDetailedThenTechnologyAverageThenAverageTable);
-        // skip the consistency check, since the new HBEFA tables are not consistent
-        ecg.setHbefaTableConsistencyCheckingLevel(EmissionsConfigGroup.HbefaTableConsistencyCheckingLevel.none);
-        ecg.setHandlesHighAverageSpeeds(true);
-        ecg.setWritingEmissionsEvents(true);
-
-        // Freight Config Group
+        ecg.setHbefaVehicleDescriptionSource(hbefaVehicleDescriptionSource);
+        ecg.setAverageWarmEmissionFactorsFile(averageWarmEmissionFactorsFilePath);
+        ecg.setAverageColdEmissionFactorsFile(averageColdEmissionFactorsFilePath);
+        ecg.setDetailedWarmEmissionFactorsFile(detailedWarmEmissionFactorsFilePath);
+        ecg.setDetailedColdEmissionFactorsFile(detailedColdEmissionFactorsFilePath);
+        ecg.setDetailedVsAverageLookupBehavior(detailedVsAverageLookupBehavior);
+        ecg.setHbefaTableConsistencyCheckingLevel(hbefaTableConsistencyCheckingLevel);
+        ecg.setHandlesHighAverageSpeeds(handlesHighAverageSpeeds);
+        ecg.setWritingEmissionsEvents(writingEmissionsEvents);
+        // add freight carriers config group
         FreightCarriersConfigGroup fccg = ConfigUtils.addOrGetModule(config, FreightCarriersConfigGroup.class);
-        fccg.setCarriersFile("testCarrierPlanWithRoute4CargoBike.xml");
-        fccg.setCarriersVehicleTypesFile("testBikeTypes.xml");
+        fccg.setCarriersFile(carrierPlanFile);
+        fccg.setCarriersVehicleTypesFile(vehicleFilePath);
+        // write the config
+        ConfigUtils.writeConfig(config, configOutputPath);
+    }
 
-        // Output the config to the directory
-        ConfigUtils.writeConfig(config, outputDir);
+    public static class Builder {
+        private String configOutputPath;
+        private int lastIteration = 5;
+        private String inputNetworkPath;
+        private String scenarioOutputPath;
+        private String vehicleFilePath;
+        private EmissionsConfigGroup.HbefaVehicleDescriptionSource hbefaVehicleDescriptionSource = EmissionsConfigGroup.HbefaVehicleDescriptionSource.asEngineInformationAttributes;
+        private String averageWarmEmissionFactorsFilePath;
+        private String averageColdEmissionFactorsFilePath;
+        private String detailedWarmEmissionFactorsFilePath;
+        private String detailedColdEmissionFactorsFilePath;
+        private EmissionsConfigGroup.DetailedVsAverageLookupBehavior detailedVsAverageLookupBehavior = EmissionsConfigGroup.DetailedVsAverageLookupBehavior.onlyTryDetailedElseAbort;
+        private EmissionsConfigGroup.HbefaTableConsistencyCheckingLevel hbefaTableConsistencyCheckingLevel = EmissionsConfigGroup.HbefaTableConsistencyCheckingLevel.none;
+        private boolean handlesHighAverageSpeeds = true;
+        private boolean writingEmissionsEvents = true;
+        private String carrierPlanFile;
 
+        public Builder setConfigOutputPath(String configOutputPath) {
+            this.configOutputPath = configOutputPath;
+            return this;
+        }
+
+        public Builder setLastIteration(int lastIteration) {
+            this.lastIteration = lastIteration;
+            return this;
+        }
+
+        public Builder setInputNetworkPath(String inputNetworkPath) {
+            this.inputNetworkPath = inputNetworkPath;
+            return this;
+        }
+
+        public Builder setScenarioOutputPath(String scenarioOutputPath) {
+            this.scenarioOutputPath = scenarioOutputPath;
+            return this;
+        }
+
+        public Builder setVehicleFilePath(String vehicleFilePath) {
+            this.vehicleFilePath = vehicleFilePath;
+            return this;
+        }
+
+        public Builder setHbefaVehicleDescriptionSource(EmissionsConfigGroup.HbefaVehicleDescriptionSource hbefaVehicleDescriptionSource) {
+            this.hbefaVehicleDescriptionSource = hbefaVehicleDescriptionSource;
+            return this;
+        }
+
+        public Builder setAverageWarmEmissionFactorsFilePath(String averageWarmEmissionFactorsFilePath) {
+            this.averageWarmEmissionFactorsFilePath = averageWarmEmissionFactorsFilePath;
+            return this;
+        }
+
+        public Builder setAverageColdEmissionFactorsFilePath(String averageColdEmissionFactorsFilePath) {
+            this.averageColdEmissionFactorsFilePath = averageColdEmissionFactorsFilePath;
+            return this;
+        }
+
+        public Builder setDetailedWarmEmissionFactorsFilePath(String detailedWarmEmissionFactorsFilePath) {
+            this.detailedWarmEmissionFactorsFilePath = detailedWarmEmissionFactorsFilePath;
+            return this;
+        }
+
+        public Builder setDetailedColdEmissionFactorsFilePath(String detailedColdEmissionFactorsFilePath) {
+            this.detailedColdEmissionFactorsFilePath = detailedColdEmissionFactorsFilePath;
+            return this;
+        }
+
+        public Builder setDetailedVsAverageLookupBehavior(EmissionsConfigGroup.DetailedVsAverageLookupBehavior detailedVsAverageLookupBehavior) {
+            this.detailedVsAverageLookupBehavior = detailedVsAverageLookupBehavior;
+            return this;
+        }
+
+        public Builder setHbefaTableConsistencyCheckingLevel(EmissionsConfigGroup.HbefaTableConsistencyCheckingLevel hbefaTableConsistencyCheckingLevel) {
+            this.hbefaTableConsistencyCheckingLevel = hbefaTableConsistencyCheckingLevel;
+            return this;
+        }
+
+        public Builder setHandlesHighAverageSpeeds(boolean handlesHighAverageSpeeds) {
+            this.handlesHighAverageSpeeds = handlesHighAverageSpeeds;
+            return this;
+        }
+
+        public Builder setWritingEmissionsEvents(boolean writingEmissionsEvents) {
+            this.writingEmissionsEvents = writingEmissionsEvents;
+            return this;
+        }
+
+        public Builder setCarrierPlanFile(String carrierPlanFile) {
+            this.carrierPlanFile = carrierPlanFile;
+            return this;
+        }
+
+        public ConfigGeneration build() {
+            return new ConfigGeneration(configOutputPath, lastIteration, inputNetworkPath, scenarioOutputPath, vehicleFilePath,
+                                       hbefaVehicleDescriptionSource, averageWarmEmissionFactorsFilePath, averageColdEmissionFactorsFilePath,
+                                       detailedWarmEmissionFactorsFilePath, detailedColdEmissionFactorsFilePath, detailedVsAverageLookupBehavior,
+                                       hbefaTableConsistencyCheckingLevel, handlesHighAverageSpeeds, writingEmissionsEvents, carrierPlanFile);
+        }
     }
 }

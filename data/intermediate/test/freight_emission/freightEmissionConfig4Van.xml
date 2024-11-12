@@ -35,7 +35,7 @@
 		Depending on the chosen mobsim, you'll have to add additional config modules to configure the corresponding mobsim.
 		For 'qsim', add a module 'qsim' to the config. -->
 		<param name="mobsim" value="qsim" />
-		<param name="outputDirectory" value="../../data/intermediate/test/freight_emission/vanOutputs/" />
+		<param name="outputDirectory" value="../../data/intermediate/test/freight_emission/vanOutputsV2/" />
 		<!-- Possible values: failIfDirectoryExists,overwriteExistingFiles,deleteDirectoryIfExists -->
 		<param name="overwriteFiles" value="overwriteExistingFiles" />
 		<!-- The type of routing (least cost path) algorithm used, may have the values: [Dijkstra, AStarLandmarks, SpeedyALT] -->
@@ -77,19 +77,19 @@
 	</module>
 	<module name="emissions" >
 		<!-- file with HBEFA vehicle type specific fleet average cold emission factors -->
-		<param name="averageFleetColdEmissionFactorsFile" value="EFA_ColdStart_vehcat_2025average.csv.gz" />
+		<param name="averageFleetColdEmissionFactorsFile" value="EFA_ColdStart_vehcat_2025averageV2.csv.gz" />
 		<!-- file with HBEFA vehicle type specific fleet average warm emission factors -->
-		<param name="averageFleetWarmEmissionFactorsFile" value="EFA_HOT_vehcat_2025average.csv.gz" />
+		<param name="averageFleetWarmEmissionFactorsFile" value="EFA_HOT_vehcat_2025averageV2.csv.gz" />
 		<!-- file with HBEFA detailed cold emission factors -->
-		<param name="detailedColdEmissionFactorsFile" value="EFA_ColdStart_SubSegm_LCV2025detailed.csv.gz" />
+		<param name="detailedColdEmissionFactorsFile" value="EFA_ColdStart_SubSegm_LCV2025detailedV2.csv.gz" />
 		<!-- Should the calculation bases on average or detailed emission factors? 
 			onlyTryDetailedElseAbort : try detailed values. Abort if values are not found. Requires DETAILED emission factors. 
 			tryDetailedThenTechnologyAverageElseAbort : try detailed values first, if not found try to use semi-detailed values for 'vehicleType,technology,average,average', if then not found abort. Requires DETAILED emission factors. 
 			tryDetailedThenTechnologyAverageThenAverageTabletry detailed values first, if not found try to use semi-detailed values for 'vehicleType,technology,average,average', if then not found try lookup in average table. Requires DETAILED and AVERAGE emission factors. 
 			directlyTryAverageTableonly calculate from average table. Requires AVERAGE emission factors. Default is onlyTryDetailedElseAbort -->
-		<param name="detailedVsAverageLookupBehavior" value="tryDetailedThenTechnologyAverageThenAverageTable" />
+		<param name="detailedVsAverageLookupBehavior" value="onlyTryDetailedElseAbort" />
 		<!-- file with HBEFA detailed warm emission factors -->
-		<param name="detailedWarmEmissionFactorsFile" value="EFA_HOT_SubSegm_LCV2025detailed.csv.gz" />
+		<param name="detailedWarmEmissionFactorsFile" value="EFA_HOT_SubSegm_LCV2025detailedV2.csv.gz" />
 		<!-- if true, the original fractional method from Hülsmann et al (2011) will be used to calculate emission factors -->
 		<param name="emissionsComputationMethod" value="AverageSpeed" />
 		<!-- if true, don't fail when average speed is higher than the link freespeed, but cap it instead. -->

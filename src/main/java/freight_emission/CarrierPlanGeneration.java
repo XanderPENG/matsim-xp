@@ -24,7 +24,7 @@ import org.matsim.freight.carriers.controler.CarrierControlerUtils;
 import org.matsim.freight.carriers.jsprit.MatsimJspritFactory;
 import org.matsim.freight.carriers.jsprit.NetworkBasedTransportCosts;
 import org.matsim.freight.carriers.jsprit.NetworkRouter;
-import org.matsim.vehicles.VehicleType;
+import org.matsim.vehicles.*;
 
 import javax.management.InvalidAttributeValueException;
 import java.util.*;
@@ -35,87 +35,113 @@ import java.util.stream.Collectors;
 import static org.matsim.freight.carriers.CarriersUtils.*;
 
 final class CarrierPlanGeneration {
-    // Create a new Carrier
-    private final Carrier carrier = CarriersUtils.createCarrier(Id.create("Carrier1", Carrier.class));
-    private final Network network;
     private static final Logger log = LogManager.getLogger(CarrierPlanGeneration.class);
 
-    public CarrierPlanGeneration(Network network) {
+    private final Network network;
+    private final int numCarrier;
+    private final int numJspritIterations;
+    private final Map<Integer, Set<VehicleType>> carrierVehicleTypes;
+    private final Map<Integer, Set<CarrierShipment>> carrierShipments;
+    private final Map<Integer,Set<Id<Link>>> depotLinks;
+
+    private final Carriers carriers = new Carriers();
+
+    public CarrierPlanGeneration(Network network, int numCarrier, int numJspritIterations,
+                                 Map<Integer, Set<VehicleType>> carrierVehicleTypes,
+                                 Map<Integer, Set<CarrierShipment>> carrierShipments,
+                                 Map<Integer, Set<Id<Link>>> depotLinks) {
         this.network = network;
+        this.numCarrier = numCarrier;
+        this.numJspritIterations = numJspritIterations;
+        this.carrierVehicleTypes = carrierVehicleTypes;
+        this.carrierShipments = carrierShipments;
+        this.depotLinks = depotLinks;
     }
 
-    void setCarrier() {
+    void setCarriers() {
+        for (int i = 0; i < this.numCarrier; i++){
+            Carrier carrier = CarriersUtils.createCarrier(Id.create("carrier_"+i, Carrier.class));
+            // Set Carrier Attributes
+            CarriersUtils.setJspritIterations(carrier, this.numJspritIterations);
+            // Set Carrier Capabilities
+            CarrierCapabilities carrierCapabilities = CarrierCapabilities.Builder.newInstance()
+                    .setFleetSize(CarrierCapabilities.FleetSize.INFINITE)
+                    .build();
+            carrier.setCarrierCapabilities(carrierCapabilities);
+            // add shipments
+            Set<CarrierShipment> shipments = this.carrierShipments.get(i);
+            for (CarrierShipment shipment : shipments) {
+                CarriersUtils.addShipment(carrier, shipment);
+            }
+            // add carrier vehicles
+            Set<VehicleType> vehicleTypes = this.carrierVehicleTypes.get(i);
 
-        // Set Carrier Attributes
-        CarriersUtils.setJspritIterations(carrier, 100);
-        // Set Carrier Capabilities
-        CarrierCapabilities carrierCapabilities = CarrierCapabilities.Builder.newInstance()
-                .setFleetSize(CarrierCapabilities.FleetSize.INFINITE)
-                .build();
-        carrier.setCarrierCapabilities(carrierCapabilities);
-
-        // Generate random shipments
-        RandomDemandGeneration randomDemandGeneration = new RandomDemandGeneration(network);
-        Set<CarrierShipment> shipments = randomDemandGeneration.generateDemandWithoutTimeWindow(Set.of(TransportMode.bike, TransportMode.car));
-
-        // Add the shipment to the carrier
-        for (CarrierShipment shipment : shipments) {
-            CarriersUtils.addShipment(carrier, shipment);
+            int vehicleIdx = 0;
+            for (VehicleType vehicleType : vehicleTypes) {
+                for (Id<Link> depotLink : this.depotLinks.get(i)) {
+                    CarrierVehicle cv = CarrierVehicle.Builder.newInstance(Id.createVehicleId("carrier"+i+"_"+vehicleType.getId()+"_"+vehicleIdx),
+                            depotLink, vehicleType).build();
+                    CarriersUtils.addCarrierVehicle(carrier, cv);
+                    vehicleIdx++;
+                }
+            }
+            this.carriers.addCarrier(carrier);
         }
-
-        // Generate 2 vehicle types
-        VehicleType van = CarrierVehicleType.Builder.newInstance(Id.create("van", VehicleType.class))
-                .setCapacity(3000)
-                .setFixCost(1168)
-                .setCostPerDistanceUnit(4.22E-3)
-                .setCostPerTimeUnit(0.089)
-                .build();
-
-        VehicleType cargoBike = CarrierVehicleType.Builder.newInstance(Id.create("cargoBike", VehicleType.class))
-                .setCapacity(125)
-                .setFixCost(300)
-                .setCostPerDistanceUnit(3E-3)
-                .setCostPerTimeUnit(0.058)
-                .build();
-
-        Set<Link> depotLinks = randomDemandGeneration.findDepotLinks(Set.of(TransportMode.bike, TransportMode.car));
-        int vehicleIdx = 0;
-        for (Link depotLink : depotLinks) {
-            CarrierVehicle cv = CarrierVehicle.Builder.newInstance(Id.createVehicleId("van_"+vehicleIdx), depotLink.getId(), van).build();
-            CarriersUtils.addCarrierVehicle(carrier, cv);
-            vehicleIdx++;
-        }
-
     }
 
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
-        Scenario scenario = ScenarioUtils.createScenario(ConfigUtils.createConfig());
-        // Read the network
-        new MatsimNetworkReader(scenario.getNetwork()).readFile("../../data/clean/network/GemeenteLeuvenOptimized.xml.gz");
-        Network network = scenario.getNetwork();
-        CarrierPlanGeneration cpg = new CarrierPlanGeneration(network);
-        cpg.setCarrier();
-        Carriers carriers = new Carriers(Set.of(cpg.carrier));
-        // Write the carrierPlan to a file
-        CarrierPlanWriter carrierPlanWriter = new CarrierPlanWriter(carriers);
-        carrierPlanWriter.write("../../data/intermediate/test/testCarrierPlanWithoutRoute4Van.xml");
-        // Write vehicle types to a file
-        CarrierVehicleTypes vehicleTypes = CarrierVehicleTypes.getVehicleTypes(carriers);
-        CarrierVehicleTypeWriter carrierVehicleTypeWriter = new CarrierVehicleTypeWriter(vehicleTypes);
-        carrierVehicleTypeWriter.write("../../data/intermediate/test/testVanTypes.xml");
+    public void writeCarrierPlanWithoutRoutes(String path) {
+        CarrierPlanWriter carrierPlanWriter = new CarrierPlanWriter(this.carriers);
+        carrierPlanWriter.write(path);
+    }
 
+    public void writeVehicleTypes(String path) {
+        CarrierVehicleTypes carrierVehicleTypes = CarrierVehicleTypes.getVehicleTypes(this.carriers);
+        Map<Id<VehicleType>, VehicleType> vehicleTypes = carrierVehicleTypes.getVehicleTypes();
+
+        Vehicles vehicles = VehicleUtils.createVehiclesContainer();
+        // add vehicle types into vehicles
+        vehicleTypes.forEach((vehicleTypeId, vehicleType) -> {
+            vehicles.addVehicleType(vehicleType);
+        });
+        // add carrier vehicles into vehicles
+        this.carriers.getCarriers().forEach((carrierId, carrier) -> {
+            Map<Id<Vehicle>, CarrierVehicle> carrierVehicles = carrier.getCarrierCapabilities().getCarrierVehicles();
+            carrierVehicles.forEach((vehicleId, carrierVehicle) -> {
+//                VehicleType vehicleType = vehicleTypes.get(carrierVehicle.getVehicleTypeId());
+//                Vehicle vehicle = VehicleUtils.createVehicle(vehicleId, vehicleType);
+                vehicles.addVehicle(carrierVehicle);
+            });
+        });
+        // Write the vehicle types to a file
+        MatsimVehicleWriter writer = new MatsimVehicleWriter(vehicles);
+        writer.writeFile(path);
+//        CarrierVehicleTypeWriter vehicleTypesWriter = new CarrierVehicleTypeWriter(vehicleTypes);
+//        vehicleTypesWriter.write(path);
+    }
+
+    public void generateAndWriteCarrierPlanWithRoutes(String path4PlanWithoutRoutes, String path4VehicleTypes) {
+        // Create scenario and add the network
+        Scenario scenario = new ScenarioUtils.ScenarioBuilder(ConfigUtils.createConfig())
+                .setNetwork(this.network).build();
         // Generate Carrier plan with routes
         FreightCarriersConfigGroup fccg = new FreightCarriersConfigGroup();
-        fccg.setCarriersFile("../../data/intermediate/test/testCarrierPlanWithoutRoute4Van.xml");
-        fccg.setCarriersVehicleTypesFile("../../data/intermediate/test/testVanTypes.xml");
+        fccg.setCarriersFile(path4PlanWithoutRoutes);
+        fccg.setCarriersVehicleTypesFile(path4VehicleTypes);
+        //// Add the module to the scenario
         scenario.getConfig().addModule(fccg);
+        //// load carriers and run jsprit to generate routes
         CarriersUtils.loadCarriersAccordingToFreightConfig(scenario);
-        CarriersUtils.runJsprit(scenario);
+        try {
+            CarriersUtils.runJsprit(scenario);
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        //// write the carrier plan with routes
         Carriers CarriersWithRoutes = getCarriers(scenario);
         CarrierPlanWriter carrierPlanWriterWithRoutes = new CarrierPlanWriter(CarriersWithRoutes);
-        carrierPlanWriterWithRoutes.write("../../data/intermediate/test/testCarrierPlanWithRoute4Van.xml");
-
+        carrierPlanWriterWithRoutes.write(path4PlanWithoutRoutes.replace("WithoutRoute", "WithRoutes"));
     }
+
 
     @Deprecated(since = "we do not need to customize the @LeastCostPathCalculatorFactory currently", forRemoval = true)
     static void runJsprit(Scenario scenario) throws ExecutionException, InterruptedException {

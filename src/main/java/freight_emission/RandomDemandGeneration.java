@@ -1,7 +1,5 @@
 package freight_emission;
 
-import com.graphhopper.jsprit.core.problem.job.Job;
-import com.graphhopper.jsprit.core.problem.job.Shipment;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.network.Network;
@@ -14,11 +12,12 @@ import java.util.stream.Collectors;
 
 class RandomDemandGeneration {
     private final Network multimodalNetwork;
-    private double demandAmount;  // Demand amount in kg
-    private int numDemandPoints;
-    private Tuple<Integer, Integer> demandRange;  // Demand range in kg
-    private Boundary boundary;
-    private Set<Id<Node>> depots = Set.of(Id.createNodeId("3408495316"), Id.createNodeId("1531042729"));
+    private final double demandAmount;  // Demand amount in kg
+    private final int numDemandPoints;
+    private final Tuple<Integer, Integer> demandRange;  // Demand range in kg
+    private final Boundary boundary;
+//    private Set<Id<Node>> depots = Set.of(Id.createNodeId("3408495316"), Id.createNodeId("1531042729"));
+    private final Set<Id<Link>> depotLinksId;
 
     public RandomDemandGeneration(Network multimodalNetwork) {
         this.multimodalNetwork = multimodalNetwork;
@@ -26,21 +25,26 @@ class RandomDemandGeneration {
         this.numDemandPoints = 200;
         this.demandRange = new Tuple<>(5, 25);  // kg
         this.boundary = new Boundary(172161.734, 174265.856, 173412.828, 175444.093);
+        this.depotLinksId = setDefaultDepotLinks();
     }
 
-    public RandomDemandGeneration(Network multimodalNetwork, Set<Id<Node>> depots, double demandAmount, int numDemandPoints, Tuple<Integer, Integer> demandRange, Boundary boundary) {
+    public RandomDemandGeneration(Network multimodalNetwork, Set<Id<Link>> depotLinks, double demandAmount, int numDemandPoints, Tuple<Integer, Integer> demandRange, Boundary boundary) {
         this.multimodalNetwork = multimodalNetwork;
-        this.depots = depots;
         this.demandAmount = demandAmount;
         this.numDemandPoints = numDemandPoints;
         this.demandRange = demandRange;
         this.boundary = boundary;
+        this.depotLinksId = depotLinks;
     }
 
+    private Set<Id<Link>> setDefaultDepotLinks() {
+        Set<Id<Link>> depotLinks = new HashSet<>();
+        depotLinks.add(Id.createLinkId("333784188_r_3"));
+        depotLinks.add(Id.createLinkId("27566523_11"));
+        return depotLinks;
+    }
 
     public Set<CarrierShipment> generateDemandWithoutTimeWindow(Set<String> transportModes) {
-        // Get the depot links
-        Set<Link> depotLinks = findDepotLinks(transportModes);
         Set<Link> filteredLinks = filterLinksWithAllowedTransportModes(transportModes);
         // Filter links within the boundary, based on the nodes
         filteredLinks = filteredLinks.stream().filter(link -> isWithinBoundary(link.getFromNode()) && isWithinBoundary(link.getToNode())).collect(Collectors.toSet());
@@ -63,6 +67,7 @@ class RandomDemandGeneration {
         for (int i = 0; i < numDemandPoints; i++) {
             Id<CarrierShipment> shipmentId = Id.create("shipment_" + i, CarrierShipment.class);
             // Randomly select a depot
+            Set<Link> depotLinks = depotLinksId.stream().map(linkId -> multimodalNetwork.getLinks().get(linkId)).collect(Collectors.toSet());
             int randomDepotIndex = (int) (Math.random() * depotLinks.size());
             Link randomDepotLink = (Link) depotLinks.toArray()[randomDepotIndex];
             CarrierShipment shipment = new CarrierShipment.Builder(shipmentId, randomDepotLink.getId(), selectedLinks.get(i).getId(), goodsWeights.get(i))
@@ -109,26 +114,6 @@ class RandomDemandGeneration {
         return numbers;
     }
 
-    public Set<Link> findDepotLinks(Set<String> transportModes) {
-        Set<Link> depotLinks = new HashSet<>();
-        for (Id<Node> depotId : depots) {
-            Node depotNode = multimodalNetwork.getNodes().get(depotId);
-            // Add in links (it seems not necessary to add in links)
-//            for (Link link : depotNode.getInLinks().values()) {
-//                if (link.getAllowedModes().containsAll(transportModes)) {
-//                    depotLinks.add(link);
-//                }
-//            }
-            // add out links
-            for (Link link : depotNode.getOutLinks().values()) {
-                if (link.getAllowedModes().containsAll(transportModes)) {
-                    depotLinks.add(link);
-                }
-            }
-        }
-        return depotLinks;
-    }
-
     private Set<Node> filterNodesWithAllowedTransportModes(Set<String> transportModes) {
         Set<Node> filteredNodes = new HashSet<>();
         for (Link link : multimodalNetwork.getLinks().values()) {
@@ -154,6 +139,10 @@ class RandomDemandGeneration {
     private boolean isWithinBoundary(double x, double y) {
         assert boundary != null;
         return boundary.getMinX() <= x && x <= boundary.getMaxX() && boundary.getMinY() <= y && y <= boundary.getMaxY();
+    }
+
+    public Set<Id<Link>> getDepotLinksId() {
+        return depotLinksId;
     }
 
     private boolean isWithinBoundary(Node node) {

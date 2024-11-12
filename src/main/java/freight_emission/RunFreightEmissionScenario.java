@@ -35,10 +35,10 @@ import java.util.Map;
 public class RunFreightEmissionScenario {
     private static final String rootPath = "../../data/intermediate/test/freight_emission/";
     public static void main(String[] args) {
-        Config config = ConfigUtils.loadConfig(rootPath+"freightEmissionConfig4CargoBike.xml");
+        Config config = ConfigUtils.loadConfig(rootPath+"freightEmissionConfig4Van.xml");
         FreightCarriersConfigGroup fccg= ConfigUtils.addOrGetModule( config, FreightCarriersConfigGroup.class );
         System.out.println(fccg.getCarriersFile());
-        Scenario scenario = ScenarioUtils.loadScenario( config );
+        Scenario scenario = ScenarioUtils.loadScenario(config);
 
         // Load carriers according to freight config
         CarriersUtils.loadCarriersAccordingToFreightConfig( scenario );
