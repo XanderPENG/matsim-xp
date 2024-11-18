@@ -65,10 +65,10 @@ def get_summary_statistics(pollutants_by_link_dict) -> pd.DataFrame:
     summary_statistics = {}
     for pollutant, pollutant_by_link in pollutants_by_link_dict.items():
         summary_statistics[pollutant] = pollutant_by_link['sum'].sum() if pollutant_by_link is not None else 0
-    summary_statistics_dict = pd.DataFrame.from_dict(summary_statistics, orient='index', columns=['sum'])
-    summary_statistics_dict.reset_index(inplace=True)
-    summary_statistics_dict.rename(columns={'index': 'pollutant'}, inplace=True)
-    return summary_statistics_dict
+    summary_statistics_df = pd.DataFrame.from_dict(summary_statistics, orient='index', columns=['sum'])
+    summary_statistics_df.reset_index(inplace=True)
+    summary_statistics_df.rename(columns={'index': 'pollutant'}, inplace=True)
+    return summary_statistics_df
 
 
 
