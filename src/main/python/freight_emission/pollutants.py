@@ -53,9 +53,3 @@ AIR_QUALITY_POLLUTANTS = {CO, NOx, NO2,
                           SO2, NH3, Pb, Benzene,
                           HC, NMHC}
 
-
-
-
-
-
-

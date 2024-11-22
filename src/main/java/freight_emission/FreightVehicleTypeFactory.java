@@ -26,7 +26,7 @@ public class FreightVehicleTypeFactory {
         van.setWidth(2.0);
 
         van.setNetworkMode("car");
-        van.setMaximumVelocity(50/3.6); // 40 km/h converted to m/s, this is the maximum velocity of the vehicle
+        van.setMaximumVelocity(30/3.6); // 50 km/h converted to m/s, this is the maximum velocity of the vehicle
         van.setFlowEfficiencyFactor(1.0); // This is the flow efficiency factor of the vehicle
         van.setPcuEquivalents(1.2); // This is the passenger car unit equivalent of the vehicle
 
@@ -52,7 +52,7 @@ public class FreightVehicleTypeFactory {
         cargoBike.setWidth(1.0);
 
         cargoBike.setNetworkMode("bike");
-        cargoBike.setMaximumVelocity(25/3.6); // 10 km/h converted to m/s, this is the maximum velocity of the vehicle
+        cargoBike.setMaximumVelocity(30/3.6); // 25 km/h converted to m/s, this is the maximum velocity of the vehicle
         cargoBike.setFlowEfficiencyFactor(1.0); // This is the flow efficiency factor of the vehicle
         cargoBike.setPcuEquivalents(0.5); // This is the passenger car unit equivalent of the vehicle
 
