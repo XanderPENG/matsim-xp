@@ -6,11 +6,13 @@ import org.matsim.api.core.v01.network.Network;
 import org.matsim.api.core.v01.network.Node;
 import org.matsim.core.utils.collections.Tuple;
 import org.matsim.freight.carriers.CarrierShipment;
+import org.matsim.freight.carriers.TimeWindow;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 class RandomDemandGeneration {
+
     private final Network multimodalNetwork;
     private final double demandAmount;  // Demand amount in kg
     private final int numDemandPoints;
@@ -77,6 +79,56 @@ class RandomDemandGeneration {
 
         return jobs;
     }
+
+    public Set<CarrierShipment> generateDemandWithTimeWindow(Set<String> transportModes) {
+        Set<Link> filteredLinks = filterLinksWithAllowedTransportModes(transportModes);
+        // Filter links within the boundary, based on the nodes
+        filteredLinks = filteredLinks.stream().filter(link -> isWithinBoundary(link.getFromNode()) && isWithinBoundary(link.getToNode())).collect(Collectors.toSet());
+        // Randomly select demand points
+        List<Link> selectedLinks = new ArrayList<>();
+        for (int i = 0; i < numDemandPoints; i++) {
+            int randomIndex = (int) (Math.random() * filteredLinks.size());
+            Link randomLink = (Link) filteredLinks.toArray()[randomIndex];
+            while (selectedLinks.contains(randomLink)) {
+                randomIndex = (int) (Math.random() * filteredLinks.size());
+                randomLink = (Link) filteredLinks.toArray()[randomIndex];
+            }
+            selectedLinks.add(randomLink);
+        }
+
+        List<Integer> goodsWeights = generateRandomNumbers((int) demandAmount, numDemandPoints, demandRange.getFirst(), demandRange.getSecond());
+        Set<CarrierShipment> jobs = new HashSet<>();
+
+        // Create several candidate time windows
+        List<TimeWindow> candidateTimeWindows = new ArrayList<>();
+        // morning delivery
+        candidateTimeWindows.add(TimeWindow.newInstance(6 * 3600, 8 * 3600));
+        candidateTimeWindows.add(TimeWindow.newInstance(6.1 * 3600, 8.1 * 3600));
+        // midday delivery
+        candidateTimeWindows.add(TimeWindow.newInstance(8 * 3600, 10 * 3600));
+        candidateTimeWindows.add(TimeWindow.newInstance(12 * 3600, 14 * 3600));
+        // night delivery - add 2 close time windows to increase the probability of selecting this time window
+        candidateTimeWindows.add(TimeWindow.newInstance(18 * 3600, 20 * 3600));
+        candidateTimeWindows.add(TimeWindow.newInstance(18.1 * 3600, 20.1 * 3600));
+
+        // Create shipment jobs
+        for (int i = 0; i < numDemandPoints; i++) {
+            Id<CarrierShipment> shipmentId = Id.create("shipment_" + i, CarrierShipment.class);
+            // Randomly select a depot
+            Set<Link> depotLinks = depotLinksId.stream().map(linkId -> multimodalNetwork.getLinks().get(linkId)).collect(Collectors.toSet());
+            int randomDepotIndex = (int) (Math.random() * depotLinks.size());
+            Link randomDepotLink = (Link) depotLinks.toArray()[randomDepotIndex];
+            int randomTimeWindowIndex = (int) (Math.random() * candidateTimeWindows.size());
+            CarrierShipment shipment = new CarrierShipment.Builder(shipmentId, randomDepotLink.getId(), selectedLinks.get(i).getId(), goodsWeights.get(i))
+                    .setDeliveryTimeWindow(candidateTimeWindows.get(randomTimeWindowIndex))
+                    .setDeliveryServiceTime(5 * 60)
+                    .build();
+            jobs.add(shipment);
+        }
+
+        return jobs;
+    }
+
 
 
     public static List<Integer> generateRandomNumbers(int totalAmount, int numberOfParts, int minValue, int maxValue) {

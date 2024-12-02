@@ -44,7 +44,7 @@ import java.util.Set;
 public class RunFreightEmissionScenarioV2 {
     private final static Logger logger = LogManager.getLogger(RunFreightEmissionScenarioV2.class);
 
-    private static final int NUM_ITERATIONS = 30;
+    private static final int NUM_ITERATIONS = 5;
     private static final int NUM_CARRIERS = 1;
     private static final int NUM_JSPRIT_ITERATIONS = 100;
     private static final String inputNetworkPath = "../../data/intermediate/test/freightEmissions/GemeenteLeuvenWithHbefaType.xml.gz";
@@ -58,7 +58,7 @@ public class RunFreightEmissionScenarioV2 {
         new MatsimNetworkReader(scenario.getNetwork()).readFile(inputNetworkPath);
         Network network = scenario.getNetwork();
 
-        for (int i = 20; i < NUM_ITERATIONS; i++) {
+        for (int i = 0; i < NUM_ITERATIONS; i++) {
             logger.info("Generating the carrier plan for iteration {}", i);
             Map<Integer, Set<CarrierShipment>> carrierShipments = new HashMap<>();
             Map<Integer, Set<Id<Link>>> depotLinks = new HashMap<>();
@@ -66,7 +66,7 @@ public class RunFreightEmissionScenarioV2 {
             for (int j = 0; j < NUM_CARRIERS; j++) {
                 // Generate random demand for each carrier
                 RandomDemandGeneration randomDemandGeneration = new RandomDemandGeneration(network);
-                Set<CarrierShipment> shipments = randomDemandGeneration.generateDemandWithoutTimeWindow(Set.of(TransportMode.car, TransportMode.bike));
+                Set<CarrierShipment> shipments = randomDemandGeneration.generateDemandWithTimeWindow(Set.of(TransportMode.car, TransportMode.bike));
                 carrierShipments.put(j, shipments);
                 // Add depot links
                 depotLinks.put(j, Set.of(Id.createLinkId("333784188_r_3"), Id.createLinkId("27566523_11")));
@@ -127,7 +127,13 @@ public class RunFreightEmissionScenarioV2 {
             vehicleTypes.put(i, Set.of(vehicleType));
         }
         logger.info("Setting the carriers");
-        CarrierPlanGeneration carrierPlanGeneration = new CarrierPlanGeneration(network, NUM_CARRIERS, NUM_JSPRIT_ITERATIONS, vehicleTypes, carrierShipments, depotLinks);
+        CarrierPlanGeneration carrierPlanGeneration;
+        if (scenarioType == ScenarioType.CARGO_BIKE) {
+            carrierPlanGeneration = new CarrierPlanGeneration(network, NUM_CARRIERS, 1000, vehicleTypes, carrierShipments, depotLinks);
+        }else {
+            carrierPlanGeneration = new CarrierPlanGeneration(network, NUM_CARRIERS, NUM_JSPRIT_ITERATIONS, vehicleTypes, carrierShipments, depotLinks);
+        }
+
         carrierPlanGeneration.setCarriers();
         // Write the carrierPlan without routes to a file
         logger.info("Writing the carrier plan without routes");
