@@ -3,6 +3,7 @@ package freight_emission;
 import org.matsim.api.core.v01.Id;
 import org.matsim.freight.carriers.CarrierVehicleType;
 import org.matsim.freight.carriers.CarrierVehicleTypeWriter;
+import org.matsim.freight.carriers.CarriersUtils;
 import org.matsim.vehicles.EngineInformation;
 import org.matsim.vehicles.VehicleType;
 import org.matsim.vehicles.VehicleUtils;
@@ -47,7 +48,6 @@ public class FreightVehicleTypeFactory {
                 .setCostPerTimeUnit(0.058)
                 .build();
         cargoBike.getCapacity().setSeats(1);
-
         cargoBike.setLength(3.0);
         cargoBike.setWidth(1.0);
 

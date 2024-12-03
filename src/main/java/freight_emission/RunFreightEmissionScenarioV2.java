@@ -41,10 +41,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+
+/* TODO:
+    1. try to only set one or two period TW for the shipments
+    2. try to set the fixedCost of vehicle to very low value/ or set the delay delivery cost as very high value (this might be good)
+*/
 public class RunFreightEmissionScenarioV2 {
     private final static Logger logger = LogManager.getLogger(RunFreightEmissionScenarioV2.class);
 
-    private static final int NUM_ITERATIONS = 5;
+    private static final int NUM_ITERATIONS = 50;
     private static final int NUM_CARRIERS = 1;
     private static final int NUM_JSPRIT_ITERATIONS = 100;
     private static final String inputNetworkPath = "../../data/intermediate/test/freightEmissions/GemeenteLeuvenWithHbefaType.xml.gz";
