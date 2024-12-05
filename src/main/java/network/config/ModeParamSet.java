@@ -20,7 +20,7 @@ public class ModeParamSet extends ReflectiveConfigGroup implements MatsimParamet
     public String MODE_NAME;
 
     @Parameter
-    @Comment("The max speed of the mode-related link (unit: m/s)")
+    @Comment("The max speed of the mode-related link (unit: keep consistent with the @INPUT_PARAM_UNIT in @linkAttrParamSet")
     public double FREE_SPEED;
 
     @Parameter

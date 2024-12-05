@@ -17,7 +17,7 @@ public class FreightVehicleTypeFactory {
     public static VehicleType createDefaultVan(String idKey){
         VehicleType van = CarrierVehicleType.Builder.newInstance(Id.create(idKey, VehicleType.class))
                 .setCapacity(3000)  // in kg
-                .setFixCost(1168.0)
+                .setFixCost(0)
                 .setCostPerDistanceUnit(4.22E-3)
                 .setCostPerTimeUnit(0.089)
                 .build();
@@ -29,7 +29,7 @@ public class FreightVehicleTypeFactory {
 //        van.setNetworkMode("car");
         van.setMaximumVelocity(30/3.6); // 50 km/h converted to m/s, this is the maximum velocity of the vehicle
         van.setFlowEfficiencyFactor(1.0); // This is the flow efficiency factor of the vehicle
-        van.setPcuEquivalents(1.2); // This is the passenger car unit equivalent of the vehicle
+        van.setPcuEquivalents(1); // This is the passenger car unit equivalent of the vehicle
 
         EngineInformation engineInformation = van.getEngineInformation();
         engineInformation.getAttributes().putAttribute("HbefaVehicleCategory", "LIGHT_COMMERCIAL_VEHICLE");
@@ -43,7 +43,7 @@ public class FreightVehicleTypeFactory {
     public static VehicleType createDefaultCargoBike(String idKey){
         VehicleType cargoBike = CarrierVehicleType.Builder.newInstance(Id.create(idKey, VehicleType.class))
                 .setCapacity(125)  // in kg
-                .setFixCost(300.0)
+                .setFixCost(0)
                 .setCostPerDistanceUnit(3E-3)
                 .setCostPerTimeUnit(0.058)
                 .build();
@@ -54,7 +54,7 @@ public class FreightVehicleTypeFactory {
 //        cargoBike.setNetworkMode("bike");
         cargoBike.setMaximumVelocity(30/3.6); // 25 km/h converted to m/s, this is the maximum velocity of the vehicle
         cargoBike.setFlowEfficiencyFactor(1.0); // This is the flow efficiency factor of the vehicle
-        cargoBike.setPcuEquivalents(0.7); // This is the passenger car unit equivalent of the vehicle
+        cargoBike.setPcuEquivalents(1); // This is the passenger car unit equivalent of the vehicle
 
         EngineInformation engineInformation = cargoBike.getEngineInformation();
         engineInformation.getAttributes().putAttribute("HbefaVehicleCategory", "MOTORCYCLE");

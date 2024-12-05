@@ -22,9 +22,9 @@ class MultiModalNetworkOptimizerTest {
         Scenario scenario = ScenarioUtils.createScenario(config);
         // Read the MATSim network
         MatsimNetworkReader matsimNetworkReader = new MatsimNetworkReader(scenario.getNetwork());
-        matsimNetworkReader.readFile("../../data/intermediate/test/GemeenteLeuvenTestV2.xml.gz");
+        matsimNetworkReader.readFile("../../data/clean/network/GemeenteLeuvenMultimodalNetwork.xml.gz");
         MultiModalNetworkOptimizer networkOptimizer = new MultiModalNetworkOptimizer.Builder().setNetwork(scenario.getNetwork()).build();
         Assertions.assertDoesNotThrow(networkOptimizer::optimize);
-        NetworkUtils.writeNetwork(networkOptimizer.getNetwork(), "../../data/intermediate/test/GemeenteLeuvenOptimizedV2.xml.gz");
+        NetworkUtils.writeNetwork(networkOptimizer.getNetwork(), "../../data/clean/network/GemeenteLeuvenMultimodalNetworkOptimized.xml.gz");
     }
 }

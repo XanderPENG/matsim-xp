@@ -80,7 +80,10 @@ final class CarrierPlanGeneration {
             for (VehicleType vehicleType : vehicleTypes) {
                 for (Id<Link> depotLink : this.depotLinks.get(i)) {
                     CarrierVehicle cv = CarrierVehicle.Builder.newInstance(Id.createVehicleId("carrier"+i+"_"+vehicleType.getId()+"_"+vehicleIdx),
-                            depotLink, vehicleType).build();
+                            depotLink, vehicleType)
+//                            .setEarliestStart(5.5 * 3600)
+//                            .setLatestEnd(21 * 3600)
+                            .build();
                     CarriersUtils.addCarrierVehicle(carrier, cv);
                     vehicleIdx++;
                 }

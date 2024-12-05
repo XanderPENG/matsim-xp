@@ -54,7 +54,7 @@ class MultimodalNetworkCleanerTest {
         Scenario scenario = ScenarioUtils.createScenario(config);
         // Read the MATSim network
         MatsimNetworkReader matsimNetworkReader = new MatsimNetworkReader(scenario.getNetwork());
-        matsimNetworkReader.readFile("../../data/intermediate/test/GemeenteLeuvenOptimizedV2.xml.gz");
+        matsimNetworkReader.readFile("../../data/clean/network/GemeenteLeuvenMultimodalNetworkOptimized.xml.gz");
         // Network Stats of the bike subnetwork
         Network carNetwork = deriveSubNetwork(scenario.getNetwork(), TransMode.Mode.CAR);
         LOG.info("Network Stats (pre-cleaning): ");
@@ -67,7 +67,7 @@ class MultimodalNetworkCleanerTest {
         carNetwork = deriveSubNetwork(scenario.getNetwork(), TransMode.Mode.BIKE);
         networkTopoCalculator.run(carNetwork);
         //write the cleaned network
-        NetworkUtils.writeNetwork(scenario.getNetwork(), "../../data/intermediate/test/GemeenteLeuvenCleanedAllModesV1.xml.gz");
+        NetworkUtils.writeNetwork(scenario.getNetwork(), "../../data/clean/network/GemeenteLeuvenMultimodalNetworkCleaned.xml.gz");
 
     }
 

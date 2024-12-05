@@ -24,7 +24,7 @@ class RunCreateConfig {
         // create a customized config (just for example)
         NetworkConverterConfigGroup config = new NetworkConverterConfigGroup("osm", "EPSG:4326", Utils.outputCrs, Utils.FILE_TEST_NETWORK_PBF,
                 true, true,
-                Utils.FILE_TEST_NETWORK_XML,
+                "../../data/clean/network/GemeenteLeuvenMultimodalNetwork.xml.gz",
                 "NA", "NA",
                 true,  Map.of("oneway", "yes"));
 
@@ -60,7 +60,7 @@ class RunCreateConfig {
         config.addParameterSet(linkAttrParamSet);
 
         // write the config file
-        config.writeConfigFile(Utils.FILE_TEST_CONFIG);
+        config.writeConfigFile("../../data/clean/network/GemeenteLeuvenMultimodalNetworkConverterConfig.xml");
     }
 
 

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE config SYSTEM "http://www.matsim.org/files/dtd/config_v2.dtd">
+<config>
+	<module name="multimodalNetworkConverter" >
+		<!-- Indicate the input network file type, which should be one of the following: osm, shp, geojson. -->
+		<param name="FILE_TYPE" value="osm" />
+		<param name="INPUT_CRS" value="EPSG:4326" />
+		<param name="INPUT_NETWORK_FILE" value="../../data/raw/test/GemeenteLeuvenOnly.pbf" />
+		<!-- If ture, the link will be split into multiple links if it is connected to multiple nodes, so as to keep the real shape of the link. -->
+		<param name="KEEP_DETAILED_LINK" value="true" />
+		<!-- If true, the link will be kept although it is not aligned with any pre-defined @TransMode. Otherwise, the link will be removed.
+			 Note: The key-value pair for the undefined link should be specified in the `other` ModeParamSet. -->
+		<param name="KEEP_UNDEFINED_LINK" value="true" />
+		<!-- If true, the network will be processed to be one-way based on the `ONEWAY_KEY_VALUE_PAIR`,
+			 which means that the traffic can only flow in specified direction. Otherwise, the traffic can flow in both directions of the whole network. -->
+		<param name="ONEWAY" value="true" />
+		<param name="ONEWAY_KEY_VALUE_PAIR" value="oneway:yes" />
+		<param name="OUTPUT_CRS" value="EPSG:31370" />
+		<param name="OUTPUT_GEOJSON_FILE" value="NA" />
+		<param name="OUTPUT_NETWORK_FILE" value="../../data/clean/network/GemeenteLeuvenMultimodalNetwork.xml.gz" />
+		<!-- Fill in the file path if you want to output the network in the shp/geojson format. -->
+		<param name="OUTPUT_SHP_FILE" value="NA" />
+		<parameterset type="connectedNetworkParamSet" >
+			<!-- The method to process the network, which should be one of the following:
+				1. `reduce`: remove the isolated nodes/links, and only keep the largest connected subnetwork;
+				2. `insert`: connect all the isolated nodes/links to the nearest node/link;
+				3. `adapt_mode`: adapt and add TransMode for some links to make the (sub)network strongly connected. (e.g., add a bike mode for the car-tagged links) -->
+			<param name="METHOD" value="reduce" />
+			<param name="MODE" value="bike, car, other, walk, pt," />
+			<!-- If true, the network will be processed to be strongly connected, which means that each node/link can be reached from any other node/link. -->
+			<param name="STRONGLY_CONNECTED" value="false" />
+		</parameterset>
+		<parameterset type="linkAttrParamSet" >
+			<param name="CAPACITY_FIELD" value="capacity" />
+			<!-- The unit of the input parameters; which could be (m or km; m/s or km/h); However, It is highly recommended to convert them to the meter-based units (i.e., m, m/s.) before running the converter. -->
+			<param name="INPUT_PARAM_UNIT" value="MAX_SPEED_FIELD:km/h,WIDTH_FIELD:m,LENGTH_FIELD:m" />
+			<param name="LANES_FIELD" value="lanes" />
+			<param name="LANE_WIDTH_FIELD" value="width" />
+			<param name="LENGTH_FIELD" value="length" />
+			<param name="MAX_SPEED_FIELD" value="max_speed" />
+			<!-- The reserved fields in the link attributes, the value of these fields will be reserved as link attributes in the output network. -->
+			<param name="RESERVED_LINK_FIELDS" value="lit, surface, highway" />
+		</parameterset>
+		<parameterset type="modeParamSet" >
+			<!-- The emission factor of the mode. -->
+			<param name="EMISSION_FACTOR" value="0.0" />
+			<!-- The max speed of the mode-related link (unit: keep consistent with the @INPUT_PARAM_UNIT in @linkAttrParamSet -->
+			<param name="FREE_SPEED" value="50.0" />
+			<param name="KEY_VALUE_MAPPING" value="{highway=track}; {ramp=yes}; {bicycle=private}; {cyclestreet=yes}; {ramp:bicycle=yes}; {bicycle=destination}; {highway=path}; {bicycle=designated}; {cycleway:both=lane,highway=*}; {cycleway=crossing}; {segregated=*}; {cycleway=shared_lane}; {cycleway=lane,highway=*}; {cycleway=shared_busway}; {highway=unclassified}; {bicycle=customers}; {bicycle=yes}; {highway=cycleway}; {highway=*,cycleway:left=lane}; {highway=footway}; {highway=pedestrian}; {cycleway:left=*}; {cycleway:both=*}; {highway=service}; {highway=residential}; {cycleway:right=lane,highway=*}; {highway=tertiary}; {highway=living_street}; {bicycle=optional_sidepath}; {cycleway:right=track,highway=*}; {bicycle=permissive}; {cycleway:right=*}; {cycleway=shared};" />
+			<param name="LANES" value="1.0" />
+			<!-- The default single-lane width (unit: meter) -->
+			<param name="LANE_WIDTH" value="2.0" />
+			<!-- The name of the mode, which should be one of the following: 
+			[car, pt, train, bike, walk, ship, other.]. see @TransMode.Mode for more details. -->
+			<param name="MODE_NAME" value="bike" />
+			<param name="ONEWAY_KEY_VALUE_MAPPING" value="{oneway:bicycle=yes}; {oneway=yes,highway=cycleway};" />
+		</parameterset>
+		<parameterset type="modeParamSet" >
+			<param name="EMISSION_FACTOR" value="0.242" />
+			<param name="FREE_SPEED" value="100.0" />
+			<param name="KEY_VALUE_MAPPING" value="{highway=track}; {highway=trunk_link}; {highway=primary}; {highway=road}; {highway=service}; {highway=secondary}; {highway=residential}; {highway=trunk}; {highway=motorway_link}; {highway=motorway}; {highway=tertiary}; {highway=living_street}; {highway=primary_link}; {highway=unclassified}; {highway=tertiary_link};" />
+			<param name="LANES" value="2.0" />
+			<param name="LANE_WIDTH" value="3.5" />
+			<param name="MODE_NAME" value="car" />
+			<param name="ONEWAY_KEY_VALUE_MAPPING" value="{oneway=yes};" />
+		</parameterset>
+		<parameterset type="modeParamSet" >
+			<param name="EMISSION_FACTOR" value="0.142" />
+			<param name="FREE_SPEED" value="60.0" />
+			<param name="KEY_VALUE_MAPPING" value="{route=subway}; {route=bus}; {*=busway}; {route=light_rail}; {route=train}; {route=trolleybus}; {route=tram};" />
+			<param name="LANES" value="1.0" />
+			<param name="LANE_WIDTH" value="3.5" />
+			<param name="MODE_NAME" value="pt" />
+			<param name="ONEWAY_KEY_VALUE_MAPPING" value="{oneway=yes};" />
+		</parameterset>
+		<parameterset type="modeParamSet" >
+			<param name="EMISSION_FACTOR" value="0.0" />
+			<param name="FREE_SPEED" value="5.0" />
+			<param name="KEY_VALUE_MAPPING" value="{highway=track}; {highway=steps}; {highway=footway}; {highway=pedestrian}; {highway=living_street}; {highway=service}; {highway=path};" />
+			<param name="LANES" value="1.0" />
+			<param name="LANE_WIDTH" value="1.0" />
+			<param name="MODE_NAME" value="walk" />
+			<param name="ONEWAY_KEY_VALUE_MAPPING" value="{oneway:foot=yes}; {oneway=yes,highway=path};" />
+		</parameterset>
+		<parameterset type="modeParamSet" >
+			<param name="EMISSION_FACTOR" value="0.142" />
+			<param name="FREE_SPEED" value="20.0" />
+			<param name="KEY_VALUE_MAPPING" value="{highway=*};" />
+			<param name="LANES" value="1.0" />
+			<param name="LANE_WIDTH" value="3.5" />
+			<param name="MODE_NAME" value="other" />
+			<param name="ONEWAY_KEY_VALUE_MAPPING" value="{oneway=yes};" />
+		</parameterset>
+	</module>
+
+</config>
