@@ -53,12 +53,12 @@ class RunAddHbefaRoadType2Network {
         RunAddHbefaRoadType2Network addHbefaRoadType2Network = new RunAddHbefaRoadType2Network();
         addHbefaRoadType2Network.run("../../data/clean/network/GemeenteLeuvenMultimodalNetworkOptimized.xml.gz");
 
-//        Network carNetworkWithHbefaRoadType = deriveSubNetwork(addHbefaRoadType2Network.network, TransportMode.car);
-//        new NetworkWriter(carNetworkWithHbefaRoadType).write("../../data/intermediate/test/freightEmissions/carGemeenteLeuvenWithHbefaType.xml.gz");
+//        Network carNetworkWithHbefaRoadType = deriveSubNetwork(addHbefaRoadType2Network.network, TransportMode.bike);
+//        new NetworkWriter(carNetworkWithHbefaRoadType).write("../../data/intermediate/test/freightEmissions/bikeGemeenteLeuvenWithHbefaType.xml.gz");
 
-//        addHbefaRoadType2Network.addMode(TransportMode.car, TransportMode.bike);  // add car mode to bike mode links
-//        addHbefaRoadType2Network.outputNetwork("../../data/intermediate/test/freightEmissions/diffusedGemeenteLeuvenWithHbefaType.xml.gz");
+        addHbefaRoadType2Network.addMode(TransportMode.car, TransportMode.bike);  // add car mode to bike mode links
+        addHbefaRoadType2Network.outputNetwork("../../data/intermediate/test/freightEmissions/diffusedGemeenteLeuvenWithHbefaType.xml.gz");
 
-        addHbefaRoadType2Network.outputNetwork("../../data/intermediate/test/freightEmissions/GemeenteLeuvenWithHbefaType.xml.gz");
+//        addHbefaRoadType2Network.outputNetwork("../../data/intermediate/test/freightEmissions/GemeenteLeuvenWithHbefaType.xml.gz");
     }
 }

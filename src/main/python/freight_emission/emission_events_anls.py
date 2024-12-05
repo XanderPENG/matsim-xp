@@ -36,6 +36,7 @@ def read_freight_emission_data(input_file_dir):
         except:
             pass
     logging.info("Data reading completed.")
+    events_df = filter_cold_emission_events(events_df)
     return events_df
 
 def aggregate_pollutant_by_link(events_df, pollutant: str):
@@ -71,4 +72,31 @@ def get_summary_statistics(pollutants_by_link_dict) -> pd.DataFrame:
     return summary_statistics_df
 
 
+# Some utils for the analysis
+def filter_incorrect_cold_emission_events(cold_emission_events_df):
+    incorrect_records_idx = []
+    previous_time = 0
+    for idx, row in cold_emission_events_df.iterrows():
+        if idx == 0:
+            previous_time = row['time']
+            continue
+        else:
+            current_time = row['time']
+            if current_time-previous_time <= 5*60:
+                incorrect_records_idx.append(idx)
+            else:
+                pass
+            previous_time = current_time
+    return cold_emission_events_df.query('index not in @incorrect_records_idx')
 
+def filter_cold_emission_events(events_df):
+    origin_cold_events = events_df.query('type == "coldEmissionEvent"')
+    origin_warm_events = events_df.query('type == "warmEmissionEvent"')
+    vehicle_list = origin_cold_events['vehicleId'].unique().tolist()
+    filtered_cold_events = []
+    for vehicle in vehicle_list:
+        sub_df = origin_cold_events.query('vehicleId == @vehicle')
+        filtered_sub_df = filter_incorrect_cold_emission_events(sub_df)
+        filtered_cold_events.append(filtered_sub_df)
+    filtered_cold_events.append(origin_warm_events)
+    return pd.concat(filtered_cold_events)

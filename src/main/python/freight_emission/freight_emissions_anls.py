@@ -29,8 +29,9 @@ def write_events_stats(scenario_kw: str, iter_idx: int, network_path = 'Gemeente
 
     # Travel VKT
     travel_events_df = travel_anls.read_travel_events(input_file_dir)
-    vkt_dict = travel_anls.derive_all_vkt_as_dict(travel_events_df, network)
+    vkt_dict, vtt_dict = travel_anls.derive_all_vkt_as_dict(travel_events_df, network)
     vkt_df = travel_anls.write_vkt_to_csv(vkt_dict, output_dir)
+    vtt_df = travel_anls.write_vtt_to_csv(vtt_dict, output_dir)
 
     # Tour durations
     tour_events_df = tour_anls.read_tour_events(input_file_dir)
@@ -44,6 +45,7 @@ def write_events_stats(scenario_kw: str, iter_idx: int, network_path = 'Gemeente
 
     # Aggregate vkt, durations and shipment dfs
     all_stats_df = vkt_df.merge(vehicle_duration_df, on='vehicle', how='left')
+    all_stats_df = all_stats_df.merge(vtt_df, on='vehicle', how='left')
     all_stats_df = all_stats_df.merge(vehicle_shipment_df, on='vehicle', how='left')
     all_stats_df.to_csv(output_dir+'all_stats.csv.gz',
                         index=False,
@@ -68,7 +70,7 @@ def load_single_scenario_stats(scenario_kw: str, iter_list: list):
         total_vkt = all_stats_df['vkt'].sum() / 1000  # km
         vkt_list.append(total_vkt)
         # Calculate travel time per ton
-        all_stats_df['travel_time_per_ton'] = (all_stats_df['duration']/60)/(all_stats_df['capacityDemand']/1000)  # min/ton
+        all_stats_df['travel_time_per_ton'] = (all_stats_df['vtt']/60)/(all_stats_df['capacityDemand']/1000)  # min/ton
         for _ in all_stats_df['travel_time_per_ton'].tolist():
             travel_time_per_ton_list.append(_)  
         # Calculate VKT per ton
