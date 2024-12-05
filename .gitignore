@@ -7,9 +7,11 @@
 /dataSources/
 /dataSources.local.xml
 
+**/iter*/
+**/*pycache*/
 *.iml
 .idea/
-
+*.7z
 
 target
 .DS_Store

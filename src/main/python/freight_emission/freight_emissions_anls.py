@@ -58,7 +58,7 @@ def write_all_events_stats(scenario_kw_list: list, iter_idx_list: list):
             logging.info(f'Processing {scenario_kw} iter {iter_idx}')
             write_events_stats(scenario_kw, iter_idx)
 
-def load_single_scenario_stats(scenario_kw: str, iter_list: list):
+def load_single_scenario_stats(scenario_kw: str, iter_list: list, is_aggregate: bool = True):
     scenario = utils.set_scenario(scenario_kw)
     vkt_list = []
     travel_time_per_ton_list = []
@@ -69,6 +69,14 @@ def load_single_scenario_stats(scenario_kw: str, iter_list: list):
         # Calculate total VKT
         total_vkt = all_stats_df['vkt'].sum() / 1000  # km
         vkt_list.append(total_vkt)
+        if is_aggregate:
+            total_travel_time = all_stats_df['vtt'].sum() / 60  # min
+            total_capacity = all_stats_df['capacityDemand'].sum() / 1000  # ton
+            total_travel_time_per_ton = total_travel_time / total_capacity  # min/ton
+            travel_time_per_ton_list.append(total_travel_time_per_ton)
+            total_vkt_per_ton = total_vkt / total_capacity  # km/ton
+            vkt_per_ton_list.append(total_vkt_per_ton)
+            continue
         # Calculate travel time per ton
         all_stats_df['travel_time_per_ton'] = (all_stats_df['vtt']/60)/(all_stats_df['capacityDemand']/1000)  # min/ton
         for _ in all_stats_df['travel_time_per_ton'].tolist():
