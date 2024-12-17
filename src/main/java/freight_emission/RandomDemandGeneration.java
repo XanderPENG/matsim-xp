@@ -108,8 +108,8 @@ class RandomDemandGeneration {
 //        candidateTimeWindows.add(TimeWindow.newInstance(8 * 3600, 10 * 3600));
 //        candidateTimeWindows.add(TimeWindow.newInstance(12 * 3600, 14 * 3600));
         // night delivery - add 2 close time windows to increase the probability of selecting this time window
-        candidateTimeWindows.add(TimeWindow.newInstance(18 * 3600, 20 * 3600));
-        candidateTimeWindows.add(TimeWindow.newInstance(18.1 * 3600, 20.1 * 3600));
+//        candidateTimeWindows.add(TimeWindow.newInstance(18 * 3600, 20 * 3600));
+//        candidateTimeWindows.add(TimeWindow.newInstance(18.1 * 3600, 20.1 * 3600));
 
         // Create shipment jobs
         for (int i = 0; i < numDemandPoints; i++) {
@@ -120,7 +120,7 @@ class RandomDemandGeneration {
             Link randomDepotLink = (Link) depotLinks.toArray()[randomDepotIndex];
             int randomTimeWindowIndex = (int) (Math.random() * candidateTimeWindows.size());
             CarrierShipment shipment = new CarrierShipment.Builder(shipmentId, randomDepotLink.getId(), selectedLinks.get(i).getId(), goodsWeights.get(i))
-                    .setDeliveryTimeWindow(candidateTimeWindows.get(randomTimeWindowIndex))
+//                    .setDeliveryTimeWindow(candidateTimeWindows.get(randomTimeWindowIndex))
                     .setDeliveryServiceTime(1.5 * 60)
                     .setPickupTimeWindow(TimeWindow.newInstance(candidateTimeWindows.get(randomTimeWindowIndex).getStart() - 60 * 60,
                             candidateTimeWindows.get(randomTimeWindowIndex).getStart() - 60 * 10))

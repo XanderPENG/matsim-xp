@@ -3,8 +3,6 @@ package freight_emission;
 import org.matsim.contrib.emissions.utils.EmissionsConfigGroup;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
-import org.matsim.core.config.groups.ReplanningConfigGroup;
-import org.matsim.core.config.groups.ScoringConfigGroup;
 import org.matsim.core.controler.OutputDirectoryHierarchy;
 import org.matsim.freight.carriers.FreightCarriersConfigGroup;
 

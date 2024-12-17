@@ -45,7 +45,7 @@ import java.util.Set;
 public class RunFreightEmissionScenarioV2 {
     private final static Logger logger = LogManager.getLogger(RunFreightEmissionScenarioV2.class);
 
-    private static final int NUM_ITERATIONS = 30;
+    private static final int NUM_ITERATIONS = 35;
     private static final int NUM_CARRIERS = 1;
     private static final int NUM_JSPRIT_ITERATIONS = 100;
     private static final String inputNetworkPath = "../../data/intermediate/test/freightEmissions/GemeenteLeuvenWithHbefaType.xml.gz";
@@ -59,7 +59,7 @@ public class RunFreightEmissionScenarioV2 {
         new MatsimNetworkReader(scenario.getNetwork()).readFile(inputNetworkPath);
         Network network = scenario.getNetwork();
 
-        for (int i = 0; i < NUM_ITERATIONS; i++) {
+        for (int i = 30; i < NUM_ITERATIONS; i++) {
             logger.info("Generating the carrier plan for iteration {}", i);
             Map<Integer, Set<CarrierShipment>> carrierShipments = new HashMap<>();
             Map<Integer, Set<Id<Link>>> depotLinks = new HashMap<>();

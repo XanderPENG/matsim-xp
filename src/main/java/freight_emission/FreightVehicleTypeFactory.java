@@ -2,11 +2,8 @@ package freight_emission;
 
 import org.matsim.api.core.v01.Id;
 import org.matsim.freight.carriers.CarrierVehicleType;
-import org.matsim.freight.carriers.CarrierVehicleTypeWriter;
-import org.matsim.freight.carriers.CarriersUtils;
 import org.matsim.vehicles.EngineInformation;
 import org.matsim.vehicles.VehicleType;
-import org.matsim.vehicles.VehicleUtils;
 
 /**
  * Factory class to create vehicle types for freight-emission vehicles (i.e., vans and cargo bikes).
@@ -52,7 +49,7 @@ public class FreightVehicleTypeFactory {
         cargoBike.setWidth(1.0);
 
 //        cargoBike.setNetworkMode("bike");
-        cargoBike.setMaximumVelocity(30/3.6); // 25 km/h converted to m/s, this is the maximum velocity of the vehicle
+        cargoBike.setMaximumVelocity(25/3.6); // 25 km/h converted to m/s, this is the maximum velocity of the vehicle
         cargoBike.setFlowEfficiencyFactor(1.0); // This is the flow efficiency factor of the vehicle
         cargoBike.setPcuEquivalents(1); // This is the passenger car unit equivalent of the vehicle
 
