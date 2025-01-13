@@ -34,7 +34,92 @@ class NetworkConverterConfigGroupTest {
     @Test
     void testCreateDefaultConfig() {
         NetworkConverterConfigGroup config = NetworkConverterConfigGroup.createDefaultConfig();
-        assertNotNull(config);
+        // Check if the default values for all parameters are set
+        Map<String, String> params = config.getParams();
+        for (Map.Entry<String, String> entry : params.entrySet()){
+            assertNotNull(entry.getValue());
+        }
 
+        // Check if all parameter sets are correctly added
+        //// LinkedAttrParamSet
+        config.getParameterSets(LinkAttrParamSet.GROUP_NAME).forEach(group-> {
+            LinkAttrParamSet linkAttrParamSet = (LinkAttrParamSet) group;
+            // Check if the default values for all parameters are set
+            Map<String, String> linkAttrParams = linkAttrParamSet.getParams();
+            for (Map.Entry<String, String> entry : linkAttrParams.entrySet()){
+                assertNotNull(entry.getValue());
+            }
+        });
+
+        //// ModeParamSet
+        config.getParameterSets(ModeParamSet.GROUP_NAME).forEach(group-> {
+            ModeParamSet modeParamSet = (ModeParamSet) group;
+            // Check if the default values for all parameters are set
+            Map<String, String> modeParams = modeParamSet.getParams();
+            for (Map.Entry<String, String> entry : modeParams.entrySet()){
+                assertNotNull(entry.getValue());
+            }
+        });
+
+        //// ConnectedNetworkParamSet
+        config.getParameterSets(ConnectedNetworkParamSet.GROUP_NAME).forEach(group-> {
+            ConnectedNetworkParamSet connectedNetworkParamSet = (ConnectedNetworkParamSet) group;
+            // Check if the default values for all parameters are set
+            Map<String, String> connectedNetworkParams = connectedNetworkParamSet.getParams();
+            for (Map.Entry<String, String> entry : connectedNetworkParams.entrySet()){
+                assertNotNull(entry.getValue());
+            }
+        });
+    }
+
+    @Test
+    void testCreateCustomizedConfig(){
+
+    }
+
+    @Test
+    void testWriteAndReadConfig(){
+        // Test if the config file can be written
+        NetworkConverterConfigGroup config4Written = NetworkConverterConfigGroup.createDefaultConfig();
+        assertDoesNotThrow(() -> config4Written.writeConfigFile("testDefaultConfig.xml"));
+
+        // Test if the config file can be read
+        NetworkConverterConfigGroup config4Reading = NetworkConverterConfigGroup.loadConfigFile("testDefaultConfig.xml");
+
+        // Check if the parameters are correctly read
+        Map<String, String> params = config4Reading.getParams();
+        for (Map.Entry<String, String> entry : params.entrySet()){
+            assertNotNull(entry.getValue());
+        }
+        // Check if the parameter sets are correctly read
+        //// LinkedAttrParamSet
+        config4Reading.getParameterSets(LinkAttrParamSet.GROUP_NAME).forEach(group-> {
+            LinkAttrParamSet linkAttrParamSet = (LinkAttrParamSet) group;
+            // Check if the default values for all parameters are set
+            Map<String, String> linkAttrParams = linkAttrParamSet.getParams();
+            for (Map.Entry<String, String> entry : linkAttrParams.entrySet()){
+                assertNotNull(entry.getValue());
+            }
+        });
+
+        //// ModeParamSet
+        config4Reading.getParameterSets(ModeParamSet.GROUP_NAME).forEach(group-> {
+            ModeParamSet modeParamSet = (ModeParamSet) group;
+            // Check if the default values for all parameters are set
+            Map<String, String> modeParams = modeParamSet.getParams();
+            for (Map.Entry<String, String> entry : modeParams.entrySet()){
+                assertNotNull(entry.getValue());
+            }
+        });
+
+        //// ConnectedNetworkParamSet
+        config4Reading.getParameterSets(ConnectedNetworkParamSet.GROUP_NAME).forEach(group-> {
+            ConnectedNetworkParamSet connectedNetworkParamSet = (ConnectedNetworkParamSet) group;
+            // Check if the default values for all parameters are set
+            Map<String, String> connectedNetworkParams = connectedNetworkParamSet.getParams();
+            for (Map.Entry<String, String> entry : connectedNetworkParams.entrySet()){
+                assertNotNull(entry.getValue());
+            }
+        });
     }
 }
