@@ -4,7 +4,6 @@ import network.config.ConnectedNetworkParamSet;
 import network.config.LinkAttrParamSet;
 import network.config.ModeParamSet;
 import network.config.NetworkConverterConfigGroup;
-import network.core.ModeKeyValueMapping;
 import network.core.TransMode;
 import network.tools.TransModeFactory;
 import network.tools.Utils;

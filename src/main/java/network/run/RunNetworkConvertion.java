@@ -2,7 +2,6 @@ package network.run;
 
 import network.config.NetworkConverterConfigGroup;
 import network.core.NetworkConverter;
-import network.tools.Utils;
 import org.matsim.api.core.v01.network.Network;
 import org.matsim.core.network.io.NetworkWriter;
 

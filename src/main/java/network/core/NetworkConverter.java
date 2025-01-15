@@ -1,13 +1,13 @@
 package network.core;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import network.config.NetworkConverterConfigGroup;
 import network.readers.GeoJsonReader;
 import network.readers.OsmReader;
 import network.readers.Reader;
 import network.readers.ShpReader;
 import network.tools.Utils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.network.Network;

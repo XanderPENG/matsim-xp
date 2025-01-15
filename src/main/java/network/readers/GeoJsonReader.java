@@ -1,12 +1,13 @@
 package network.readers;
 
 import network.config.NetworkConverterConfigGroup;
+import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.opengis.feature.simple.SimpleFeature;
-import org.geotools.data.DataStore;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;

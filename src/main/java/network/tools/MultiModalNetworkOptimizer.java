@@ -1,5 +1,6 @@
 package network.tools;
 
+import network.core.TransMode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.matsim.api.core.v01.Coord;
@@ -8,18 +9,17 @@ import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.network.Network;
 import org.matsim.api.core.v01.network.Node;
 import org.matsim.core.network.NetworkUtils;
+import org.matsim.core.network.algorithms.MultimodalNetworkCleaner;
 import org.matsim.core.network.algorithms.NetworkSimplifier;
 import org.matsim.core.utils.collections.Tuple;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
+import java.util.stream.Collectors;
 
 /**
- * This class is used to optimize the MATSim's multimodal network (based on {@link NetworkSimplifier}), particularly considering the following aspects:
+ * This class is used to optimize the MATSim's multimodal network, particularly considering the following aspects:
  * 1. Split the links whose length is longer than a certain threshold (for the sake of drt mode)
  * 2. Merge the links whose length is shorter than a certain threshold (to ensure no link is too short to accommodate even one vehicle)
  * 3. Ensure the consistency of the allowed modes of the links after splitting/merging.
@@ -32,6 +32,7 @@ public class MultiModalNetworkOptimizer {
     private final NetworkSimplifier networkSimplifier;
     private final BiPredicate<Link, Link> customizedLinkMergeablePredicate;
     private final BiConsumer<Tuple<Link, Link>, Link> customizedLinkAttrConsumer;
+    private final MultimodalNetworkCleaner cleaner;
 
     private final Logger logger = LogManager.getLogger(MultiModalNetworkOptimizer.class);
 
@@ -43,6 +44,7 @@ public class MultiModalNetworkOptimizer {
         this.networkSimplifier = networkSimplifier;
         this.customizedLinkMergeablePredicate = customizedLinkMergeablePredicate;
         this.customizedLinkAttrConsumer = customizedLinkAttrConsumer;
+        this.cleaner = new MultimodalNetworkCleaner(this.network);
     }
 
     // Split a long link into multiple links
@@ -105,6 +107,23 @@ public class MultiModalNetworkOptimizer {
         return coords;
     }
 
+    public void clean(TransMode.Mode mode, Set<TransMode.Mode> retainModes){
+        final MultimodalNetworkCleaner cleaner = new MultimodalNetworkCleaner(this.network);
+        cleaner.run(Set.of(mode.name), retainModes.stream().map(Enum::name).collect(Collectors.toSet()));
+    }
+
+    public void clean(Set<TransMode.Mode> allModes){
+        final MultimodalNetworkCleaner cleaner = new MultimodalNetworkCleaner(this.network);
+        Set<String> allModesString = allModes.stream().map(mode-> mode.name).collect(Collectors.toSet());
+        Iterator<String> iterator = allModesString.iterator();
+        while (iterator.hasNext()) {
+            String mode = iterator.next();
+            iterator.remove();
+            cleaner.run(Set.of(mode));
+//            cleaner.run(Set.of(mode), allModesString);
+        }
+    }
+
     public void optimize(){
         logger.info("Optimizing the multimodal network...");
         // Get the links whose length is longer than the threshold
@@ -118,6 +137,11 @@ public class MultiModalNetworkOptimizer {
         linksToBeSplit.forEach(this::splitLink);
         // Merge the short links using NetworkSimplifier
         networkSimplifier.run(this.network, this.customizedLinkMergeablePredicate, this.customizedLinkAttrConsumer);
+    }
+
+    public void optimize(Set<TransMode.Mode> modes){
+        optimize();
+        clean(modes);
     }
 
     public Network getNetwork() {
