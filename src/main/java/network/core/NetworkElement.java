@@ -144,12 +144,6 @@ public final class NetworkElement {
             this.composedNodes.put(node.getId(), node);
         }
 
-        public void addComposedNodes(Set<Node> nodes){
-            for(Node node : nodes){
-                this.composedNodes.put(node.getId(), node);
-            }
-        }
-
         public void addComposedNodes(LinkedHashMap<String, Node> nodes){
             this.composedNodes.putAll(nodes);
         }
