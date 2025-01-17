@@ -47,7 +47,7 @@ public final class GeoJsonReader extends Reader {
     }
 
     // Method to get each feature in the GeoJSON
-    public void processFeatureCollection() {
+    private void processFeatureCollection() {
         try (SimpleFeatureIterator iterator = featureCollection.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();

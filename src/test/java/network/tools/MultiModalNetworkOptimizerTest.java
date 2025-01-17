@@ -16,14 +16,6 @@ class MultiModalNetworkOptimizerTest {
 
     @Test
     void optimize() {
-//        LOG.info("Testing network optimizer");
-//        Config config = ConfigUtils.createConfig();
-//        Scenario scenario = ScenarioUtils.createScenario(config);
-//        // Read the MATSim network
-//        MatsimNetworkReader matsimNetworkReader = new MatsimNetworkReader(scenario.getNetwork());
-//        matsimNetworkReader.readFile("../../data/clean/network/GemeenteLeuvenMultimodalNetwork.xml.gz");
-//        MultiModalNetworkOptimizer networkOptimizer = new MultiModalNetworkOptimizer.Builder().setNetwork(scenario.getNetwork()).build();
-//        Assertions.assertDoesNotThrow(networkOptimizer::optimize);
-//        NetworkUtils.writeNetwork(networkOptimizer.getNetwork(), "../../data/clean/network/GemeenteLeuvenMultimodalNetworkOptimized.xml.gz");
+
     }
 }
