@@ -5,7 +5,7 @@
 		<!-- Indicate the input network file type, which should be one of the following: osm, shp, geojson. -->
 		<param name="FILE_TYPE" value="osm" />
 		<param name="INPUT_CRS" value="EPSG:4326" />
-		<param name="INPUT_NETWORK_FILE" value="../../data/raw/test/GemeenteLeuvenOnly.pbf" />
+		<param name="INPUT_NETWORK_FILE" value="../../data/raw/GemeenteLeuvenOnly.osm.pbf" />
 		<!-- If ture, the link will be split into multiple links if it is connected to multiple nodes, so as to keep the real shape of the link. -->
 		<param name="KEEP_DETAILED_LINK" value="true" />
 		<!-- If true, the link will be kept although it is not aligned with any pre-defined @TransMode. Otherwise, the link will be removed.

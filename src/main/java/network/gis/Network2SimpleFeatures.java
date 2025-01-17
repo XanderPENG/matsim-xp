@@ -62,7 +62,7 @@ class Network2SimpleFeatures {
         typeBuilder.add("freespeed", Double.class);     // Free speed
         typeBuilder.add("length", Double.class);        // Link length
         typeBuilder.add("lanes", Double.class);         // Number of lanes
-        typeBuilder.add("allowedModes", Set.class);  // Allowed modes
+        typeBuilder.add("modes", Set.class);  // Allowed modes
         // Add the link attributes fields
         for (String attrKey : attrKeys) {
             typeBuilder.add(attrKey, String.class);
@@ -84,6 +84,9 @@ class Network2SimpleFeatures {
         };
         LineString lineString = geometryFactory.createLineString(coordinates);
 
+        // Convert allowed modes set to a comma-separated string
+        String allowedModes = String.join(", ", link.getAllowedModes());
+
         // Set geometry and attributes
         featureBuilder.add(lineString);                          // Geometry (LineString)
         featureBuilder.add(link.getId().toString());             // Link ID
@@ -91,7 +94,7 @@ class Network2SimpleFeatures {
         featureBuilder.add(link.getFreespeed());                 // Free speed
         featureBuilder.add(link.getLength());                    // Length
         featureBuilder.add(link.getNumberOfLanes());             // Number of lanes
-        featureBuilder.add(link.getAllowedModes());              // Allowed modes
+        featureBuilder.add(allowedModes);              // Allowed modes
         // Add the link attributes fields
         for (String attrKey : link.getAttributes().getAsMap().keySet()) {
             featureBuilder.add(link.getAttributes().getAttribute(attrKey).toString());
