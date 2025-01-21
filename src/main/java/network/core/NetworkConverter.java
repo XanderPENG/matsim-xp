@@ -337,7 +337,11 @@ public final class NetworkConverter {
                     if (link.getFromNode().getCoord().hasZ()){
                         length = Utils.calculateDistWithElevation(link.getFromNode().getCoord(), link.getToNode().getCoord());
                     } else {
-                        length = Utils.calculateHaversineDist(link.getFromNode().getCoord(), link.getToNode().getCoord());
+                        try {length = Utils.calculateHaversineDist(link.getFromNode().getCoord(), link.getToNode().getCoord());}
+                        catch (IllegalArgumentException e){
+                            // calculate the Euclidean length
+                            length = NetworkUtils.getEuclideanDistance(link.getFromNode().getCoord(), link.getToNode().getCoord());
+                        }
                     }
                     linkAttr.put(param, length >0 ? length : 1);
                 } else {

@@ -20,10 +20,12 @@ class SimpleFeatureConverter {
         Map<String, String> keyValuePairs = getKeyValuePairs(feature);
         // Get the geometry of the feature
         Geometry geometry = (Geometry) feature.getDefaultGeometry();
+        // Remove the filename prefix from the feature ID
+        String featureId = feature.getID().substring(feature.getID().indexOf('.') + 1);
         // Here, we only consider the LineString and MultiLineString; the other types of geometry are not considered
         // TODO: Add the support for other types of geometry (e.g., Points)
         if (geometry instanceof MultiLineString || geometry instanceof LineString) {
-            handleLinks(geometry, feature.getID(), keyValuePairs, rawNodes, rawLinks, CRS);
+            handleLinks(geometry, featureId, keyValuePairs, rawNodes, rawLinks, CRS);
         }
     }
 
