@@ -3,10 +3,16 @@ package network.readers;
 import network.config.NetworkConverterConfigGroup;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
+import org.geotools.data.geojson.GeoJSONDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.geojson.GeoJSON;
+import org.geotools.geojson.GeoJSONUtil;
 import org.opengis.feature.simple.SimpleFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+//import org.geojson.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,7 +39,8 @@ public final class GeoJsonReader extends Reader {
     private void loadGeoJSON(String filePath) throws IOException {
         // Create a map to hold the connection parameters
         Map<String, Object> params = new HashMap<>();
-        params.put("url", new File(filePath).toURI().toURL());
+
+        params.put(GeoJSONDataStoreFactory.URL_PARAM.key, new File(filePath).toURI().toURL());
 
         // Get the DataStore from the GeoJSON file
         DataStore dataStore = DataStoreFinder.getDataStore(params);

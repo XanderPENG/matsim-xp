@@ -22,17 +22,18 @@ class GeoJsonReaderTest {
         assertEquals(25, reader.getRawLinks().size());
         assertEquals(15, reader.getRawNodes().size());
 
-        // Check the attribute of link 20
-        NetworkElement.Link link20 = reader.getRawLinks().get("20");
-        assertNotNull(link20);
-        assertEquals("12", link20.getFromNode().getId());
-        assertEquals("13", link20.getToNode().getId());
+        // Check the attribute of link 1
+        NetworkElement.Link link1 = reader.getRawLinks().values().stream().filter(link -> link.getKeyValuePairs().get("linkId").equals("1")).findFirst().orElse(null);
+        assertNotNull(link1);
+        // Since the reader will index the nodes from 0, the node id in the shapefile will be 1 less than the node id in the geojson file
+        assertEquals("0", link1.getFromNode().getId());
+        assertEquals("1", link1.getToNode().getId());
 
-        assertEquals("1", link20.getKeyValuePairs().get("lanes"));
-        assertEquals("27.78", link20.getKeyValuePairs().get("maxspeed"));
-        assertEquals("36000", link20.getKeyValuePairs().get("capacity"));
-        assertEquals("10000", link20.getKeyValuePairs().get("length"));
-        assertEquals("bike, car, pt", link20.getKeyValuePairs().get("modes"));
+        assertEquals("2.0", link1.getKeyValuePairs().get("lanes"));
+        assertEquals("27.78", link1.getKeyValuePairs().get("freespeed"));
+        assertEquals("36000.0", link1.getKeyValuePairs().get("capacity"));
+        assertEquals("10000.0", link1.getKeyValuePairs().get("length"));
+        assertEquals("bike, car, pt", link1.getKeyValuePairs().get("modes"));
 
 
     }

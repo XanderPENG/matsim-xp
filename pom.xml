@@ -40,7 +40,13 @@
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-geojson</artifactId>
-            <version>28.0</version>
+            <version>29.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-geojsondatastore</artifactId>
+            <version>26.7</version>
         </dependency>
 
         <!-- This is the matsim "core": -->
@@ -91,6 +97,21 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+<!--    <dependencyManagement>-->
+<!--        <dependencies>-->
+<!--            <dependency>-->
+<!--                <groupId>org.geotools</groupId>-->
+<!--                <artifactId>gt-main</artifactId>-->
+<!--                <version>28.0</version> &lt;!&ndash; make sure they are identical &ndash;&gt;-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>org.geotools</groupId>-->
+<!--                <artifactId>gt-geojson</artifactId>-->
+<!--                <version>28.0</version>-->
+<!--            </dependency>-->
+<!--        </dependencies>-->
+<!--    </dependencyManagement>-->
 
     <build>
         <plugins>

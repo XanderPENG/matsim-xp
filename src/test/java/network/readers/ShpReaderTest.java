@@ -20,7 +20,7 @@ class ShpReaderTest {
         NetworkElement.Link link20 = reader.getRawLinks().values().stream().filter(link -> link.getKeyValuePairs().get("linkId").equals("20")).findFirst().orElse(null);
         assertNotNull(link20);
 
-        // Since the geojson reader will index the nodes from 0, the node id in the shapefile will be 1 less than the node id in the geojson file
+        // Since the reader will index the nodes from 0, the node id in the shapefile will be 1 less than the node id in the geojson file
         assertEquals("11", link20.getFromNode().getId());
         assertEquals("12", link20.getToNode().getId());
 
