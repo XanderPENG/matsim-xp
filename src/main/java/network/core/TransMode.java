@@ -60,11 +60,11 @@ public final class TransMode {
     }
 
     public boolean matchLinkTransMode(NetworkElement.Link link) {
-        return matchLinkKeyValues(link, this.keyValueMapping.getKeyValueMapping());
+        return matchLinkKeyValuesV2(link, this.keyValueMapping.getKeyValueMapping());
     }
 
     public boolean matchLinkOneway(NetworkElement.Link link) {
-        return matchLinkKeyValues(link, this.onewayKeyValueMapping);
+        return matchLinkKeyValuesV2(link, this.onewayKeyValueMapping);
     }
 
     private boolean matchLinkKeyValues(NetworkElement.Link link, Set<Map<String, String>> mappings){
@@ -109,6 +109,77 @@ public final class TransMode {
             }
         }
         return match[0];
+    }
+
+    public boolean matchLinkKeyValuesV2(NetworkElement.Link link, Set<Map<String, String>> mappings) {
+        Map<String, String> keyValuePairs = link.getKeyValuePairs();
+        final boolean[] match = {false};
+
+        // Outer loop for each mapping
+        for (Map<String, String> mapping : mappings) {
+            // Inner loop for each key-value pair in the mapping
+            for (Map.Entry<String, String> entry : mapping.entrySet()) {
+                String key = entry.getKey().trim();
+                String value = entry.getValue().trim();
+
+                if (key.equals("*") && value.equals("*")) {
+                    match[0] = true;
+                    break;
+                } else if (key.equals("*")) {
+                    if (keyValuePairs.values().stream().anyMatch(v -> matchesPattern(v, value))) {
+                        match[0] = true;
+                    } else {
+                        match[0] = false;
+                        break;
+                    }
+                } else if (value.equals("*")) {
+                    if (keyValuePairs.keySet().stream().anyMatch(k -> k.equals(key))) {
+                        match[0] = true;
+                    } else {
+                        match[0] = false;
+                        break;
+                    }
+                } else {
+                    if (keyValuePairs.containsKey(key) && matchesPattern(keyValuePairs.get(key), value)) {
+                        match[0] = true;
+                    } else {
+                        match[0] = false;
+                        break;
+                    }
+                }
+            }
+            // If the link keyValuePairs match successfully with the mapping (any one of the keyValueMapping), break the loop
+            if (match[0]) {
+                break;
+            }
+        }
+        return match[0];
+    }
+
+    /**
+     * Helper method to determine if a value matches a given pattern.
+     * Patterns can include:
+     * - "*substring*" to check if the value contains the substring
+     * - "substring*" to check if the value starts with the substring
+     * - "*substring" to check if the value ends with the substring
+     *
+     * @param value  The value to check.
+     * @param pattern The pattern to match against.
+     * @return True if the value matches the pattern; false otherwise.
+     */
+    private boolean matchesPattern(String value, String pattern) {
+        if (pattern.startsWith("*") && pattern.endsWith("*")) {
+            String substring = pattern.substring(1, pattern.length() - 1);
+            return value.contains(substring);
+        } else if (pattern.startsWith("*")) {
+            String substring = pattern.substring(1);
+            return value.endsWith(substring);
+        } else if (pattern.endsWith("*")) {
+            String substring = pattern.substring(0, pattern.length() - 1);
+            return value.startsWith(substring);
+        } else {
+            return value.equals(pattern);
+        }
     }
 
     public enum Mode {

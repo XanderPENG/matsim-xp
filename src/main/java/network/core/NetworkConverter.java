@@ -1,6 +1,8 @@
 package network.core;
 
 import network.config.NetworkConverterConfigGroup;
+import network.gis.Network2GeoJson;
+import network.gis.Network2Shp;
 import network.readers.GeoJsonReader;
 import network.readers.OsmReader;
 import network.readers.Reader;
@@ -15,9 +17,11 @@ import org.matsim.api.core.v01.network.Node;
 import org.matsim.core.network.NetworkUtils;
 import org.matsim.core.network.algorithms.MultimodalNetworkCleaner;
 import org.matsim.core.network.algorithms.NetworkTransform;
+import org.matsim.core.network.io.NetworkWriter;
 import org.matsim.core.utils.geometry.CoordinateTransformation;
 import org.matsim.core.utils.geometry.transformations.TransformationFactory;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -33,7 +37,7 @@ public final class NetworkConverter {
     private final Map<String, NetworkElement.Node> interimNodes = new HashMap<>();
     private final Map<String, NetworkElement.Link> interimLinks = new HashMap<>();
     private final Set<TransMode> configuredTransModes = new HashSet<>();
-
+    private final Network network = NetworkUtils.createNetwork();
 
     public NetworkConverter(NetworkConverterConfigGroup config) {
 
@@ -57,10 +61,9 @@ public final class NetworkConverter {
             configuredTransModes.add(modeParamSet.getTransMode()));
     }
 
-    public Network convert() {
+    public void convert() {
         LOG.info("Start converting the input network file to MATSim network...");
-        // Create matsim network and factory instance
-        Network network = NetworkUtils.createNetwork();
+
         // Read the input network file
         LOG.info("Reading the input network file: {}", config.INPUT_NETWORK_FILE);
         reader.read(config.INPUT_NETWORK_FILE);
@@ -149,7 +152,7 @@ public final class NetworkConverter {
                     this.config.INPUT_CRS, this.config.OUTPUT_CRS);
             new NetworkTransform(transformation).run(network);
         }
-        return network;
+
     }
 
     private void matchLinkMode(NetworkElement.Link link) {
@@ -170,6 +173,9 @@ public final class NetworkConverter {
 
     // Process the oneway attribute of the link
     private NetworkElement.Link processOneway(NetworkElement.Link link) {
+        if (!config.ONEWAY){
+            return null;
+        }
         NetworkElement.Link reversedLink;
         Set<TransMode.Mode> reversedLinkModes = new HashSet<>();
         Set<TransMode.Mode> reversedLinkUnsupportedModes = new HashSet<>();
@@ -389,7 +395,27 @@ public final class NetworkConverter {
         });
     }
 
+    public Network getNetwork() {
+        return this.network;
+    }
 
+    public void writeNetwork(){
+        new NetworkWriter(this.network).write(this.config.OUTPUT_NETWORK_FILE);
+
+        if (this.config.OUTPUT_SHP_FILE != null && !this.config.OUTPUT_SHP_FILE.isEmpty() && !this.config.OUTPUT_SHP_FILE.equals("NA")){
+            LOG.info("Output the network to a shapefile: {}", this.config.OUTPUT_SHP_FILE);
+            Network2Shp network2Shp = new Network2Shp(this.config.OUTPUT_CRS, this.network);
+            network2Shp.write(this.config.OUTPUT_SHP_FILE);
+            LOG.info("The shapefile has been written successfully!");
+        }
+
+        if (this.config.OUTPUT_GEOJSON_FILE != null && !this.config.OUTPUT_GEOJSON_FILE.isEmpty() && !this.config.OUTPUT_GEOJSON_FILE.equals("NA")){
+            LOG.info("Output the network to a GeoJSON file: {}", this.config.OUTPUT_GEOJSON_FILE);
+            Network2GeoJson network2GeoJson = new Network2GeoJson(this.config.OUTPUT_CRS, this.network);
+            network2GeoJson.write(this.config.OUTPUT_GEOJSON_FILE);
+            LOG.info("The GeoJSON file has been written successfully!");
+        }
+    }
 
 }
 

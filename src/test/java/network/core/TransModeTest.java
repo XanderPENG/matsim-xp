@@ -60,6 +60,9 @@ class TransModeTest {
                 .addKeyValueMapping(Map.of("highway", "trunk"))
                 .addKeyValueMapping(Map.of("highway", "secondary"))
                 .addKeyValueMapping(Map.of("highway","*", "cycleway:both", "lane"))
+                .addKeyValueMapping(Map.of("modes", "*car*"))
+                .addKeyValueMapping(Map.of("modes", "cycle*"))
+                .addKeyValueMapping(Map.of("modes", "*pt"))
                 .build();
         Set<Map<String, String>> onewayKeyValueMapping = Set.of(Map.of("isOneWay", "true"));
         return new TransMode(TransMode.Mode.BIKE, mapping, onewayKeyValueMapping, 25, 0.0, 2.0, 1.0);

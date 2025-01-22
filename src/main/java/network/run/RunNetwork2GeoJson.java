@@ -10,6 +10,7 @@ import org.matsim.core.scenario.ScenarioUtils;
 import org.matsim.core.utils.geometry.CoordinateTransformation;
 import org.matsim.core.utils.geometry.transformations.TransformationFactory;
 
+@Deprecated
 public class RunNetwork2GeoJson {
     public static void main(String[] args) {
         String inputNetworkFile = "../../data/intermediate/test/freight_emission/GemeenteLeuvenWithHbefaType.xml.gz";

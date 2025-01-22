@@ -39,7 +39,7 @@ class OsmReaderTest {
         reader.read("../data/testOsmReader/test_equil.pbf");
         Map<String, NetworkElement.Link> rawLinks =  reader.getRawLinks();
 
-        // Check the number of links (should be 23 as it won't add additional links for PT-supported links)
+        // Check the number of links (should be 22 as it won't add additional links for PT-supported links)
         assertEquals(22, rawLinks.size());
 
         // check the attribute of link 16
@@ -54,7 +54,7 @@ class OsmReaderTest {
 
     @Test
     void testReadPbfNetworkViaConfig(){
-        NetworkConverterConfigGroup config = NetworkConverterConfigGroup.loadConfigFile("../data/testOsmReader/config.xml");
+        NetworkConverterConfigGroup config = NetworkConverterConfigGroup.loadConfigFile("../data/testOsmReader/testConfig.xml");
         OsmReader reader = new OsmReader(config);
         reader.read(config.INPUT_NETWORK_FILE);
 

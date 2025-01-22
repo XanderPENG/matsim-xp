@@ -15,7 +15,8 @@ class RunNetworkConversion {
         NetworkConverterConfigGroup config = NetworkConverterConfigGroup.loadConfigFile(configUrl);
 
         NetworkConverter networkConverter = new NetworkConverter(config);
-        Network network = networkConverter.convert();
+        networkConverter.convert();
+        Network network = networkConverter.getNetwork();
         new NetworkWriter(network).write(config.OUTPUT_NETWORK_FILE);
 
     }

@@ -64,7 +64,7 @@ class RunCreateCustomizedConfigTest {
         // ModeParamSet
         assertEquals(1, customizedConfig.getParameterSets(ModeParamSet.GROUP_NAME).size());
 
-
+        assertDoesNotThrow(() -> customizedConfig.writeConfigFile("../data/testCustomizedConfig.xml"));
 
     }
 }

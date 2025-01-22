@@ -185,7 +185,7 @@ public class NetworkConverterConfigGroup extends ReflectiveConfigGroup {
             this.linkAttrParamSet = (LinkAttrParamSet) group);
     }
 
-    // Write config.xml file
+    // Write testConfig.xml file
     public void writeConfigFile(String filename) {
         LOG.info("Start writing config file: {}", filename);
 
