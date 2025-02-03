@@ -11,7 +11,9 @@ import org.matsim.vehicles.VehicleType;
 public class CarrierGeneration {
     Carriers carriers = new Carriers();
 
-    public CarrierGeneration() {
+    public CarrierGeneration() {}
+
+    public void generateCarriers(){
         // Create 2 vehicle types
         VehicleType lightVanType = CarrierVehicleType.Builder.newInstance(Id.create("light", VehicleType.class))
                 .setCapacity(3000)  // in kg
@@ -28,14 +30,14 @@ public class CarrierGeneration {
         // Create Carrier 1
         Carrier carrier1 = CarriersUtils.createCarrier(Id.create("carrier1", Carrier.class));
         CarrierVehicle lightVan = CarrierVehicle.Builder.newInstance(
-                Id.createVehicleId("lightVan1"),
-                Id.createLinkId("i(3,4)"),
-                lightVanType)
+                        Id.createVehicleId("lightVan1"),
+                        Id.createLinkId("i(3,4)"),
+                        lightVanType)
                 .build();
         CarrierVehicle heavyVan = CarrierVehicle.Builder.newInstance(
-                Id.createVehicleId("heavyVan1"),
-                Id.createLinkId("i(3,4)"),
-                heavyVanType)
+                        Id.createVehicleId("heavyVan1"),
+                        Id.createLinkId("i(3,4)"),
+                        heavyVanType)
                 .build();
         CarrierCapabilities carrierCapabilities1 = CarrierCapabilities.Builder.newInstance()
                 .addVehicle(lightVan)
@@ -44,6 +46,30 @@ public class CarrierGeneration {
                 .build();
         carrier1.setCarrierCapabilities(carrierCapabilities1);
         carriers.addCarrier(carrier1);
+
+        // Create Carrier 2
+        Carrier carrier2 = CarriersUtils.createCarrier(Id.create("carrier2", Carrier.class));
+        CarrierVehicle lightVan2 = CarrierVehicle.Builder.newInstance(
+                        Id.createVehicleId("lightVan2"),
+                        Id.createLinkId("i(7,7)R"),
+                        lightVanType)
+                .build();
+        CarrierVehicle heavyVan2 = CarrierVehicle.Builder.newInstance(
+                        Id.createVehicleId("heavyVan2"),
+                        Id.createLinkId("i(7,7)R"),
+                        heavyVanType)
+                .build();
+        CarrierCapabilities carrierCapabilities2 = CarrierCapabilities.Builder.newInstance()
+                .addVehicle(lightVan2)
+                .addVehicle(heavyVan2)
+                .setFleetSize(CarrierCapabilities.FleetSize.INFINITE)
+                .build();
+        carrier2.setCarrierCapabilities(carrierCapabilities2);
+        carriers.addCarrier(carrier2);
+    }
+
+    public Carriers getCarriers(){
+        return carriers;
     }
 
 

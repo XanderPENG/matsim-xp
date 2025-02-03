@@ -20,7 +20,7 @@ class TransModeTest {
         assertEquals(1.0, bikeMode.getDefaultLanes());
         assertEquals(1, bikeMode.getOnewayKeyValueMapping().size());
         assertTrue(bikeMode.getOnewayKeyValueMapping().contains(Map.of("isOneWay", "true")));
-        assertEquals(3, bikeMode.getModeKeyValueMapping().getKeyValueMapping().size());
+        assertEquals(6, bikeMode.getModeKeyValueMapping().getKeyValueMapping().size());
         assertTrue(bikeMode.getModeKeyValueMapping().getKeyValueMapping().contains(Map.of("highway", "trunk")));
         assertTrue(bikeMode.getModeKeyValueMapping().getKeyValueMapping().contains(Map.of("highway", "secondary")));
         assertTrue(bikeMode.getModeKeyValueMapping().getKeyValueMapping().contains(Map.of("highway", "*", "cycleway:both", "lane")));
