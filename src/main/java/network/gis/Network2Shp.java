@@ -1,13 +1,17 @@
 package network.gis;
 
-import org.geotools.data.FeatureWriter;
-import org.geotools.data.Transaction;
+//import org.geotools.data.FeatureWriter;
+import org.geotools.api.data.FeatureWriter;
+import org.geotools.api.data.Transaction;
+//import org.geotools.data.Transaction;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.matsim.api.core.v01.network.Network;
 import org.matsim.core.api.internal.MatsimSomeWriter;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+//import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
+//import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 import java.io.File;
 import java.io.Serializable;

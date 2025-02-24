@@ -34,7 +34,7 @@ public class MultiModalNetwork2HbefaMapping extends HbefaRoadTypeMapping {
     }
 
     @Override
-    public String determineHebfaType(Link link) {
+    public String determineHbefaType(Link link) {
         return this.detailedHbefaMap.getOrDefault(getHighwayType(link), "URB/Access/30");
     }
 

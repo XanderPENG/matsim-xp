@@ -4,7 +4,8 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.geojson.feature.FeatureJSON;
 import org.matsim.api.core.v01.network.Network;
-import org.opengis.feature.simple.SimpleFeature;
+//import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 import java.io.File;
 import java.io.FileWriter;

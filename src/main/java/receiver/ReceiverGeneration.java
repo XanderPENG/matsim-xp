@@ -2,10 +2,12 @@ package receiver;
 
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.network.Link;
-import org.matsim.contrib.freightreceiver.Receiver;
-import org.matsim.contrib.freightreceiver.ReceiverUtils;
-import org.matsim.contrib.freightreceiver.Receivers;
-import org.matsim.contrib.freightreceiver.collaboration.CollaborationUtils;
+import org.matsim.freight.receiver.*;
+import org.matsim.freight.receiver.collaboration.CollaborationUtils;
+//import org.matsim.contrib.freightreceiver.Receiver;
+//import org.matsim.contrib.freightreceiver.ReceiverUtils;
+//import org.matsim.contrib.freightreceiver.Receivers;
+//import org.matsim.contrib.freightreceiver.collaboration.CollaborationUtils;
 
 import java.util.Set;
 

@@ -2,8 +2,10 @@ package receiver;
 
 import org.matsim.api.core.v01.Scenario;
 import org.matsim.core.controler.AbstractModule;
-import org.matsim.contrib.freightreceiver.*;
-import org.matsim.contrib.freightreceiver.collaboration.CollaborationUtils;
+//import org.matsim.contrib.freightreceiver.*;
+import org.matsim.freight.receiver.*;
+import org.matsim.freight.receiver.collaboration.CollaborationUtils;
+//import org.matsim.contrib.freightreceiver.collaboration.CollaborationUtils;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.controler.Controler;

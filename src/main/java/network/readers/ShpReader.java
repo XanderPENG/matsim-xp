@@ -2,8 +2,8 @@ package network.readers;
 
 import network.config.NetworkConverterConfigGroup;
 import org.matsim.core.utils.gis.GeoFileReader;
-import org.opengis.feature.simple.SimpleFeature;
-
+//import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 import java.util.Collection;
 
 

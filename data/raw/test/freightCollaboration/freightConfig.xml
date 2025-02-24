@@ -35,7 +35,7 @@
 		Depending on the chosen mobsim, you'll have to add additional config modules to configure the corresponding mobsim.
 		For 'qsim', add a module 'qsim' to the config. -->
 		<param name="mobsim" value="qsim" />
-		<param name="outputDirectory" value="../../data/intermediate/test/freight_emission/outputs/" />
+		<param name="outputDirectory" value="../../data/intermediate/test/freight_collaboration/outputs/" />
 		<!-- Possible values: failIfDirectoryExists,overwriteExistingFiles,deleteDirectoryIfExists -->
 		<param name="overwriteFiles" value="failIfDirectoryExists" />
 		<!-- The type of routing (least cost path) algorithm used, may have the values: [Dijkstra, AStarLandmarks, SpeedyALT] -->
@@ -100,7 +100,7 @@
 	</module>
 	<module name="freightCarriers" >
 		<!-- Freight Carriers File, according to MATSim freight contrib -->
-		<param name="carriersFile" value="testCarrierPlanWithRoute.xml" />
+		<param name="carriersFile" value="CarrierPlanWithRoutes.xml" />
 		<!-- Carrier Vehicle Types file, according to MATSim freight contrib -->
 		<param name="carriersVehicleTypeFile" value="vehicleTypes.xml" />
 		<!-- time slice width used for calculation of travel times in seconds. The smaller the value, the more precise the calculation of routing costs but the longer the computation time. Default value is 1800 seconds. -->
@@ -153,7 +153,7 @@
 		<!-- The Coordinates Reference System in which the coordinates are expressed in the input file. At import, the coordinates will be converted to the coordinate system defined in "global", and willbe converted back at export. If not specified, no conversion happens. -->
 		<param name="inputCRS" value="null" />
 		<param name="inputChangeEventsFile" value="null" />
-		<param name="inputNetworkFile" value="GemeenteLeuvenWithHbefaType.xml.gz" />
+		<param name="inputNetworkFile" value="grid9x9.xml" />
 		<param name="laneDefinitionsFile" value="null" />
 		<param name="timeVariantNetwork" value="false" />
 	</module>
@@ -582,7 +582,7 @@
 		<param name="travelTimeGetter" value="average" />
 	</module>
 	<module name="vehicles" >
-		<param name="vehiclesFile" value="emissionVanTest.xml" />
+		<param name="vehiclesFile" value="vehicleTypes.xml" />
 	</module>
 	<module name="vspExperimental" >
 		<!-- (do not use except of you have to) There was a problem with pt interaction scoring.  Some people solved it by overwriting the parameters of the pt interaction activity type.  Doing this now throws an Exception.  If you still insist on doing this, set the following to true. -->

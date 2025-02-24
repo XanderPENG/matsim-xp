@@ -12,7 +12,7 @@
     <!--do not forget to add the following properties:-->
     <properties>
         <!--MATSim version, which is cited and used in the dependency. Modify it for different versions -->
-        <matsim.version>2024.0</matsim.version>
+        <matsim.version>2025.0-2025w02</matsim.version>
     </properties>
 
     <repositories>
@@ -37,6 +37,12 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-main</artifactId>
+            <version>31.3</version>
+        </dependency>
+
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-geojson</artifactId>

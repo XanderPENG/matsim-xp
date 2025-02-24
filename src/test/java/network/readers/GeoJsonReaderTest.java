@@ -1,8 +1,9 @@
 package network.readers;
 
 import network.core.NetworkElement;
-import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.DataStoreFinder;
+import org.geotools.api.data.DataStoreFactorySpi;
+import org.geotools.api.data.DataStoreFinder;
+//import org.geotools.data.DataStoreFinder;
 import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;

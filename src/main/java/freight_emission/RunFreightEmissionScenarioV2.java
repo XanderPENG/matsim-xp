@@ -29,7 +29,7 @@ import org.matsim.core.scenario.ScenarioUtils;
 import org.matsim.core.scoring.ScoringFunction;
 import org.matsim.core.scoring.SumScoringFunction;
 import org.matsim.freight.carriers.*;
-import org.matsim.freight.carriers.controler.*;
+import org.matsim.freight.carriers.controller.*;
 import org.matsim.freight.carriers.usecases.analysis.CarrierScoreStats;
 import org.matsim.freight.carriers.usecases.analysis.LegHistogram;
 import org.matsim.freight.carriers.usecases.chessboard.CarrierScoringFunctionFactoryImpl;
@@ -254,7 +254,7 @@ public class RunFreightEmissionScenarioV2 {
 
         @Override
         public CarrierStrategyManager get() {
-            final CarrierStrategyManager strategyManager = CarrierControlerUtils.createDefaultCarrierStrategyManager();
+            final CarrierStrategyManager strategyManager = CarrierControllerUtils.createDefaultCarrierStrategyManager();
             strategyManager.setMaxPlansPerAgent(5);
             {
                 GenericPlanStrategyImpl<CarrierPlan, Carrier> strategy = new GenericPlanStrategyImpl<>(new ExpBetaPlanChanger.Factory<CarrierPlan, Carrier>().build());

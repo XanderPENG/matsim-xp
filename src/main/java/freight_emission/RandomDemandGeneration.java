@@ -72,7 +72,7 @@ class RandomDemandGeneration {
             Set<Link> depotLinks = depotLinksId.stream().map(linkId -> multimodalNetwork.getLinks().get(linkId)).collect(Collectors.toSet());
             int randomDepotIndex = (int) (Math.random() * depotLinks.size());
             Link randomDepotLink = (Link) depotLinks.toArray()[randomDepotIndex];
-            CarrierShipment shipment = new CarrierShipment.Builder(shipmentId, randomDepotLink.getId(), selectedLinks.get(i).getId(), goodsWeights.get(i))
+            CarrierShipment shipment = CarrierShipment.Builder.newInstance(shipmentId, randomDepotLink.getId(), selectedLinks.get(i).getId(), goodsWeights.get(i))
                     .build();
             jobs.add(shipment);
         }
@@ -119,7 +119,7 @@ class RandomDemandGeneration {
             int randomDepotIndex = (int) (Math.random() * depotLinks.size());
             Link randomDepotLink = (Link) depotLinks.toArray()[randomDepotIndex];
             int randomTimeWindowIndex = (int) (Math.random() * candidateTimeWindows.size());
-            CarrierShipment shipment = new CarrierShipment.Builder(shipmentId, randomDepotLink.getId(), selectedLinks.get(i).getId(), goodsWeights.get(i))
+            CarrierShipment shipment = CarrierShipment.Builder.newInstance(shipmentId, randomDepotLink.getId(), selectedLinks.get(i).getId(), goodsWeights.get(i))
 //                    .setDeliveryTimeWindow(candidateTimeWindows.get(randomTimeWindowIndex))
                     .setDeliveryServiceTime(1.5 * 60)
                     .setPickupTimeWindow(TimeWindow.newInstance(candidateTimeWindows.get(randomTimeWindowIndex).getStart() - 60 * 60,

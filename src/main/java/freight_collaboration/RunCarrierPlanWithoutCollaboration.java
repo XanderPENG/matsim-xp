@@ -1,11 +1,13 @@
-package freight_emission;
+package freight_collaboration;
 
 import com.google.inject.Provider;
+import freight_emission.RunFreightEmissionScenarioV2;
 import jakarta.inject.Inject;
 import org.matsim.api.core.v01.Scenario;
 import org.matsim.api.core.v01.TransportMode;
 import org.matsim.api.core.v01.network.Network;
 import org.matsim.contrib.emissions.EmissionModule;
+import org.matsim.contrib.osm.examples.RunFullyConfiguredNetworkReader;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.controler.AbstractModule;
@@ -32,37 +34,33 @@ import org.matsim.freight.carriers.usecases.chessboard.CarrierTravelDisutilities
 
 import java.util.Map;
 
-public class RunFreightEmissionScenario {
-    private static final String rootPath = "../../data/intermediate/test/freight_emission/";
+public class RunCarrierPlanWithoutCollaboration {
     public static void main(String[] args) {
-        Config config = ConfigUtils.loadConfig(rootPath+"freightEmissionConfig4Van.xml");
-        FreightCarriersConfigGroup fccg= ConfigUtils.addOrGetModule( config, FreightCarriersConfigGroup.class );
-        System.out.println(fccg.getCarriersFile());
+        Config config = ConfigUtils.loadConfig("../../data/raw/test/freightCollaboration/freightConfig.xml");
         Scenario scenario = ScenarioUtils.loadScenario(config);
-
-        // Load carriers according to freight config
-        CarriersUtils.loadCarriersAccordingToFreightConfig( scenario );
-        // Get carriers and carrier vehicle types
-        Carriers carriers = CarriersUtils.addOrGetCarriers( scenario );
-        CarrierVehicleTypes types = CarriersUtils.getCarrierVehicleTypes( scenario );
-
+        CarriersUtils.loadCarriersAccordingToFreightConfig(scenario);
         Controler controler = new Controler(scenario);
-        controler.addOverridingModule(new CarrierModule() );
+
+        // Get carriers and carrier vehicle types
+        Carriers carriers = CarriersUtils.addOrGetCarriers(scenario);
+        CarrierVehicleTypes types = CarriersUtils.getCarrierVehicleTypes(scenario);
+
+        controler.addOverridingModule(new CarrierModule());
         controler.addOverridingModule(new AbstractModule() {
             @Override
             public void install() {
-                bind(EmissionModule.class).asEagerSingleton();
-                bind( CarrierStrategyManager.class ).toProvider( new RunFreightEmissionScenario.MyCarrierPlanStrategyManagerProvider( types ) );
-                bind( CarrierScoringFunctionFactory.class).toInstance( new RunFreightEmissionScenario.MyCarrierScoringFunctionFactory() );
+                CarrierStrategyManager carrierStrategyManager = CarrierControllerUtils.createDefaultCarrierStrategyManager();
+                bind(CarrierStrategyManager.class).toProvider(new RunCarrierPlanWithoutCollaboration.MyCarrierPlanStrategyManagerProvider(types));
+                bind(CarrierScoringFunctionFactory.class).toInstance(new RunCarrierPlanWithoutCollaboration.MyCarrierScoringFunctionFactory());
 
-                final LegHistogram freightOnly = new LegHistogram(900).setInclPop( false );
+                final LegHistogram freightOnly = new LegHistogram(900).setInclPop(false);
                 addEventHandlerBinding().toInstance(freightOnly);
 
                 final LegHistogram withoutFreight = new LegHistogram(900);
                 addEventHandlerBinding().toInstance(withoutFreight);
 
-                addControlerListenerBinding().toInstance( new CarrierScoreStats(carriers, config.controller().getOutputDirectory() +"/carrier_scores", true) );
-                addControlerListenerBinding().toInstance( new IterationEndsListener() {
+                addControlerListenerBinding().toInstance(new CarrierScoreStats(carriers, config.controller().getOutputDirectory() + "/carrier_scores", true));
+                addControlerListenerBinding().toInstance(new IterationEndsListener() {
 
                     @Inject
                     private OutputDirectoryHierarchy controlerIO;
@@ -90,22 +88,29 @@ public class RunFreightEmissionScenario {
     }
 
     private static class MyCarrierScoringFunctionFactory implements CarrierScoringFunctionFactory {
-        @Inject private Network network;
-        @Override public ScoringFunction createScoringFunction(Carrier carrier) {
+        @Inject
+        private Network network;
+
+        @Override
+        public ScoringFunction createScoringFunction(Carrier carrier) {
             SumScoringFunction sf = new SumScoringFunction();
-            sf.addScoringFunction( new CarrierScoringFunctionFactoryImpl.SimpleDriversLegScoring(carrier, network) );
-            sf.addScoringFunction( new CarrierScoringFunctionFactoryImpl.SimpleVehicleEmploymentScoring(carrier) );
-            sf.addScoringFunction( new CarrierScoringFunctionFactoryImpl.SimpleDriversActivityScoring() );
+            sf.addScoringFunction(new CarrierScoringFunctionFactoryImpl.SimpleDriversLegScoring(carrier, network));
+            sf.addScoringFunction(new CarrierScoringFunctionFactoryImpl.SimpleVehicleEmploymentScoring(carrier));
+            sf.addScoringFunction(new CarrierScoringFunctionFactoryImpl.SimpleDriversActivityScoring());
             return sf;
         }
     }
 
     private static class MyCarrierPlanStrategyManagerProvider implements Provider<CarrierStrategyManager> {
-        @Inject private Network network;
-        @Inject private LeastCostPathCalculatorFactory leastCostPathCalculatorFactory;
-        @Inject private Map<String, TravelTime> modeTravelTimes;
         private final CarrierVehicleTypes types;
-        MyCarrierPlanStrategyManagerProvider( CarrierVehicleTypes types ) {
+        @Inject
+        private Network network;
+        @Inject
+        private LeastCostPathCalculatorFactory leastCostPathCalculatorFactory;
+        @Inject
+        private Map<String, TravelTime> modeTravelTimes;
+
+        MyCarrierPlanStrategyManagerProvider(CarrierVehicleTypes types) {
             this.types = types;
         }
 
@@ -114,19 +119,20 @@ public class RunFreightEmissionScenario {
             final CarrierStrategyManager strategyManager = CarrierControllerUtils.createDefaultCarrierStrategyManager();
             strategyManager.setMaxPlansPerAgent(5);
             {
-                GenericPlanStrategyImpl<CarrierPlan, Carrier> strategy = new GenericPlanStrategyImpl<>( new ExpBetaPlanChanger.Factory<CarrierPlan,Carrier>().build() );
+                GenericPlanStrategyImpl<CarrierPlan, Carrier> strategy = new GenericPlanStrategyImpl<>(new ExpBetaPlanChanger.Factory<CarrierPlan, Carrier>().build());
                 strategyManager.addStrategy(strategy, null, 1.0);
             }
             {
-                final TravelDisutility travelDisutility = CarrierTravelDisutilities.createBaseDisutility( types, modeTravelTimes.get( TransportMode.car ) );
-                final LeastCostPathCalculator router = leastCostPathCalculatorFactory.createPathCalculator(network, travelDisutility, modeTravelTimes.get(TransportMode.car ) );
+                final TravelDisutility travelDisutility = CarrierTravelDisutilities.createBaseDisutility(types, modeTravelTimes.get(TransportMode.car));
+                final LeastCostPathCalculator router = leastCostPathCalculatorFactory.createPathCalculator(network, travelDisutility, modeTravelTimes.get(TransportMode.car));
 
-                GenericPlanStrategyImpl<CarrierPlan, Carrier> strategy = new GenericPlanStrategyImpl<>( new KeepSelected<>());
-                strategy.addStrategyModule(new CarrierTimeAllocationMutator.Factory().build() );
-                strategy.addStrategyModule(new CarrierReRouteVehicles.Factory(router, network, modeTravelTimes.get(TransportMode.car ) ).build() );
+                GenericPlanStrategyImpl<CarrierPlan, Carrier> strategy = new GenericPlanStrategyImpl<>(new KeepSelected<>());
+                strategy.addStrategyModule(new CarrierTimeAllocationMutator.Factory().build());
+                strategy.addStrategyModule(new CarrierReRouteVehicles.Factory(router, network, modeTravelTimes.get(TransportMode.car)).build());
                 strategyManager.addStrategy(strategy, null, 0.5);
             }
             return strategyManager;
         }
     }
+
 }

@@ -2,9 +2,12 @@ package receiver;
 
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.network.Link;
-import org.matsim.contrib.freightreceiver.*;
-import org.matsim.contrib.freightreceiver.collaboration.CollaborationUtils;
-import org.matsim.contrib.freightreceiver.run.chessboard.ReceiverChessboardScenario;
+import org.matsim.freight.receiver.*;
+import org.matsim.freight.receiver.collaboration.CollaborationUtils;
+import org.matsim.freight.receiver.run.chessboard.ReceiverChessboardScenario;
+//import org.matsim.contrib.freightreceiver.*;
+//import org.matsim.contrib.freightreceiver.collaboration.CollaborationUtils;
+//import org.matsim.contrib.freightreceiver.run.chessboard.ReceiverChessboardScenario;
 import org.matsim.freight.carriers.Carrier;
 import org.matsim.freight.carriers.Carriers;
 import org.matsim.freight.carriers.TimeWindow;
