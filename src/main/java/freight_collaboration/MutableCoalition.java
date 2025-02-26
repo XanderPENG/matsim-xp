@@ -1,5 +1,6 @@
 package freight_collaboration;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -8,7 +9,7 @@ public class MutableCoalition implements Coalition {
     private final Collection<Collaborator> collaborators;
 
     public MutableCoalition() {
-        collaborators = Collections.emptyList();
+        collaborators = new ArrayList<>();
     }
 
     public MutableCoalition(Collection<Collaborator> collaborators) {
