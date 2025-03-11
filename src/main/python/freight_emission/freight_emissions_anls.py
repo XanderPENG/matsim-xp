@@ -106,7 +106,7 @@ def load_single_scenario_stats(scenario_kw: str, iter_list: list, is_aggregate: 
         transit_time_per_ton_list.append(total_transit_time_per_ton)
 
         # Calculate transit VKT per ton
-        total_transit_vkt_per_ton = total_transit_time / total_capacity  # km/ton
+        total_transit_vkt_per_ton = total_transit_vkt / total_capacity  # km/ton
         transit_vkt_per_ton_list.append(total_transit_vkt_per_ton)
 
         # Calculate average transit VKT per shipment

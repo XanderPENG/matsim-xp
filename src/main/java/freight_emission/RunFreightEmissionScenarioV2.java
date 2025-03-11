@@ -37,15 +37,13 @@ import org.matsim.freight.carriers.usecases.chessboard.CarrierTravelDisutilities
 import org.matsim.vehicles.VehicleType;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 public class RunFreightEmissionScenarioV2 {
     private final static Logger logger = LogManager.getLogger(RunFreightEmissionScenarioV2.class);
 
-    private static final int NUM_ITERATIONS = 35;
+    private static final int NUM_ITERATIONS = 200;
     private static final int NUM_CARRIERS = 1;
     private static final int NUM_JSPRIT_ITERATIONS = 100;
     private static final String inputNetworkPath = "../../data/intermediate/test/freightEmissions/GemeenteLeuvenWithHbefaType.xml.gz";
@@ -59,18 +57,20 @@ public class RunFreightEmissionScenarioV2 {
         new MatsimNetworkReader(scenario.getNetwork()).readFile(inputNetworkPath);
         Network network = scenario.getNetwork();
 
-        for (int i = 30; i < NUM_ITERATIONS; i++) {
+        for (int i = 100; i < NUM_ITERATIONS; i++) {
             logger.info("Generating the carrier plan for iteration {}", i);
             Map<Integer, Set<CarrierShipment>> carrierShipments = new HashMap<>();
             Map<Integer, Set<Id<Link>>> depotLinks = new HashMap<>();
 
             for (int j = 0; j < NUM_CARRIERS; j++) {
+                Set<Id<Link>> randomDepotLinks = generateRandomDepotLinks();
+                // Add depot links
+                depotLinks.put(j, randomDepotLinks);
                 // Generate random demand for each carrier
                 RandomDemandGeneration randomDemandGeneration = new RandomDemandGeneration(network);
+                randomDemandGeneration.updateDepotLinksId(depotLinks.get(j));
                 Set<CarrierShipment> shipments = randomDemandGeneration.generateDemandWithTimeWindow(Set.of(TransportMode.car, TransportMode.bike));
                 carrierShipments.put(j, shipments);
-                // Add depot links
-                depotLinks.put(j, Set.of(Id.createLinkId("333784188_r_3"), Id.createLinkId("27566523_11")));
             }
 
             // Run the scenario for basic-VAN
@@ -163,10 +163,10 @@ public class RunFreightEmissionScenarioV2 {
 
         // Run the scenario
         logger.info("Running the scenario{} for iteration {}", scenarioType, iterIdx);
-        runScenario(outputScenarioDir + "iter" + iterIdx + "/config.xml");
+        runScenario(outputScenarioDir + "iter" + iterIdx + "/config.xml", scenarioType);
     }
 
-    static void runScenario(String configPath) {
+    static void runScenario(String configPath, ScenarioType scenarioType) {
         Config config = ConfigUtils.loadConfig(configPath);
         Scenario scenario = ScenarioUtils.loadScenario(config);
         // Load carriers according to freight config
@@ -182,6 +182,11 @@ public class RunFreightEmissionScenarioV2 {
             @Override
             public void install() {
                 bind(EmissionModule.class).asEagerSingleton();
+//                if (scenarioType == ScenarioType.CARGO_BIKE) {
+//                    bind(CarrierStrategyManager.class).toProvider(new RunFreightEmissionScenarioV2.MyBikeCarrierPlanStrategyManagerProvider(types));
+//                } else {
+//                    bind(CarrierStrategyManager.class).toProvider(new RunFreightEmissionScenarioV2.MyCarrierPlanStrategyManagerProvider(types));
+//                }
                 bind(CarrierStrategyManager.class).toProvider(new RunFreightEmissionScenarioV2.MyCarrierPlanStrategyManagerProvider(types));
                 bind(CarrierScoringFunctionFactory.class).toInstance(new RunFreightEmissionScenarioV2.MyCarrierScoringFunctionFactory());
 
@@ -273,6 +278,41 @@ public class RunFreightEmissionScenarioV2 {
         }
     }
 
+    private static class MyBikeCarrierPlanStrategyManagerProvider implements Provider<CarrierStrategyManager> {
+        private final CarrierVehicleTypes types;
+        @Inject
+        private Network network;
+        @Inject
+        private LeastCostPathCalculatorFactory leastCostPathCalculatorFactory;
+        @Inject
+        private Map<String, TravelTime> modeTravelTimes;
+
+        MyBikeCarrierPlanStrategyManagerProvider(CarrierVehicleTypes types) {
+            this.types = types;
+        }
+
+        @Override
+        public CarrierStrategyManager get() {
+            final CarrierStrategyManager strategyManager = CarrierControlerUtils.createDefaultCarrierStrategyManager();
+            strategyManager.setMaxPlansPerAgent(5);
+            {
+                GenericPlanStrategyImpl<CarrierPlan, Carrier> strategy = new GenericPlanStrategyImpl<>(new ExpBetaPlanChanger.Factory<CarrierPlan, Carrier>().build());
+                strategyManager.addStrategy(strategy, null, 1.0);
+            }
+            {
+                final TravelDisutility travelDisutility = CarrierTravelDisutilities.createBaseDisutility(types, modeTravelTimes.get(TransportMode.bike));
+                final LeastCostPathCalculator router = leastCostPathCalculatorFactory.createPathCalculator(network, travelDisutility, modeTravelTimes.get(TransportMode.bike));
+
+                GenericPlanStrategyImpl<CarrierPlan, Carrier> strategy = new GenericPlanStrategyImpl<>(new KeepSelected<>());
+                strategy.addStrategyModule(new CarrierTimeAllocationMutator.Factory().build());
+                strategy.addStrategyModule(new CarrierReRouteVehicles.Factory(router, network, modeTravelTimes.get(TransportMode.car)).build());
+                strategyManager.addStrategy(strategy, null, 0.5);
+            }
+            return strategyManager;
+        }
+    }
+
+
     static class DirUtils {
 
         public static boolean ensureDirectoryExists(String directoryPath) {
@@ -283,4 +323,28 @@ public class RunFreightEmissionScenarioV2 {
             return true;
         }
     }
+
+    private static Set<Id<Link>>generateRandomDepotLinks(){
+        Set<Id<Link>> candidateDepotLinks = Set.of(
+                // out of the ring
+                Id.createLinkId("333784188_r_3"),
+                Id.createLinkId("27566523_11"),
+                Id.createLinkId("25806807_r_1"),
+                Id.createLinkId("131757263_1-131757263_2"),
+                // in the ring
+                Id.createLinkId("3390195_0"),
+                Id.createLinkId("893781380_r_0-48247088_0"),
+                Id.createLinkId("10149534_2"),
+                Id.createLinkId("150056709_r_10")
+        );
+
+        // Randomly select 2 depot links
+        // Convert the set to a list for random selection
+        List<Id<Link>> depotLinksList = new ArrayList<>(candidateDepotLinks);
+        // Shuffle the list to randomize the order
+        Collections.shuffle(depotLinksList);
+        // Select the first 2 elements from the shuffled list
+        return new HashSet<>(depotLinksList.subList(0, 2));
+    }
+
 }

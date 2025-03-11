@@ -199,6 +199,11 @@ class RandomDemandGeneration {
         return depotLinksId;
     }
 
+    public void updateDepotLinksId(Set<Id<Link>> depotLinksId) {
+        this.depotLinksId.clear();
+        this.depotLinksId.addAll(depotLinksId);
+    }
+
     private boolean isWithinBoundary(Node node) {
         return isWithinBoundary(node.getCoord().getX(), node.getCoord().getY());
     }
