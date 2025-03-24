@@ -74,7 +74,7 @@ def spatial_join_with_h3_hexagons(network_gdf: gpd.GeoDataFrame,
 if __name__ == '__main__':
 
     logging.basicConfig(level=logging.INFO)
-    iter_list = list(range(100, 200))
+    iter_list = list(range(300, 400))
     # iter_index = 100
     scenario_type_list = ['Basic', 'CB', 'Van']
 
