@@ -3,7 +3,7 @@ import matsim
 import pollutants
 import logging
 
-def read_freight_emission_data(input_file_dir, filter_threshold=5*60):
+def read_freight_emission_data(input_file_dir, filter_threshold=3*60):
     logging.info("Reading the freight emission data...")
     # Read the freight emission events
     freight_emission_events = matsim.event_reader(input_file_dir + 'output_events.xml.gz',

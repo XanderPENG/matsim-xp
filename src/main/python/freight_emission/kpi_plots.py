@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt 
 import os
-
+import scipy.stats as stats
 # Some utils modules
 import pollutants
 import freight_emissions_anls as fea
@@ -18,30 +18,44 @@ def plot_stat_comparison(
     colors=["darkgrey", "steelblue", "#A5D6A7"],
     alphas=[0.8, 0.6, 0.8],
     figure_size=(10, 6),
+    is_fitting=False,
+    n_bins=60,
 ):
     fig, ax = plt.subplots(figsize=figure_size, dpi=300)
     min_val = min(bike_summary.min(), car_summary.min(), no_policy_summary.min())
     max_val = max(bike_summary.max(), car_summary.max(), no_policy_summary.max())
 
-    bins = np.linspace(min_val, max_val, 11)
+    bins = np.linspace(min_val, max_val, n_bins)
+    
+    # Plot histograms
 
-    plt.hist(
-        no_policy_summary, bins=bins, color=colors[0], alpha=alphas[0], label="Van"
-    )
-    plt.hist(
-        car_summary,
-        bins=bins,
-        color=colors[1],
-        alpha=alphas[1],
-        label="Van-Circulation",
-    )
-    plt.hist(
-        bike_summary,
-        bins=bins,
-        color=colors[2],
-        alpha=alphas[2],
-        label="Cargo Bike-Circulation",
-    )
+    # 绘制非归一化直方图（显示频数）
+    plt.hist(no_policy_summary, bins=bins, color=colors[0], 
+                                alpha=alphas[0], label="Van")
+    plt.hist(car_summary, bins=bins, color=colors[1], alpha=alphas[1], 
+            label="Van-Circulation")
+    plt.hist(bike_summary, bins=bins, color=colors[2], alpha=alphas[2], 
+            label="Cargo Bike-Circulation")
+    if is_fitting:
+        # bin宽度
+        bin_width = bins[1] - bins[0]
+        xmin, xmax = plt.xlim()
+        x = np.linspace(xmin, xmax, 100)
+
+        # 对 no_policy_summary 拟合正态分布，并调整曲线高度
+        mu_van, std_van = stats.norm.fit(no_policy_summary)
+        p_van = stats.norm.pdf(x, mu_van, std_van) * len(no_policy_summary) * bin_width
+        plt.plot(x, p_van, color=colors[0], linewidth=2, label="Van Fitting")
+
+        # 对 car_summary 拟合正态分布，并调整曲线高度
+        mu_car, std_car = stats.norm.fit(car_summary)
+        p_car = stats.norm.pdf(x, mu_car, std_car) * len(car_summary) * bin_width
+        plt.plot(x, p_car, color=colors[1], linewidth=2, label="Van-Circulation Fitting")
+
+        # 对 bike_summary 拟合正态分布，并调整曲线高度
+        mu_bike, std_bike = stats.norm.fit(bike_summary)
+        p_bike = stats.norm.pdf(x, mu_bike, std_bike) * len(bike_summary) * bin_width
+        plt.plot(x, p_bike, color=colors[2], linewidth=2, label="Cargo Bike-Circulation Fitting")
 
     # Hide the right and top spines
     plt.gca().spines["right"].set_visible(False)
@@ -97,7 +111,7 @@ def plot_stat_comparison_two_groups(
 
 if __name__ == '__main__':
     ''' Some settings '''
-    iter_list = list(range(100, 150))
+    iter_list = list(range(300, 400))
     scenario_kw_list = ['basic', 'van', 'cb']
     figure_folder = r'../../../../figures/freightEmissions/KPIs/'
     os.makedirs(figure_folder, exist_ok=True)
@@ -301,5 +315,46 @@ if __name__ == '__main__':
         filename='air_quality_van_no_policy.png',
         xlabel='Air quality emissions (g)',
     )
+
+    ''' EPI '''
+    metric = 'EPI'
+    plot_stat_comparison(
+        no_policy_summary=np.array(all_scenario_emissions['basic'][metric]),
+        car_summary=np.array(all_scenario_emissions['van'][metric]),
+        bike_summary=np.array(all_scenario_emissions['cb'][metric]),
+        figure_folder=figure_folder,
+        filename='EPI.png',
+        xlabel='EPI',
+    )
+
+    # Only compare van and no policy
+    metric = 'EPI'
+    plot_stat_comparison_two_groups(
+        no_policy_summary=np.array(all_scenario_emissions['basic'][metric]),
+        car_summary=np.array(all_scenario_emissions['van'][metric]),
+        figure_folder=figure_folder,
+        filename='EPI_van_no_policy.png',
+        xlabel='EPI',
+    )
+
+    ''' Weighted AQI '''
+    metric = 'weighted_AQI'
+    plot_stat_comparison(
+        no_policy_summary=np.array(all_scenario_emissions['basic'][metric]),
+        car_summary=np.array(all_scenario_emissions['van'][metric]),
+        bike_summary=np.array(all_scenario_emissions['cb'][metric]),
+        figure_folder=figure_folder,
+        filename='weighted_AQI.png',
+        xlabel='Weighted AQI',
+    )
+
+    # Only compare van and no policy
+    metric = 'weighted_AQI'
+    plot_stat_comparison_two_groups(
+        no_policy_summary=np.array(all_scenario_emissions['basic'][metric]),
+        car_summary=np.array(all_scenario_emissions['van'][metric]),
+        figure_folder=figure_folder,
+        filename='weighted_AQI_van_no_policy.png',
+        xlabel='Weighted AQI',)
 
     print('Done!')

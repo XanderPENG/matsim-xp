@@ -53,3 +53,21 @@ AIR_QUALITY_POLLUTANTS = {CO, NOx, NO2,
                           SO2, NH3, Pb, Benzene,
                           HC, NMHC}
 
+EPI_POLLUTANTS = {
+                CO: 2.9,
+                SO2: 2.9,
+                NOx: 5.9,
+                NO2: 5.9,
+                PM2_5: 38.2,
+                PM2_5_non_exhaust: 38.2,
+            }
+
+WEIGHTED_AQI_POLLUTANTS = { 
+                SO2: 1,
+                NO2: 2.5,
+                PM: 5,
+                PM_non_exhaust: 5,
+                PM2_5: 10,
+                PM2_5_non_exhaust: 10,
+            }
+

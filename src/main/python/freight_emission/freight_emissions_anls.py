@@ -160,6 +160,17 @@ def load_single_scenario_emission_stats(scenario_kw: str, iter_list: list):
         if emissions_dict.get('air_quality_pollutants') is None:
             emissions_dict['air_quality_pollutants'] = []
         emissions_dict['air_quality_pollutants'].append(air_quality_pollutants_sum)
+        
+        ''' Add EPI and Weighted AQI '''
+        EPI_value = sum([emissions_dict.get(p)[idx] * pollutants.EPI_POLLUTANTS.get(p) for p in pollutants.EPI_POLLUTANTS.keys()])
+        if emissions_dict.get('EPI') is None:
+            emissions_dict['EPI'] = []
+        emissions_dict['EPI'].append(EPI_value)
+
+        weighted_AQI_value = sum([emissions_dict.get(p)[idx] * pollutants.WEIGHTED_AQI_POLLUTANTS.get(p) for p in pollutants.WEIGHTED_AQI_POLLUTANTS.keys()])
+        if emissions_dict.get('weighted_AQI') is None:
+            emissions_dict['weighted_AQI'] = [] 
+        emissions_dict['weighted_AQI'].append(weighted_AQI_value)
     return emissions_dict
 
 def load_all_scenario_emission_stats(scenario_kw_list: list, iter_list: list):
