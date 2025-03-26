@@ -1,13 +1,23 @@
 import numpy as np
 import matplotlib.pyplot as plt 
+import matplotlib.colors as mcolors
 import os
 import scipy.stats as stats
 # Some utils modules
 import pollutants
 import freight_emissions_anls as fea
 
+# Change the default font family as Arial
+plt.rcParams["font.sans-serif"] = "Arial"
 
 ''' Plot utils '''
+
+def darken_color(color, factor=0.7):
+
+    rgb = np.array(mcolors.to_rgb(color))
+    dark_rgb = rgb * factor
+    return dark_rgb
+
 def plot_stat_comparison(
     bike_summary,
     car_summary,
@@ -20,6 +30,7 @@ def plot_stat_comparison(
     figure_size=(10, 6),
     is_fitting=False,
     n_bins=60,
+    **kwargs
 ):
     fig, ax = plt.subplots(figsize=figure_size, dpi=300)
     min_val = min(bike_summary.min(), car_summary.min(), no_policy_summary.min())
@@ -30,43 +41,47 @@ def plot_stat_comparison(
     # Plot histograms
 
     # 绘制非归一化直方图（显示频数）
-    plt.hist(no_policy_summary, bins=bins, color=colors[0], 
+    ax.hist(no_policy_summary, bins=bins, color=colors[0], 
                                 alpha=alphas[0], label="Van")
-    plt.hist(car_summary, bins=bins, color=colors[1], alpha=alphas[1], 
+    ax.hist(car_summary, bins=bins, color=colors[1], alpha=alphas[1], 
             label="Van-Circulation")
-    plt.hist(bike_summary, bins=bins, color=colors[2], alpha=alphas[2], 
+    ax.hist(bike_summary, bins=bins, color=colors[2], alpha=alphas[2], 
             label="Cargo Bike-Circulation")
     if is_fitting:
         # bin宽度
         bin_width = bins[1] - bins[0]
         xmin, xmax = plt.xlim()
-        x = np.linspace(xmin, xmax, 100)
+        x = np.linspace(xmin, xmax, 1000)
 
         # 对 no_policy_summary 拟合正态分布，并调整曲线高度
         mu_van, std_van = stats.norm.fit(no_policy_summary)
         p_van = stats.norm.pdf(x, mu_van, std_van) * len(no_policy_summary) * bin_width
-        plt.plot(x, p_van, color=colors[0], linewidth=2, label="Van Fitting")
+        ax.plot(x, p_van, color=darken_color(colors[0], 0.5), linewidth=2, linestyle=':', label="Van Fitting")
 
         # 对 car_summary 拟合正态分布，并调整曲线高度
         mu_car, std_car = stats.norm.fit(car_summary)
         p_car = stats.norm.pdf(x, mu_car, std_car) * len(car_summary) * bin_width
-        plt.plot(x, p_car, color=colors[1], linewidth=2, label="Van-Circulation Fitting")
+        ax.plot(x, p_car, color=darken_color(colors[1]), linewidth=2, linestyle=':', label="Van-Circulation Fitting")
 
         # 对 bike_summary 拟合正态分布，并调整曲线高度
         mu_bike, std_bike = stats.norm.fit(bike_summary)
         p_bike = stats.norm.pdf(x, mu_bike, std_bike) * len(bike_summary) * bin_width
-        plt.plot(x, p_bike, color=colors[2], linewidth=2, label="Cargo Bike-Circulation Fitting")
+        ax.plot(x, p_bike, color=darken_color(colors[2], 0.9), linewidth=2, linestyle=':', label="Cargo Bike-Circulation Fitting")
 
     # Hide the right and top spines
     plt.gca().spines["right"].set_visible(False)
     plt.gca().spines["top"].set_visible(False)
 
-    plt.xlabel(xlabel, fontsize=12, fontweight="bold")
-    plt.ylabel("Density", fontsize=12, fontweight="bold")
-    plt.xticks(fontsize=10)
-    plt.yticks(fontsize=10)
+    plt.xlabel(xlabel, fontsize=kwargs.get('label_size', 12), fontweight="bold")
+    plt.ylabel("Density", fontsize=kwargs.get('label_size', 12), fontweight="bold")
+
+    plt.xticks(fontsize=kwargs.get('tick_size', 12))
+    plt.yticks(fontsize=kwargs.get('tick_size', 12))
     plt.tight_layout()
-    plt.savefig(figure_folder + filename, dpi=350)
+    plt.savefig(figure_folder + filename, dpi=350,
+                bbox_inches='tight', 
+                pad_inches=0,
+                transparent=True)
     # plt.show()
 
 
@@ -131,7 +146,10 @@ if __name__ == '__main__':
         figure_folder=figure_folder,
         filename='vkt.png',
         xlabel='VKT (km)',
-        figure_size=(3.9, 2.6)
+        # n_bins=50,
+        is_fitting=True,
+        figure_size=(6.2, 2.2)
+
     )
 
     # Only compare van and no policy
@@ -175,7 +193,8 @@ if __name__ == '__main__':
         figure_folder=figure_folder,
         filename='transit_time.png',
         xlabel='Transit Time (min)',
-        figure_size=(3.9, 2.6)
+        figure_size=(6.2, 2.2),
+        is_fitting=True,
     )
 
     # Only compare van and no policy
@@ -196,8 +215,10 @@ if __name__ == '__main__':
         bike_summary=np.array(all_scenario_stats['cb'][metric]),
         figure_folder=figure_folder,
         filename='ton_km_traveled.png',
-        xlabel='Ton-km traveled (ton-km)',
-        figure_size=(3.9, 2.6)
+        xlabel='Ton-km traveled (ton·km)',
+        figure_size=(6.2, 2.2),
+        is_fitting=True,
+
     )
 
     # Only compare van and no policy
@@ -282,7 +303,8 @@ if __name__ == '__main__':
         figure_folder=figure_folder,
         filename='CO2e.png',
         xlabel='WTW CO2-eq emissions (g)',
-        figure_size=(3.9, 2.6)
+        figure_size=(5.5, 3),
+        is_fitting=True,
     )
 
     # Only compare van and no policy
@@ -325,6 +347,8 @@ if __name__ == '__main__':
         figure_folder=figure_folder,
         filename='EPI.png',
         xlabel='EPI',
+        is_fitting=True,
+        figure_size=(5.5, 3),
     )
 
     # Only compare van and no policy
