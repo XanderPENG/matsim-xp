@@ -9,13 +9,13 @@ basic_scenario = 'scenarioBasic/'
 van_scenario = 'scenarioVan/'
 cb_scenario = 'scenarioCB/'
 
-def set_scenario(scenario_kw):
-    if scenario_kw == 'van':
-        scenario = van_scenario
-    elif scenario_kw == 'cb':
-        scenario = cb_scenario
-    elif scenario_kw == 'basic':
-        scenario = basic_scenario
+def set_scenario(scenario_kw: str):
+    if scenario_kw.lower() in ['van', 'basic']:
+        scenario = f'scenario{scenario_kw.capitalize()}/'
+    elif scenario_kw.lower() == 'cb':
+        scenario = f'scenario{scenario_kw.upper()}/'
+    elif 'sa' in scenario_kw.lower():
+        scenario = f'scenario{scenario_kw}/' 
     else:
         raise ValueError('scenario_kw must be either "van" or "cb" or "basic"')
     return scenario
