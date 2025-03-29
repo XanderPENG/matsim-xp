@@ -94,12 +94,14 @@ def plot_stat_comparison_two_groups(
     colors=["darkgrey", "steelblue"],
     alphas=[0.8, 0.6],
     figure_size=(10, 6),
+    is_fitting=True,
+    n_bins=50,
 ):
-    fig, ax = plt.subplots(figsize=figure_size, dpi=300)
+    fig, ax = plt.subplots(figsize=figure_size, dpi=350)
     min_val = min(car_summary.min(), no_policy_summary.min())
     max_val = max(car_summary.max(), no_policy_summary.max())
 
-    bins = np.linspace(min_val, max_val, 11)
+    bins = np.linspace(min_val, max_val, n_bins)
 
     plt.hist(
         no_policy_summary, bins=bins, color=colors[0], alpha=alphas[0], label="Van"
@@ -112,6 +114,22 @@ def plot_stat_comparison_two_groups(
         label="Van-Circulation",
     )
 
+    if is_fitting:
+        # bin宽度
+        bin_width = bins[1] - bins[0]
+        xmin, xmax = plt.xlim()
+        x = np.linspace(xmin, xmax, 1000)
+
+        # 对 no_policy_summary 拟合正态分布，并调整曲线高度
+        mu_van, std_van = stats.norm.fit(no_policy_summary)
+        p_van = stats.norm.pdf(x, mu_van, std_van) * len(no_policy_summary) * bin_width
+        ax.plot(x, p_van, color=darken_color(colors[0], 0.5), linewidth=2, linestyle=':', label="Van Fitting")
+
+        # 对 car_summary 拟合正态分布，并调整曲线高度
+        mu_car, std_car = stats.norm.fit(car_summary)
+        p_car = stats.norm.pdf(x, mu_car, std_car) * len(car_summary) * bin_width
+        ax.plot(x, p_car, color=darken_color(colors[1]), linewidth=2, linestyle=':', label="Van-Circulation Fitting")
+
     # Hide the right and top spines
     plt.gca().spines["right"].set_visible(False)
     plt.gca().spines["top"].set_visible(False)
@@ -121,7 +139,60 @@ def plot_stat_comparison_two_groups(
     plt.xticks(fontsize=10)
     plt.yticks(fontsize=10)
     plt.tight_layout()
-    plt.savefig(figure_folder + filename)
+    plt.savefig(figure_folder + filename,
+                bbox_inches='tight', 
+                pad_inches=0,
+                transparent=True)
+    # plt.show()
+
+def plot_stat_one_group(
+    result_summary,
+    xlabel,
+    figure_folder,
+    filename=None,
+    color="steelblue",
+    alpha=0.6,
+    figure_size=(10, 6),
+    is_fitting=True,
+    n_bins=50,
+):
+    fig, ax = plt.subplots(figsize=figure_size, dpi=350)
+    min_val = result_summary.min()
+    max_val = result_summary.max()
+
+    bins = np.linspace(min_val, max_val, n_bins)
+
+    plt.hist(
+        result_summary, bins=bins, color=color, alpha=alpha,
+        # label="Van"
+    )
+
+    if is_fitting:
+        # bin宽度
+        bin_width = bins[1] - bins[0]
+        xmin, xmax = plt.xlim()
+        x = np.linspace(xmin, xmax, 1000)
+
+        # 对 result_summary 拟合正态分布，并调整曲线高度
+        mu_car, std_car = stats.norm.fit(result_summary)
+        p_car = stats.norm.pdf(x, mu_car, std_car) * len(result_summary) * bin_width
+        ax.plot(x, p_car, color=darken_color(color), linewidth=2, linestyle=':', 
+                # label="Van-Circulation Fitting"
+                )
+
+    # Hide the right and top spines
+    plt.gca().spines["right"].set_visible(False)
+    plt.gca().spines["top"].set_visible(False)
+
+    plt.xlabel(xlabel, fontsize=12, fontweight="bold")
+    plt.ylabel("Density", fontsize=12, fontweight="bold")
+    plt.xticks(fontsize=10)
+    plt.yticks(fontsize=10)
+    plt.tight_layout()
+    plt.savefig(figure_folder + filename,
+                bbox_inches='tight', 
+                pad_inches=0,
+                transparent=True)
     # plt.show()
 
 if __name__ == '__main__':
@@ -160,6 +231,23 @@ if __name__ == '__main__':
         figure_folder=figure_folder,
         filename='vkt_van_no_policy.png',
         xlabel='VKT (km)',
+        n_bins=50,
+        is_fitting=True,
+        figure_size=(2.8, 1.2)
+    )
+
+    # only cb 
+    metric = 'vkt'
+    plot_stat_one_group(
+        result_summary=np.array(all_scenario_stats['cb'][metric]),
+        figure_folder=figure_folder,
+        filename='vkt_cb.png',
+        xlabel='VKT (km)',
+        color="#A5D6A7",
+        alpha=0.8,
+        figure_size=(2.8, 1.2),
+        is_fitting=True,
+        n_bins=50,
     )
 
     ''' Transit VKT '''
@@ -205,6 +293,23 @@ if __name__ == '__main__':
         figure_folder=figure_folder,
         filename='transit_time_van_no_policy.png',
         xlabel='Transit Time (min)',
+        n_bins=50,
+        is_fitting=True,
+        figure_size=(2.8, 1.2)
+    )
+
+    # only cb
+    metric = 'total_transit_time'
+    plot_stat_one_group(
+        result_summary=np.array(all_scenario_stats['cb'][metric]),
+        figure_folder=figure_folder,
+        filename='transit_time_cb.png',
+        xlabel='Transit Time (min)',
+        color="#A5D6A7",
+        alpha=0.8,
+        figure_size=(2.8, 1.2),
+        is_fitting=True,
+        n_bins=50,
     )
 
     ''' Ton-km traveled '''
@@ -229,6 +334,23 @@ if __name__ == '__main__':
         figure_folder=figure_folder,
         filename='ton_km_traveled_van_no_policy.png',
         xlabel='Ton-km traveled (ton-km)',
+        n_bins=50,
+        is_fitting=True,
+        figure_size=(2.8, 1.2)
+    )
+
+    # only cb
+    metric = 'ton_km_traveled'
+    plot_stat_one_group(
+        result_summary=np.array(all_scenario_stats['cb'][metric]),
+        figure_folder=figure_folder,
+        filename='ton_km_traveled_cb.png',
+        xlabel='Ton-km traveled (ton·km)',
+        color="#A5D6A7",
+        alpha=0.8,
+        figure_size=(2.8, 1.2),
+        is_fitting=True,
+        n_bins=50,
     )
 
     ''' Transit Time per Ton '''
@@ -315,6 +437,23 @@ if __name__ == '__main__':
         figure_folder=figure_folder,
         filename='CO2e_van_no_policy.png',
         xlabel='WTW CO2-eq emissions (g)',
+        n_bins=50,
+        is_fitting=True,
+        figure_size=(2.6, 1.2)
+    )
+
+    # only cb
+    metric = pollutants.CO2e
+    plot_stat_one_group(
+        result_summary=np.array(all_scenario_emissions['cb'][metric]),
+        figure_folder=figure_folder,
+        filename='CO2e_cb.png',
+        xlabel='WTW CO2-eq emissions (g)',
+        color="#A5D6A7",
+        alpha=0.8,
+        figure_size=(2.6, 1.2),
+        is_fitting=True,
+        n_bins=50,
     )
 
     ''' Pollutants-air quality '''
@@ -359,6 +498,23 @@ if __name__ == '__main__':
         figure_folder=figure_folder,
         filename='EPI_van_no_policy.png',
         xlabel='EPI',
+        n_bins=50,
+        is_fitting=True,
+        figure_size=(2.5, 1.5)
+    )
+
+    # only cb
+    metric = 'EPI'
+    plot_stat_one_group(
+        result_summary=np.array(all_scenario_emissions['cb'][metric]),
+        figure_folder=figure_folder,
+        filename='EPI_cb.png',
+        xlabel='EPI',
+        color="#A5D6A7",
+        alpha=0.8,
+        figure_size=(2.5, 1.5),
+        is_fitting=True,
+        n_bins=50,
     )
 
     ''' Weighted AQI '''
@@ -379,6 +535,24 @@ if __name__ == '__main__':
         car_summary=np.array(all_scenario_emissions['van'][metric]),
         figure_folder=figure_folder,
         filename='weighted_AQI_van_no_policy.png',
-        xlabel='Weighted AQI',)
-
+        xlabel='Weighted AQI',
+        n_bins=50,
+        is_fitting=True,
+        figure_size=(2.5, 1.5)
+        )
+    
+    # only cb
+    metric = 'weighted_AQI'
+    plot_stat_one_group(
+        result_summary=np.array(all_scenario_emissions['cb'][metric]),
+        figure_folder=figure_folder,
+        filename='weighted_AQI_cb.png',
+        xlabel='Weighted AQI',
+        color="#A5D6A7",
+        alpha=0.8,
+        figure_size=(2.5, 1.5),
+        is_fitting=True,
+        n_bins=50,
+    )
+    
     print('Done!')
