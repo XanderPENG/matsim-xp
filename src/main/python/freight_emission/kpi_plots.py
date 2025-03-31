@@ -155,6 +155,7 @@ def plot_stat_one_group(
     figure_size=(10, 6),
     is_fitting=True,
     n_bins=50,
+    **kwargs
 ):
     fig, ax = plt.subplots(figsize=figure_size, dpi=350)
     min_val = result_summary.min()
@@ -183,9 +184,12 @@ def plot_stat_one_group(
     # Hide the right and top spines
     plt.gca().spines["right"].set_visible(False)
     plt.gca().spines["top"].set_visible(False)
-
+    
     plt.xlabel(xlabel, fontsize=10, fontweight="bold")
     plt.ylabel("Density", fontsize=10, fontweight="bold")
+    if kwargs.get('hide_labels', True):
+        plt.xlabel('')
+        plt.ylabel('')
     plt.xticks(fontsize=10)
     plt.yticks(fontsize=10)
     plt.tight_layout()
@@ -204,6 +208,8 @@ if __name__ == '__main__':
     # 'cb'
     ]
     sa_scenario_kw_list = ['VanSA2t', 'CBSA80kg', 'CBSA100kg', 'CBSA150kg', 'CBSA200kg']  
+    sa_colors = ['#6184a1', '#f7f7e8', '#c7cfb7', '#9dad7f', '#557174']
+    sa_alphas = [0.6, 0.95, 0.9, 0.85, 0.8]
     figure_folder = r'../../../../figures/freightEmissions/KPIs/'
     sa_figure_folder = r'../../../../figures/freightEmissions/KPIs/SA/'
     os.makedirs(figure_folder, exist_ok=True)
@@ -564,131 +570,104 @@ if __name__ == '__main__':
             n_bins=50,
         )
     
-    def plot_sa_plots(sa_scenario_kw_list, sa_figure_folder):
+    def plot_sa_plots(sa_scenario_kw_list, sa_figure_folder, sa_colors, sa_alphas):
         ''' VKT '''
-        metric = 'vkt'
-        for scen_kw in sa_scenario_kw_list:
-            if 'Van' in scen_kw:
-                color_ = 'steelblue'
-                alpha_ = 0.6
-            else:
-                color_ = "#A5D6A7"
-                alpha_ = 0.8
+        metric = 'vkt' 
+        for scen_kw, scen_color, scen_alpha in zip(sa_scenario_kw_list, sa_colors, sa_alphas):
+            
             plot_stat_one_group(
                 result_summary=np.array(all_scenario_stats[scen_kw][metric]),
                 figure_folder=sa_figure_folder,
                 filename=f'{scen_kw}_vkt.png',
                 xlabel='VKT (km)',
-                color=color_,
-                alpha=alpha_,
+                color=scen_color,
+                alpha=scen_alpha,
                 figure_size=(2.5, 1.2),
                 is_fitting=True,
                 n_bins=50,
+                hide_labels=True
             )
         ''' Transit Time '''
         metric = 'total_transit_time'
-        for scen_kw in sa_scenario_kw_list:
-            if 'Van' in scen_kw:
-                color_ = 'steelblue'
-                alpha_ = 0.6
-            else:
-                color_ = "#A5D6A7"
-                alpha_ = 0.8
+        for scen_kw, scen_color, scen_alpha in zip(sa_scenario_kw_list, sa_colors, sa_alphas):
+
             plot_stat_one_group(
                 result_summary=np.array(all_scenario_stats[scen_kw][metric]),
                 figure_folder=sa_figure_folder,
                 filename=f'{scen_kw}_transit_time.png',
                 xlabel='Transit Time (min)',
-                color=color_,
-                alpha=alpha_,
+                color=scen_color,
+                alpha=scen_alpha,
                 figure_size=(2.5, 1.2),
                 is_fitting=True,
                 n_bins=50,
+                hide_labels=True
             )
         ''' Ton-km traveled '''
         metric = 'ton_km_traveled'
-        for scen_kw in sa_scenario_kw_list:
-            if 'Van' in scen_kw:
-                color_ = 'steelblue'
-                alpha_ = 0.6
-            else:
-                color_ = "#A5D6A7"
-                alpha_ = 0.8
+        for scen_kw, scen_color, scen_alpha in zip(sa_scenario_kw_list, sa_colors, sa_alphas):
             plot_stat_one_group(
                 result_summary=np.array(all_scenario_stats[scen_kw][metric]),
                 figure_folder=sa_figure_folder,
                 filename=f'{scen_kw}_ton_km_traveled.png',
                 xlabel='Ton-km traveled (ton·km)',
-                color=color_,
-                alpha=alpha_,
+                color=scen_color,
+                alpha=scen_alpha,
                 figure_size=(2.5, 1.2),
                 is_fitting=True,
                 n_bins=50,
+                hide_labels=True
             )
         ''' EPI '''
         metric = 'EPI'
-        for scen_kw in sa_scenario_kw_list:
-            if 'Van' in scen_kw:
-                color_ = 'steelblue'
-                alpha_ = 0.6
-            else:
-                color_ = "#A5D6A7"
-                alpha_ = 0.8
+        for scen_kw, scen_color, scen_alpha in zip(sa_scenario_kw_list, sa_colors, sa_alphas):
             plot_stat_one_group(
                 result_summary=np.array(all_scenario_emissions[scen_kw][metric]),
                 figure_folder=sa_figure_folder,
                 filename=f'{scen_kw}_EPI.png',
                 xlabel='EPI',
-                color=color_,
-                alpha=alpha_,
+                color=scen_color,
+                alpha=scen_alpha,
                 figure_size=(2.5, 1.2),
                 is_fitting=True,
                 n_bins=50,
+                hide_labels=True
             )
 
         ''' Weighted AQI '''
         metric = 'weighted_AQI'
-        for scen_kw in sa_scenario_kw_list:
-            if 'Van' in scen_kw:
-                color_ = 'steelblue'
-                alpha_ = 0.6
-            else:
-                color_ = "#A5D6A7"
-                alpha_ = 0.8
+        for scen_kw, scen_color, scen_alpha in zip(sa_scenario_kw_list, sa_colors, sa_alphas):
             plot_stat_one_group(
                 result_summary=np.array(all_scenario_emissions[scen_kw][metric]),
                 figure_folder=sa_figure_folder,
                 filename=f'{scen_kw}_weighted_AQI.png',
                 xlabel='Weighted AQI',
-                color=color_,
-                alpha=alpha_,
+                color=scen_color,
+                alpha=scen_alpha,
                 figure_size=(2.5, 1.2),
                 is_fitting=True,
                 n_bins=50,
+                hide_labels=True
             )
 
         ''' Pollutants-CO2e '''
         metric = pollutants.CO2e
-        for scen_kw in sa_scenario_kw_list:
-            if 'Van' in scen_kw:
-                color_ = 'steelblue'
-                alpha_ = 0.6
-            else:
-                color_ = "#A5D6A7"
-                alpha_ = 0.8
+        for scen_kw, scen_color, scen_alpha in zip(sa_scenario_kw_list, sa_colors, sa_alphas):
+            
             plot_stat_one_group(
                 result_summary=np.array(all_scenario_emissions[scen_kw][metric]),
                 figure_folder=sa_figure_folder,
                 filename=f'{scen_kw}_CO2e.png',
                 xlabel='WTW CO2-eq emissions (g)',
-                color=color_,
-                alpha=alpha_,
+                color=scen_color,
+                alpha=scen_alpha,
                 figure_size=(2.5, 1.2),
                 is_fitting=True,
                 n_bins=50,
+                hide_labels=True
             )
     
     # plot_main_plots(figure_folder)
-    plot_sa_plots(sa_scenario_kw_list, sa_figure_folder)
+    plot_sa_plots(sa_scenario_kw_list, sa_figure_folder, sa_colors, sa_alphas)
 
     print('Done!')
