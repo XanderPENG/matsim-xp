@@ -74,13 +74,21 @@ public class RunFreightEmissionScenarioV2 {
             }
 
             // Run the scenario for basic-VAN
-            runFreightEmissionScenario(ScenarioType.BASIC, i, network, carrierShipments, depotLinks);
+//            runFreightEmissionScenario(ScenarioType.BASIC, i, network, carrierShipments, depotLinks);
             // Run the scenario for van-circulation
             Network carNetwork = RunAddHbefaRoadType2Network.deriveSubNetwork(network, TransportMode.car);
-            runFreightEmissionScenario(ScenarioType.VAN, i, carNetwork, carrierShipments, depotLinks);
+//            runFreightEmissionScenario(ScenarioType.VAN, i, carNetwork, carrierShipments, depotLinks);
             // Run the scenario for CARGO_BIKE-circulation
             Network bikeNetwork = RunAddHbefaRoadType2Network.deriveSubNetwork(network, TransportMode.bike);
-            runFreightEmissionScenario(ScenarioType.CARGO_BIKE, i, bikeNetwork, carrierShipments, depotLinks);
+//            runFreightEmissionScenario(ScenarioType.CARGO_BIKE, i, bikeNetwork, carrierShipments, depotLinks);
+
+            // Run the sensitivity analysis for loading capacity
+            runFreightEmissionScenario(ScenarioType.SA_VAN_2t, i, carNetwork, carrierShipments, depotLinks);
+            runFreightEmissionScenario(ScenarioType.SA_CB_80kg, i, bikeNetwork, carrierShipments, depotLinks);
+            runFreightEmissionScenario(ScenarioType.SA_CB_100kg, i, bikeNetwork, carrierShipments, depotLinks);
+            runFreightEmissionScenario(ScenarioType.SA_CB_150kg, i, bikeNetwork, carrierShipments, depotLinks);
+            runFreightEmissionScenario(ScenarioType.SA_CB_200kg, i, bikeNetwork, carrierShipments, depotLinks);
+
 
         }
     }
@@ -88,7 +96,7 @@ public class RunFreightEmissionScenarioV2 {
     static void runFreightEmissionScenario(ScenarioType scenarioType, int iterIdx, Network network,
                                            Map<Integer, Set<CarrierShipment>> carrierShipments,
                                            Map<Integer, Set<Id<Link>>> depotLinks) {
-        assert scenarioType == ScenarioType.VAN || scenarioType == ScenarioType.CARGO_BIKE || scenarioType == ScenarioType.BASIC;
+//        assert scenarioType == ScenarioType.VAN || scenarioType == ScenarioType.CARGO_BIKE || scenarioType == ScenarioType.BASIC;
 
         String outputScenarioDir = null;
         String hbefaKeyWord = null;
@@ -118,6 +126,41 @@ public class RunFreightEmissionScenarioV2 {
                 hbefaKeyWord = "MC";
                 configInputNetworkPath = "../../bikeGemeenteLeuvenWithHbefaType.xml.gz";
                 break;
+            case SA_VAN_2t:
+                outputScenarioDir = "../../data/intermediate/test/freightEmissions/scenarioVanSA2t/";
+                vehicleType = FreightVehicleTypeFactory.createDefaultVan("Van2t");
+                vehicleType.getCapacity().setOther(2000);  // 2t
+                hbefaKeyWord = "LCV";
+                configInputNetworkPath = "../../carGemeenteLeuvenWithHbefaType.xml.gz";
+                break;
+            case SA_CB_80kg:
+                outputScenarioDir = "../../data/intermediate/test/freightEmissions/scenarioCBSA80kg/";
+                vehicleType = FreightVehicleTypeFactory.createDefaultCargoBike("CB80kg");
+                vehicleType.getCapacity().setOther(80);  // 80kg
+                hbefaKeyWord = "MC";
+                configInputNetworkPath = "../../bikeGemeenteLeuvenWithHbefaType.xml.gz";
+                break;
+            case SA_CB_100kg:
+                outputScenarioDir = "../../data/intermediate/test/freightEmissions/scenarioCBSA100kg/";
+                vehicleType = FreightVehicleTypeFactory.createDefaultCargoBike("CB100kg");
+                vehicleType.getCapacity().setOther(100);  // 100kg
+                hbefaKeyWord = "MC";
+                configInputNetworkPath = "../../bikeGemeenteLeuvenWithHbefaType.xml.gz";
+                break;
+            case SA_CB_150kg:
+                outputScenarioDir = "../../data/intermediate/test/freightEmissions/scenarioCBSA150kg/";
+                vehicleType = FreightVehicleTypeFactory.createDefaultCargoBike("CB150kg");
+                vehicleType.getCapacity().setOther(150);  // 150kg
+                hbefaKeyWord = "MC";
+                configInputNetworkPath = "../../bikeGemeenteLeuvenWithHbefaType.xml.gz";
+                break;
+            case SA_CB_200kg:
+                outputScenarioDir = "../../data/intermediate/test/freightEmissions/scenarioCBSA200kg/";
+                vehicleType = FreightVehicleTypeFactory.createDefaultCargoBike("CB200kg");
+                vehicleType.getCapacity().setOther(200);  // 200kg
+                hbefaKeyWord = "MC";
+                configInputNetworkPath = "../../bikeGemeenteLeuvenWithHbefaType.xml.gz";
+                break;
         }
 
         // Check if the dir exists in the disk, if not, create it
@@ -129,7 +172,7 @@ public class RunFreightEmissionScenarioV2 {
         }
         logger.info("Setting the carriers");
         CarrierPlanGeneration carrierPlanGeneration;
-        if (scenarioType == ScenarioType.CARGO_BIKE) {
+        if (scenarioType == ScenarioType.CARGO_BIKE || scenarioType == ScenarioType.SA_CB_80kg || scenarioType == ScenarioType.SA_CB_100kg || scenarioType == ScenarioType.SA_CB_150kg || scenarioType == ScenarioType.SA_CB_200kg) {
             carrierPlanGeneration = new CarrierPlanGeneration(network, NUM_CARRIERS, 1000, vehicleTypes, carrierShipments, depotLinks);
         }else {
             carrierPlanGeneration = new CarrierPlanGeneration(network, NUM_CARRIERS, NUM_JSPRIT_ITERATIONS, vehicleTypes, carrierShipments, depotLinks);
@@ -227,7 +270,18 @@ public class RunFreightEmissionScenarioV2 {
     enum ScenarioType {
         BASIC,  // Basic scenario-van
         VAN,
-        CARGO_BIKE
+        CARGO_BIKE,
+        // Sensitivity analysis for loading capacity
+        SA_VAN_2t,
+        SA_CB_80kg,
+        SA_CB_100kg,
+        SA_CB_150kg,
+        SA_CB_200kg,
+        // sensitivity analysis for emission factors
+        SA_VAN_EFA_DIESEL,  // LCV Diesel N1-III EURO-6
+//        SA_VAN_EFA_EV,  // LCV EV N1-III; no CO2e emission
+
+
     }
 
     private static class MyCarrierScoringFunctionFactory implements CarrierScoringFunctionFactory {

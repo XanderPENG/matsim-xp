@@ -134,8 +134,8 @@ def plot_stat_comparison_two_groups(
     plt.gca().spines["right"].set_visible(False)
     plt.gca().spines["top"].set_visible(False)
 
-    plt.xlabel(xlabel, fontsize=12, fontweight="bold")
-    plt.ylabel("Density", fontsize=12, fontweight="bold")
+    plt.xlabel(xlabel, fontsize=10, fontweight="bold")
+    plt.ylabel("Density", fontsize=10, fontweight="bold")
     plt.xticks(fontsize=10)
     plt.yticks(fontsize=10)
     plt.tight_layout()
@@ -184,8 +184,8 @@ def plot_stat_one_group(
     plt.gca().spines["right"].set_visible(False)
     plt.gca().spines["top"].set_visible(False)
 
-    plt.xlabel(xlabel, fontsize=12, fontweight="bold")
-    plt.ylabel("Density", fontsize=12, fontweight="bold")
+    plt.xlabel(xlabel, fontsize=10, fontweight="bold")
+    plt.ylabel("Density", fontsize=10, fontweight="bold")
     plt.xticks(fontsize=10)
     plt.yticks(fontsize=10)
     plt.tight_layout()
@@ -198,361 +198,497 @@ def plot_stat_one_group(
 if __name__ == '__main__':
     ''' Some settings '''
     iter_list = list(range(300, 400))
-    scenario_kw_list = ['basic', 'van', 'cb']
+    scenario_kw_list = [
+    # 'basic',
+    # 'van', 
+    # 'cb'
+    ]
+    sa_scenario_kw_list = ['VanSA2t', 'CBSA80kg', 'CBSA100kg', 'CBSA150kg', 'CBSA200kg']  
     figure_folder = r'../../../../figures/freightEmissions/KPIs/'
+    sa_figure_folder = r'../../../../figures/freightEmissions/KPIs/SA/'
     os.makedirs(figure_folder, exist_ok=True)
+    os.makedirs(sa_figure_folder, exist_ok=True)
 
     plt.rcParams["font.sans-serif"] = "Arial"
 
     # Load all the scenario stats
-    all_scenario_stats = fea.load_all_scenario_stats(scenario_kw_list=scenario_kw_list, iter_list=iter_list)
-    all_scenario_emissions = fea.load_all_scenario_emission_stats(scenario_kw_list=scenario_kw_list, iter_list=iter_list)
+    all_scenario_stats = fea.load_all_scenario_stats(scenario_kw_list=scenario_kw_list+sa_scenario_kw_list,
+                                                     iter_list=iter_list)
+    all_scenario_emissions = fea.load_all_scenario_emission_stats(scenario_kw_list=scenario_kw_list+sa_scenario_kw_list, 
+                                                                  iter_list=iter_list)
+    def plot_main_plots(figure_folder,):
+        ''' VKT '''
+        metric = 'vkt'
+        plot_stat_comparison(
+            no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
+            car_summary=np.array(all_scenario_stats['van'][metric]),
+            bike_summary=np.array(all_scenario_stats['cb'][metric]),
+            figure_folder=figure_folder,
+            filename='vkt.png',
+            xlabel='VKT (km)',
+            # n_bins=50,
+            is_fitting=True,
+            figure_size=(6.2, 2.2)
 
-    ''' VKT '''
-    metric = 'vkt'
-    plot_stat_comparison(
-        no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
-        car_summary=np.array(all_scenario_stats['van'][metric]),
-        bike_summary=np.array(all_scenario_stats['cb'][metric]),
-        figure_folder=figure_folder,
-        filename='vkt.png',
-        xlabel='VKT (km)',
-        # n_bins=50,
-        is_fitting=True,
-        figure_size=(6.2, 2.2)
+        )
 
-    )
+        # Only compare van and no policy
+        metric = 'vkt'
+        plot_stat_comparison_two_groups(
+            no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
+            car_summary=np.array(all_scenario_stats['van'][metric]),
+            figure_folder=figure_folder,
+            filename='vkt_van_no_policy.png',
+            xlabel='VKT (km)',
+            n_bins=50,
+            is_fitting=True,
+            figure_size=(2.5, 1.2)
+        )
 
-    # Only compare van and no policy
-    metric = 'vkt'
-    plot_stat_comparison_two_groups(
-        no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
-        car_summary=np.array(all_scenario_stats['van'][metric]),
-        figure_folder=figure_folder,
-        filename='vkt_van_no_policy.png',
-        xlabel='VKT (km)',
-        n_bins=50,
-        is_fitting=True,
-        figure_size=(2.8, 1.2)
-    )
+        # only cb 
+        metric = 'vkt'
+        plot_stat_one_group(
+            result_summary=np.array(all_scenario_stats['cb'][metric]),
+            figure_folder=figure_folder,
+            filename='vkt_cb.png',
+            xlabel='VKT (km)',
+            color="#A5D6A7",
+            alpha=0.8,
+            figure_size=(2.5, 1.2),
+            is_fitting=True,
+            n_bins=50,
+        )
 
-    # only cb 
-    metric = 'vkt'
-    plot_stat_one_group(
-        result_summary=np.array(all_scenario_stats['cb'][metric]),
-        figure_folder=figure_folder,
-        filename='vkt_cb.png',
-        xlabel='VKT (km)',
-        color="#A5D6A7",
-        alpha=0.8,
-        figure_size=(2.8, 1.2),
-        is_fitting=True,
-        n_bins=50,
-    )
+        ''' Transit VKT '''
+        metric = 'transit_vkt'
+        plot_stat_comparison(
+            no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
+            car_summary=np.array(all_scenario_stats['van'][metric]),
+            bike_summary=np.array(all_scenario_stats['cb'][metric]),
+            figure_folder=figure_folder,
+            filename='transit_vkt.png',
+            xlabel='Transit VKT (km)',
+            figure_size=(3.9, 2.6)
+        )
 
-    ''' Transit VKT '''
-    metric = 'transit_vkt'
-    plot_stat_comparison(
-        no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
-        car_summary=np.array(all_scenario_stats['van'][metric]),
-        bike_summary=np.array(all_scenario_stats['cb'][metric]),
-        figure_folder=figure_folder,
-        filename='transit_vkt.png',
-        xlabel='Transit VKT (km)',
-        figure_size=(3.9, 2.6)
-    )
+        # Only compare van and no policy
+        metric = 'transit_vkt'
+        plot_stat_comparison_two_groups(
+            no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
+            car_summary=np.array(all_scenario_stats['van'][metric]),
+            figure_folder=figure_folder,
+            filename='transit_vkt_van_no_policy.png',
+            xlabel='Transit VKT (km)',
+        )
 
-    # Only compare van and no policy
-    metric = 'transit_vkt'
-    plot_stat_comparison_two_groups(
-        no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
-        car_summary=np.array(all_scenario_stats['van'][metric]),
-        figure_folder=figure_folder,
-        filename='transit_vkt_van_no_policy.png',
-        xlabel='Transit VKT (km)',
-    )
+        ''' Transit Time '''
+        metric = 'total_transit_time'
+        plot_stat_comparison(
+            no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
+            car_summary=np.array(all_scenario_stats['van'][metric]),
+            bike_summary=np.array(all_scenario_stats['cb'][metric]),
+            figure_folder=figure_folder,
+            filename='transit_time.png',
+            xlabel='Transit Time (min)',
+            figure_size=(6.2, 2.2),
+            is_fitting=True,
+        )
 
-    ''' Transit Time '''
-    metric = 'total_transit_time'
-    plot_stat_comparison(
-        no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
-        car_summary=np.array(all_scenario_stats['van'][metric]),
-        bike_summary=np.array(all_scenario_stats['cb'][metric]),
-        figure_folder=figure_folder,
-        filename='transit_time.png',
-        xlabel='Transit Time (min)',
-        figure_size=(6.2, 2.2),
-        is_fitting=True,
-    )
+        # Only compare van and no policy
+        metric = 'total_transit_time'
+        plot_stat_comparison_two_groups(
+            no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
+            car_summary=np.array(all_scenario_stats['van'][metric]),
+            figure_folder=figure_folder,
+            filename='transit_time_van_no_policy.png',
+            xlabel='Transit Time (min)',
+            n_bins=50,
+            is_fitting=True,
+            figure_size=(2.5, 1.2)
+        )
 
-    # Only compare van and no policy
-    metric = 'total_transit_time'
-    plot_stat_comparison_two_groups(
-        no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
-        car_summary=np.array(all_scenario_stats['van'][metric]),
-        figure_folder=figure_folder,
-        filename='transit_time_van_no_policy.png',
-        xlabel='Transit Time (min)',
-        n_bins=50,
-        is_fitting=True,
-        figure_size=(2.8, 1.2)
-    )
+        # only cb
+        metric = 'total_transit_time'
+        plot_stat_one_group(
+            result_summary=np.array(all_scenario_stats['cb'][metric]),
+            figure_folder=figure_folder,
+            filename='transit_time_cb.png',
+            xlabel='Transit Time (min)',
+            color="#A5D6A7",
+            alpha=0.8,
+            figure_size=(2.5, 1.2),
+            is_fitting=True,
+            n_bins=50,
+        )
 
-    # only cb
-    metric = 'total_transit_time'
-    plot_stat_one_group(
-        result_summary=np.array(all_scenario_stats['cb'][metric]),
-        figure_folder=figure_folder,
-        filename='transit_time_cb.png',
-        xlabel='Transit Time (min)',
-        color="#A5D6A7",
-        alpha=0.8,
-        figure_size=(2.8, 1.2),
-        is_fitting=True,
-        n_bins=50,
-    )
+        ''' Ton-km traveled '''
+        metric = 'ton_km_traveled'
+        plot_stat_comparison(
+            no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
+            car_summary=np.array(all_scenario_stats['van'][metric]),
+            bike_summary=np.array(all_scenario_stats['cb'][metric]),
+            figure_folder=figure_folder,
+            filename='ton_km_traveled.png',
+            xlabel='Ton-km traveled (ton·km)',
+            figure_size=(6.2, 2.2),
+            is_fitting=True,
 
-    ''' Ton-km traveled '''
-    metric = 'ton_km_traveled'
-    plot_stat_comparison(
-        no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
-        car_summary=np.array(all_scenario_stats['van'][metric]),
-        bike_summary=np.array(all_scenario_stats['cb'][metric]),
-        figure_folder=figure_folder,
-        filename='ton_km_traveled.png',
-        xlabel='Ton-km traveled (ton·km)',
-        figure_size=(6.2, 2.2),
-        is_fitting=True,
+        )
 
-    )
+        # Only compare van and no policy
+        metric = 'ton_km_traveled'
+        plot_stat_comparison_two_groups(
+            no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
+            car_summary=np.array(all_scenario_stats['van'][metric]),
+            figure_folder=figure_folder,
+            filename='ton_km_traveled_van_no_policy.png',
+            xlabel='Ton-km traveled (ton-km)',
+            n_bins=50,
+            is_fitting=True,
+            figure_size=(2.5, 1.2)
+        )
 
-    # Only compare van and no policy
-    metric = 'ton_km_traveled'
-    plot_stat_comparison_two_groups(
-        no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
-        car_summary=np.array(all_scenario_stats['van'][metric]),
-        figure_folder=figure_folder,
-        filename='ton_km_traveled_van_no_policy.png',
-        xlabel='Ton-km traveled (ton-km)',
-        n_bins=50,
-        is_fitting=True,
-        figure_size=(2.8, 1.2)
-    )
+        # only cb
+        metric = 'ton_km_traveled'
+        plot_stat_one_group(
+            result_summary=np.array(all_scenario_stats['cb'][metric]),
+            figure_folder=figure_folder,
+            filename='ton_km_traveled_cb.png',
+            xlabel='Ton-km traveled (ton·km)',
+            color="#A5D6A7",
+            alpha=0.8,
+            figure_size=(2.5, 1.2),
+            is_fitting=True,
+            n_bins=50,
+        )
 
-    # only cb
-    metric = 'ton_km_traveled'
-    plot_stat_one_group(
-        result_summary=np.array(all_scenario_stats['cb'][metric]),
-        figure_folder=figure_folder,
-        filename='ton_km_traveled_cb.png',
-        xlabel='Ton-km traveled (ton·km)',
-        color="#A5D6A7",
-        alpha=0.8,
-        figure_size=(2.8, 1.2),
-        is_fitting=True,
-        n_bins=50,
-    )
+        ''' Transit Time per Ton '''
+        metric = 'transit_vkt_per_ton'
+        plot_stat_comparison(
+            no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
+            car_summary=np.array(all_scenario_stats['van'][metric]),
+            bike_summary=np.array(all_scenario_stats['cb'][metric]),
+            figure_folder=figure_folder,
+            filename='transit_vkt_per_ton.png',
+            xlabel='Transit VKT per ton (Km/ton)',
+        )
 
-    ''' Transit Time per Ton '''
-    metric = 'transit_vkt_per_ton'
-    plot_stat_comparison(
-        no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
-        car_summary=np.array(all_scenario_stats['van'][metric]),
-        bike_summary=np.array(all_scenario_stats['cb'][metric]),
-        figure_folder=figure_folder,
-        filename='transit_vkt_per_ton.png',
-        xlabel='Transit VKT per ton (Km/ton)',
-    )
+        # Only compare van and no policy
+        metric = 'transit_vkt_per_ton'
+        plot_stat_comparison_two_groups(
+            no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
+            car_summary=np.array(all_scenario_stats['van'][metric]),
+            figure_folder=figure_folder,
+            filename='transit_vkt_per_ton_van_no_policy.png',
+            xlabel='Transit VKT per ton (Km/ton)',
+        )
 
-    # Only compare van and no policy
-    metric = 'transit_vkt_per_ton'
-    plot_stat_comparison_two_groups(
-        no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
-        car_summary=np.array(all_scenario_stats['van'][metric]),
-        figure_folder=figure_folder,
-        filename='transit_vkt_per_ton_van_no_policy.png',
-        xlabel='Transit VKT per ton (Km/ton)',
-    )
+        ''' Transit Time per Ton '''
+        metric = 'transit_time_per_ton'
+        plot_stat_comparison(
+            no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
+            car_summary=np.array(all_scenario_stats['van'][metric]),
+            bike_summary=np.array(all_scenario_stats['cb'][metric]),
+            figure_folder=figure_folder,
+            filename='transit_time_per_ton.png',
+            xlabel='Transit Time per ton (min/ton)',
+        )
 
-    ''' Transit Time per Ton '''
-    metric = 'transit_time_per_ton'
-    plot_stat_comparison(
-        no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
-        car_summary=np.array(all_scenario_stats['van'][metric]),
-        bike_summary=np.array(all_scenario_stats['cb'][metric]),
-        figure_folder=figure_folder,
-        filename='transit_time_per_ton.png',
-        xlabel='Transit Time per ton (min/ton)',
-    )
+        # Only compare van and no policy
+        metric = 'transit_time_per_ton'
+        plot_stat_comparison_two_groups(
+            no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
+            car_summary=np.array(all_scenario_stats['van'][metric]),
+            figure_folder=figure_folder,
+            filename='transit_time_per_ton_van_no_policy.png',
+            xlabel='Transit Time per ton (min/ton)',
+        )
 
-    # Only compare van and no policy
-    metric = 'transit_time_per_ton'
-    plot_stat_comparison_two_groups(
-        no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
-        car_summary=np.array(all_scenario_stats['van'][metric]),
-        figure_folder=figure_folder,
-        filename='transit_time_per_ton_van_no_policy.png',
-        xlabel='Transit Time per ton (min/ton)',
-    )
+        ''' Number of vehicles '''
+        metric = 'number_of_vehicle'
+        plot_stat_comparison(
+            no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
+            car_summary=np.array(all_scenario_stats['van'][metric]),
+            bike_summary=np.array(all_scenario_stats['cb'][metric]),
+            figure_folder=figure_folder,
+            filename='number_of_vehicle.png',
+            xlabel='Number of vehicles',
+        )
 
-    ''' Number of vehicles '''
-    metric = 'number_of_vehicle'
-    plot_stat_comparison(
-        no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
-        car_summary=np.array(all_scenario_stats['van'][metric]),
-        bike_summary=np.array(all_scenario_stats['cb'][metric]),
-        figure_folder=figure_folder,
-        filename='number_of_vehicle.png',
-        xlabel='Number of vehicles',
-    )
+        # Only compare van and no policy
+        metric = 'number_of_vehicle'
+        plot_stat_comparison_two_groups(
+            no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
+            car_summary=np.array(all_scenario_stats['van'][metric]),
+            figure_folder=figure_folder,
+            filename='number_of_vehicle_van_no_policy.png',
+            xlabel='Number of vehicles',
+        )
 
-    # Only compare van and no policy
-    metric = 'number_of_vehicle'
-    plot_stat_comparison_two_groups(
-        no_policy_summary=np.array(all_scenario_stats['basic'][metric]),
-        car_summary=np.array(all_scenario_stats['van'][metric]),
-        figure_folder=figure_folder,
-        filename='number_of_vehicle_van_no_policy.png',
-        xlabel='Number of vehicles',
-    )
+        ''' Pollutants-CO2e'''
+        metric = pollutants.CO2e
+        plot_stat_comparison(
+            no_policy_summary=np.array(all_scenario_emissions['basic'][metric]),
+            car_summary=np.array(all_scenario_emissions['van'][metric]),
+            bike_summary=np.array(all_scenario_emissions['cb'][metric]),
+            figure_folder=figure_folder,
+            filename='CO2e.png',
+            xlabel='WTW CO2-eq emissions (g)',
+            figure_size=(5.5, 3),
+            is_fitting=True,
+        )
 
-    ''' Pollutants-CO2e'''
-    metric = pollutants.CO2e
-    plot_stat_comparison(
-        no_policy_summary=np.array(all_scenario_emissions['basic'][metric]),
-        car_summary=np.array(all_scenario_emissions['van'][metric]),
-        bike_summary=np.array(all_scenario_emissions['cb'][metric]),
-        figure_folder=figure_folder,
-        filename='CO2e.png',
-        xlabel='WTW CO2-eq emissions (g)',
-        figure_size=(5.5, 3),
-        is_fitting=True,
-    )
+        # Only compare van and no policy
+        metric = pollutants.CO2e
+        plot_stat_comparison_two_groups(
+            no_policy_summary=np.array(all_scenario_emissions['basic'][metric]),
+            car_summary=np.array(all_scenario_emissions['van'][metric]),
+            figure_folder=figure_folder,
+            filename='CO2e_van_no_policy.png',
+            xlabel='WTW CO2-eq emissions (g)',
+            n_bins=50,
+            is_fitting=True,
+            figure_size=(2.6, 1.2)
+        )
 
-    # Only compare van and no policy
-    metric = pollutants.CO2e
-    plot_stat_comparison_two_groups(
-        no_policy_summary=np.array(all_scenario_emissions['basic'][metric]),
-        car_summary=np.array(all_scenario_emissions['van'][metric]),
-        figure_folder=figure_folder,
-        filename='CO2e_van_no_policy.png',
-        xlabel='WTW CO2-eq emissions (g)',
-        n_bins=50,
-        is_fitting=True,
-        figure_size=(2.6, 1.2)
-    )
+        # only cb
+        metric = pollutants.CO2e
+        plot_stat_one_group(
+            result_summary=np.array(all_scenario_emissions['cb'][metric]),
+            figure_folder=figure_folder,
+            filename='CO2e_cb.png',
+            xlabel='WTW CO2-eq emissions (g)',
+            color="#A5D6A7",
+            alpha=0.8,
+            figure_size=(2.6, 1.2),
+            is_fitting=True,
+            n_bins=50,
+        )
 
-    # only cb
-    metric = pollutants.CO2e
-    plot_stat_one_group(
-        result_summary=np.array(all_scenario_emissions['cb'][metric]),
-        figure_folder=figure_folder,
-        filename='CO2e_cb.png',
-        xlabel='WTW CO2-eq emissions (g)',
-        color="#A5D6A7",
-        alpha=0.8,
-        figure_size=(2.6, 1.2),
-        is_fitting=True,
-        n_bins=50,
-    )
+        ''' Pollutants-air quality '''
+        metric = 'air_quality_pollutants'
+        plot_stat_comparison(
+            no_policy_summary=np.array(all_scenario_emissions['basic'][metric]),
+            car_summary=np.array(all_scenario_emissions['van'][metric]),
+            bike_summary=np.array(all_scenario_emissions['cb'][metric]),
+            figure_folder=figure_folder,
+            filename='air_quality.png',
+            xlabel='Air quality emissions (g)',
+        )
 
-    ''' Pollutants-air quality '''
-    metric = 'air_quality_pollutants'
-    plot_stat_comparison(
-        no_policy_summary=np.array(all_scenario_emissions['basic'][metric]),
-        car_summary=np.array(all_scenario_emissions['van'][metric]),
-        bike_summary=np.array(all_scenario_emissions['cb'][metric]),
-        figure_folder=figure_folder,
-        filename='air_quality.png',
-        xlabel='Air quality emissions (g)',
-    )
+        # Only compare van and no policy
+        metric = 'air_quality_pollutants'
+        plot_stat_comparison_two_groups(
+            no_policy_summary=np.array(all_scenario_emissions['basic'][metric]),
+            car_summary=np.array(all_scenario_emissions['van'][metric]),
+            figure_folder=figure_folder,
+            filename='air_quality_van_no_policy.png',
+            xlabel='Air quality emissions (g)',
+        )
 
-    # Only compare van and no policy
-    metric = 'air_quality_pollutants'
-    plot_stat_comparison_two_groups(
-        no_policy_summary=np.array(all_scenario_emissions['basic'][metric]),
-        car_summary=np.array(all_scenario_emissions['van'][metric]),
-        figure_folder=figure_folder,
-        filename='air_quality_van_no_policy.png',
-        xlabel='Air quality emissions (g)',
-    )
+        ''' EPI '''
+        metric = 'EPI'
+        plot_stat_comparison(
+            no_policy_summary=np.array(all_scenario_emissions['basic'][metric]),
+            car_summary=np.array(all_scenario_emissions['van'][metric]),
+            bike_summary=np.array(all_scenario_emissions['cb'][metric]),
+            figure_folder=figure_folder,
+            filename='EPI.png',
+            xlabel='EPI',
+            is_fitting=True,
+            figure_size=(5.5, 3),
+        )
 
-    ''' EPI '''
-    metric = 'EPI'
-    plot_stat_comparison(
-        no_policy_summary=np.array(all_scenario_emissions['basic'][metric]),
-        car_summary=np.array(all_scenario_emissions['van'][metric]),
-        bike_summary=np.array(all_scenario_emissions['cb'][metric]),
-        figure_folder=figure_folder,
-        filename='EPI.png',
-        xlabel='EPI',
-        is_fitting=True,
-        figure_size=(5.5, 3),
-    )
+        # Only compare van and no policy
+        metric = 'EPI'
+        plot_stat_comparison_two_groups(
+            no_policy_summary=np.array(all_scenario_emissions['basic'][metric]),
+            car_summary=np.array(all_scenario_emissions['van'][metric]),
+            figure_folder=figure_folder,
+            filename='EPI_van_no_policy.png',
+            xlabel='EPI',
+            n_bins=50,
+            is_fitting=True,
+            figure_size=(2.4, 1.5)
+        )
 
-    # Only compare van and no policy
-    metric = 'EPI'
-    plot_stat_comparison_two_groups(
-        no_policy_summary=np.array(all_scenario_emissions['basic'][metric]),
-        car_summary=np.array(all_scenario_emissions['van'][metric]),
-        figure_folder=figure_folder,
-        filename='EPI_van_no_policy.png',
-        xlabel='EPI',
-        n_bins=50,
-        is_fitting=True,
-        figure_size=(2.5, 1.5)
-    )
+        # only cb
+        metric = 'EPI'
+        plot_stat_one_group(
+            result_summary=np.array(all_scenario_emissions['cb'][metric]),
+            figure_folder=figure_folder,
+            filename='EPI_cb.png',
+            xlabel='EPI',
+            color="#A5D6A7",
+            alpha=0.8,
+            figure_size=(2.4, 1.5),
+            is_fitting=True,
+            n_bins=50,
+        )
 
-    # only cb
-    metric = 'EPI'
-    plot_stat_one_group(
-        result_summary=np.array(all_scenario_emissions['cb'][metric]),
-        figure_folder=figure_folder,
-        filename='EPI_cb.png',
-        xlabel='EPI',
-        color="#A5D6A7",
-        alpha=0.8,
-        figure_size=(2.5, 1.5),
-        is_fitting=True,
-        n_bins=50,
-    )
+        ''' Weighted AQI '''
+        metric = 'weighted_AQI'
+        plot_stat_comparison(
+            no_policy_summary=np.array(all_scenario_emissions['basic'][metric]),
+            car_summary=np.array(all_scenario_emissions['van'][metric]),
+            bike_summary=np.array(all_scenario_emissions['cb'][metric]),
+            figure_folder=figure_folder,
+            filename='weighted_AQI.png',
+            xlabel='Weighted AQI',
+        )
 
-    ''' Weighted AQI '''
-    metric = 'weighted_AQI'
-    plot_stat_comparison(
-        no_policy_summary=np.array(all_scenario_emissions['basic'][metric]),
-        car_summary=np.array(all_scenario_emissions['van'][metric]),
-        bike_summary=np.array(all_scenario_emissions['cb'][metric]),
-        figure_folder=figure_folder,
-        filename='weighted_AQI.png',
-        xlabel='Weighted AQI',
-    )
-
-    # Only compare van and no policy
-    metric = 'weighted_AQI'
-    plot_stat_comparison_two_groups(
-        no_policy_summary=np.array(all_scenario_emissions['basic'][metric]),
-        car_summary=np.array(all_scenario_emissions['van'][metric]),
-        figure_folder=figure_folder,
-        filename='weighted_AQI_van_no_policy.png',
-        xlabel='Weighted AQI',
-        n_bins=50,
-        is_fitting=True,
-        figure_size=(2.5, 1.5)
+        # Only compare van and no policy
+        metric = 'weighted_AQI'
+        plot_stat_comparison_two_groups(
+            no_policy_summary=np.array(all_scenario_emissions['basic'][metric]),
+            car_summary=np.array(all_scenario_emissions['van'][metric]),
+            figure_folder=figure_folder,
+            filename='weighted_AQI_van_no_policy.png',
+            xlabel='Weighted AQI',
+            n_bins=50,
+            is_fitting=True,
+            figure_size=(2.5, 1.5)
+            )
+        
+        # only cb
+        metric = 'weighted_AQI'
+        plot_stat_one_group(
+            result_summary=np.array(all_scenario_emissions['cb'][metric]),
+            figure_folder=figure_folder,
+            filename='weighted_AQI_cb.png',
+            xlabel='Weighted AQI',
+            color="#A5D6A7",
+            alpha=0.8,
+            figure_size=(2.5, 1.5),
+            is_fitting=True,
+            n_bins=50,
         )
     
-    # only cb
-    metric = 'weighted_AQI'
-    plot_stat_one_group(
-        result_summary=np.array(all_scenario_emissions['cb'][metric]),
-        figure_folder=figure_folder,
-        filename='weighted_AQI_cb.png',
-        xlabel='Weighted AQI',
-        color="#A5D6A7",
-        alpha=0.8,
-        figure_size=(2.5, 1.5),
-        is_fitting=True,
-        n_bins=50,
-    )
+    def plot_sa_plots(sa_scenario_kw_list, sa_figure_folder):
+        ''' VKT '''
+        metric = 'vkt'
+        for scen_kw in sa_scenario_kw_list:
+            if 'Van' in scen_kw:
+                color_ = 'steelblue'
+                alpha_ = 0.6
+            else:
+                color_ = "#A5D6A7"
+                alpha_ = 0.8
+            plot_stat_one_group(
+                result_summary=np.array(all_scenario_stats[scen_kw][metric]),
+                figure_folder=sa_figure_folder,
+                filename=f'{scen_kw}_vkt.png',
+                xlabel='VKT (km)',
+                color=color_,
+                alpha=alpha_,
+                figure_size=(2.5, 1.2),
+                is_fitting=True,
+                n_bins=50,
+            )
+        ''' Transit Time '''
+        metric = 'total_transit_time'
+        for scen_kw in sa_scenario_kw_list:
+            if 'Van' in scen_kw:
+                color_ = 'steelblue'
+                alpha_ = 0.6
+            else:
+                color_ = "#A5D6A7"
+                alpha_ = 0.8
+            plot_stat_one_group(
+                result_summary=np.array(all_scenario_stats[scen_kw][metric]),
+                figure_folder=sa_figure_folder,
+                filename=f'{scen_kw}_transit_time.png',
+                xlabel='Transit Time (min)',
+                color=color_,
+                alpha=alpha_,
+                figure_size=(2.5, 1.2),
+                is_fitting=True,
+                n_bins=50,
+            )
+        ''' Ton-km traveled '''
+        metric = 'ton_km_traveled'
+        for scen_kw in sa_scenario_kw_list:
+            if 'Van' in scen_kw:
+                color_ = 'steelblue'
+                alpha_ = 0.6
+            else:
+                color_ = "#A5D6A7"
+                alpha_ = 0.8
+            plot_stat_one_group(
+                result_summary=np.array(all_scenario_stats[scen_kw][metric]),
+                figure_folder=sa_figure_folder,
+                filename=f'{scen_kw}_ton_km_traveled.png',
+                xlabel='Ton-km traveled (ton·km)',
+                color=color_,
+                alpha=alpha_,
+                figure_size=(2.5, 1.2),
+                is_fitting=True,
+                n_bins=50,
+            )
+        ''' EPI '''
+        metric = 'EPI'
+        for scen_kw in sa_scenario_kw_list:
+            if 'Van' in scen_kw:
+                color_ = 'steelblue'
+                alpha_ = 0.6
+            else:
+                color_ = "#A5D6A7"
+                alpha_ = 0.8
+            plot_stat_one_group(
+                result_summary=np.array(all_scenario_emissions[scen_kw][metric]),
+                figure_folder=sa_figure_folder,
+                filename=f'{scen_kw}_EPI.png',
+                xlabel='EPI',
+                color=color_,
+                alpha=alpha_,
+                figure_size=(2.5, 1.2),
+                is_fitting=True,
+                n_bins=50,
+            )
+
+        ''' Weighted AQI '''
+        metric = 'weighted_AQI'
+        for scen_kw in sa_scenario_kw_list:
+            if 'Van' in scen_kw:
+                color_ = 'steelblue'
+                alpha_ = 0.6
+            else:
+                color_ = "#A5D6A7"
+                alpha_ = 0.8
+            plot_stat_one_group(
+                result_summary=np.array(all_scenario_emissions[scen_kw][metric]),
+                figure_folder=sa_figure_folder,
+                filename=f'{scen_kw}_weighted_AQI.png',
+                xlabel='Weighted AQI',
+                color=color_,
+                alpha=alpha_,
+                figure_size=(2.5, 1.2),
+                is_fitting=True,
+                n_bins=50,
+            )
+
+        ''' Pollutants-CO2e '''
+        metric = pollutants.CO2e
+        for scen_kw in sa_scenario_kw_list:
+            if 'Van' in scen_kw:
+                color_ = 'steelblue'
+                alpha_ = 0.6
+            else:
+                color_ = "#A5D6A7"
+                alpha_ = 0.8
+            plot_stat_one_group(
+                result_summary=np.array(all_scenario_emissions[scen_kw][metric]),
+                figure_folder=sa_figure_folder,
+                filename=f'{scen_kw}_CO2e.png',
+                xlabel='WTW CO2-eq emissions (g)',
+                color=color_,
+                alpha=alpha_,
+                figure_size=(2.5, 1.2),
+                is_fitting=True,
+                n_bins=50,
+            )
     
+    # plot_main_plots(figure_folder)
+    plot_sa_plots(sa_scenario_kw_list, sa_figure_folder)
+
     print('Done!')
