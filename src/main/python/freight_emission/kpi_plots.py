@@ -208,8 +208,8 @@ if __name__ == '__main__':
     # 'cb'
     ]
     sa_scenario_kw_list = ['VanSA2t', 'CBSA80kg', 'CBSA100kg', 'CBSA150kg', 'CBSA200kg']  
-    sa_colors = ['#6184a1', '#f7f7e8', '#c7cfb7', '#9dad7f', '#557174']
-    sa_alphas = [0.6, 0.95, 0.9, 0.85, 0.8]
+    sa_colors = ['#6184a1', '#e6e5b8', '#c7cfb7', '#9dad7f', '#819f85']
+    sa_alphas = [0.6, 0.95, 0.9, 0.85, 0.95]
     figure_folder = r'../../../../figures/freightEmissions/KPIs/'
     sa_figure_folder = r'../../../../figures/freightEmissions/KPIs/SA/'
     os.makedirs(figure_folder, exist_ok=True)
