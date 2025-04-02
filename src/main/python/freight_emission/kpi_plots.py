@@ -158,6 +158,10 @@ def plot_stat_one_group(
     **kwargs
 ):
     fig, ax = plt.subplots(figsize=figure_size, dpi=350)
+    if kwargs.get('x_lim') is not None:
+        plt.xlim(kwargs.get('x_lim'))
+    if kwargs.get('y_lim') is not None:
+        plt.ylim(kwargs.get('y_lim'))
     min_val = result_summary.min()
     max_val = result_summary.max()
 
@@ -585,7 +589,8 @@ if __name__ == '__main__':
                 figure_size=(2.5, 1.2),
                 is_fitting=True,
                 n_bins=50,
-                hide_labels=True
+                hide_labels=True,
+                x_lim=(50, 300)
             )
         ''' Transit Time '''
         metric = 'total_transit_time'
@@ -601,7 +606,8 @@ if __name__ == '__main__':
                 figure_size=(2.5, 1.2),
                 is_fitting=True,
                 n_bins=50,
-                hide_labels=True
+                hide_labels=True,
+                x_lim=(400, 1100)
             )
         ''' Ton-km traveled '''
         metric = 'ton_km_traveled'
@@ -616,7 +622,8 @@ if __name__ == '__main__':
                 figure_size=(2.5, 1.2),
                 is_fitting=True,
                 n_bins=50,
-                hide_labels=True
+                hide_labels=True,
+                x_lim=(150, 850)
             )
         ''' EPI '''
         metric = 'EPI'
@@ -631,7 +638,8 @@ if __name__ == '__main__':
                 figure_size=(2.5, 1.2),
                 is_fitting=True,
                 n_bins=50,
-                hide_labels=True
+                hide_labels=True,
+                x_lim=(20, 1600)
             )
 
         ''' Weighted AQI '''
@@ -647,7 +655,8 @@ if __name__ == '__main__':
                 figure_size=(2.5, 1.2),
                 is_fitting=True,
                 n_bins=50,
-                hide_labels=True
+                hide_labels=True,
+                # x_lim=(0, 100)
             )
 
         ''' Pollutants-CO2e '''
@@ -664,7 +673,8 @@ if __name__ == '__main__':
                 figure_size=(2.5, 1.2),
                 is_fitting=True,
                 n_bins=50,
-                hide_labels=True
+                hide_labels=True,
+                x_lim=(750, 2700)
             )
     
     # plot_main_plots(figure_folder)
