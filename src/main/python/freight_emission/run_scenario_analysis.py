@@ -9,8 +9,11 @@ scenario_kw_list = [
     # 'cb'
     ]
 # The SA-scenario names must be the same as the folder names.
-sa_scenario_kw_list = ['VanSA2t', 'CBSA80kg', 'CBSA100kg', 'CBSA150kg', 'CBSA200kg']  
-iter_idx_list = list(range(300, 400))
+sa_scenario_kw_list = [
+    # 'VanSA2t', 'CBSA80kg', 'CBSA100kg', 'CBSA150kg', 'CBSA200kg',
+    'VanSA4t', 'BasicSA2t', 'BasicSA4t'
+    ]  
+iter_idx_list = list(range(300, 330))
 
 fea.write_all_events_stats(scenario_kw_list+sa_scenario_kw_list, iter_idx_list)
 

@@ -18,6 +18,66 @@ def darken_color(color, factor=0.7):
     dark_rgb = rgb * factor
     return dark_rgb
 
+
+def plot_multigroup_stat_comparison(
+    result_summary_dict,  # {scen_kw: result_summary}
+    config_dict,  # {scen_kw: (color, alpha, linestyle)}
+    xlabel,
+    figure_folder,
+    filename=None,
+    only_fitting_curve=True,
+    figure_size=(10, 6),
+    is_fitting=True,
+    n_bins=50,
+    **kwargs
+):
+    fig, ax = plt.subplots(figsize=figure_size, dpi=350)
+    min_val = min([result_summary.min() for result_summary in result_summary_dict.values()])
+    max_val = max([result_summary.max() for result_summary in result_summary_dict.values()])
+
+    bins = np.linspace(min_val, max_val, n_bins)
+
+    # Plot histograms
+    for scen_kw, result_summary in result_summary_dict.items():
+        color, alpha, linestyle = config_dict[scen_kw]
+        if only_fitting_curve is False:
+            # Plot histogram
+            ax.hist(
+                result_summary, bins=bins, color=color, alpha=alpha,
+                label=scen_kw
+            )
+
+        if is_fitting:
+            # bin宽度
+            bin_width = bins[1] - bins[0]
+            xmin, xmax = result_summary.min(), result_summary.max()
+            print(f'scenario: {scen_kw}; min: {xmin}; max: {xmax}')
+            xmin, xmax = (xmin- (max_val - min_val) * 0.1, xmax + (max_val - min_val) * 0.1)
+            x = np.linspace(xmin, xmax, 500)
+
+            # 对 result_summary 拟合正态分布，并调整曲线高度
+            mu_car, std_car = stats.norm.fit(result_summary)
+            p_car = stats.norm.pdf(x, mu_car, std_car) * len(result_summary) * bin_width
+            ax.plot(x, p_car, color=darken_color(color), 
+                    linewidth=2, linestyle=linestyle,
+                    label=f"{scen_kw} Fitting")
+            
+    # Hide the right and top spines
+    plt.gca().spines["right"].set_visible(False)
+    plt.gca().spines["top"].set_visible(False)
+
+    plt.xlabel(xlabel, fontsize=kwargs.get('label_size', 12), fontweight="bold")
+    plt.ylabel("Density", fontsize=kwargs.get('label_size', 12), fontweight="bold")
+
+    plt.xticks(fontsize=kwargs.get('tick_size', 12))
+    plt.yticks(fontsize=kwargs.get('tick_size', 12))
+    plt.tight_layout()
+    plt.savefig(figure_folder + filename, dpi=350,
+                bbox_inches='tight', 
+                pad_inches=0,
+                transparent=True)
+
+
 def plot_stat_comparison(
     bike_summary,
     car_summary,
@@ -205,17 +265,29 @@ def plot_stat_one_group(
 
 if __name__ == '__main__':
     ''' Some settings '''
-    iter_list = list(range(300, 400))
+    iter_list = list(range(300, 330))
     scenario_kw_list = [
     # 'basic',
     # 'van', 
     # 'cb'
     ]
-    sa_scenario_kw_list = ['VanSA2t', 'CBSA80kg', 'CBSA100kg', 'CBSA150kg', 'CBSA200kg']  
-    sa_colors = ['#6184a1', '#e6e5b8', '#c7cfb7', '#9dad7f', '#819f85']
-    sa_alphas = [0.6, 0.95, 0.9, 0.85, 0.95]
+    sa_kw_color_dict = {
+        'BasicSA2t': ('#B7B7B7', 0.8, 'dotted'),
+        'BasicSA4t': ('#B7B7B7', 0.8, 'dashdot'),
+        'VanSA2t': ('#6184a1', 0.6, 'dotted'),
+        'VanSA4t': ('#6184a1', 0.8, 'dashdot'),
+        'CBSA80kg': ('#e6e5b8', 0.95, 'dotted'),
+        'CBSA100kg': ('#c7cfb7', 0.9, 'dotted'),
+        'CBSA150kg': ('#9dad7f', 0.85, 'dashdot'),
+        'CBSA200kg': ('#819f85', 0.95, 'dashdot'),
+    }
+    sa_scenario_kw_list = list(sa_kw_color_dict.keys())
+    sa_colors = [tup[0] for tup in list(sa_kw_color_dict.values())]
+    sa_alphas = [tup[1] for tup in list(sa_kw_color_dict.values())]
+    sa_linestyles = [tup[2] for tup in list(sa_kw_color_dict.values())]
+
     figure_folder = r'../../../../figures/freightEmissions/KPIs/'
-    sa_figure_folder = r'../../../../figures/freightEmissions/KPIs/SA/'
+    sa_figure_folder = r'../../../../figures/freightEmissions/SA/'
     os.makedirs(figure_folder, exist_ok=True)
     os.makedirs(sa_figure_folder, exist_ok=True)
 
@@ -677,7 +749,58 @@ if __name__ == '__main__':
                 x_lim=(750, 2700)
             )
     
+    def plot_sa_figs_v2(sa_scenario_stats,
+                        sa_scenario_emissions,
+                        metric_name_table_dict,
+                        sa_config_dict,
+                        sa_figure_folder, 
+                        only_fitting_curve=True):
+        ''' 
+        In this version, 
+        there will only be one main figure for each metric (i.e., all the scenarios will be plotted in one figure).
+        However, 2 sub-figures for each main figure will be created for Basic/Vans Scenario and CB scenario, respectively.
+        Additionally, there is a switch of whether showing shades/bars, i.e., (only_fitting_curve=True).
+        Thus, there will be 5 figures in total.
+        '''
+        
+        if metric_name_table_dict is None:
+            metric_name_table_dict = {
+                'vkt': 'VKT (km)',
+                'total_transit_time': 'Transit Time (min)',
+                'ton_km_traveled': 'Ton-km traveled (ton·km)',
+                'EPI': 'EPI',
+                'weighted_AQI': 'Weighted AQI',
+                pollutants.CO2e: 'WTW CO2-eq emissions (g)',
+            }
+        
+        for metric in list(metric_name_table_dict.keys()):
+            print(f'Plotting {metric}...')
+            plot_multigroup_stat_comparison(
+                result_summary_dict=
+                    {scen_kw: np.array(stat[metric]) for scen_kw, stat in sa_scenario_emissions.items()} 
+                    if metric in ['EPI', 'weighted_AQI', pollutants.CO2e]
+                    else {scen_kw: np.array(stat[metric]) for scen_kw, stat in sa_scenario_stats.items()},
+                config_dict=sa_config_dict,
+                xlabel=metric_name_table_dict[metric],
+                figure_folder=sa_figure_folder,
+                filename=f'sa_{metric}.png',
+                only_fitting_curve=only_fitting_curve,
+                figure_size=(6.2, 2.2),
+                is_fitting=True,
+                n_bins=50,
+                tick_size=10,
+                label_size=12,
+            )
+            
     # plot_main_plots(figure_folder)
-    plot_sa_plots(sa_scenario_kw_list, sa_figure_folder, sa_colors, sa_alphas)
+    # plot_sa_plots(sa_scenario_kw_list, sa_figure_folder, sa_colors, sa_alphas)
 
+    plot_sa_figs_v2(
+        sa_scenario_stats=all_scenario_stats,
+        sa_scenario_emissions=all_scenario_emissions,
+        metric_name_table_dict=None,
+        sa_config_dict=sa_kw_color_dict,
+        sa_figure_folder=sa_figure_folder,
+        only_fitting_curve=True
+    )
     print('Done!')

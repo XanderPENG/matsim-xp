@@ -83,11 +83,14 @@ public class RunFreightEmissionScenarioV2 {
 //            runFreightEmissionScenario(ScenarioType.CARGO_BIKE, i, bikeNetwork, carrierShipments, depotLinks);
 
             // Run the sensitivity analysis for loading capacity
-            runFreightEmissionScenario(ScenarioType.SA_VAN_2t, i, carNetwork, carrierShipments, depotLinks);
-            runFreightEmissionScenario(ScenarioType.SA_CB_80kg, i, bikeNetwork, carrierShipments, depotLinks);
-            runFreightEmissionScenario(ScenarioType.SA_CB_100kg, i, bikeNetwork, carrierShipments, depotLinks);
-            runFreightEmissionScenario(ScenarioType.SA_CB_150kg, i, bikeNetwork, carrierShipments, depotLinks);
-            runFreightEmissionScenario(ScenarioType.SA_CB_200kg, i, bikeNetwork, carrierShipments, depotLinks);
+            runFreightEmissionScenario(ScenarioType.SA_BASIC_2t, i, network, carrierShipments, depotLinks);
+            runFreightEmissionScenario(ScenarioType.SA_BASIC_4t, i, network, carrierShipments, depotLinks);
+            runFreightEmissionScenario(ScenarioType.SA_VAN_4t, i, carNetwork, carrierShipments, depotLinks);
+//            runFreightEmissionScenario(ScenarioType.SA_VAN_2t, i, carNetwork, carrierShipments, depotLinks);
+//            runFreightEmissionScenario(ScenarioType.SA_CB_80kg, i, bikeNetwork, carrierShipments, depotLinks);
+//            runFreightEmissionScenario(ScenarioType.SA_CB_100kg, i, bikeNetwork, carrierShipments, depotLinks);
+//            runFreightEmissionScenario(ScenarioType.SA_CB_150kg, i, bikeNetwork, carrierShipments, depotLinks);
+//            runFreightEmissionScenario(ScenarioType.SA_CB_200kg, i, bikeNetwork, carrierShipments, depotLinks);
 
 
         }
@@ -126,10 +129,37 @@ public class RunFreightEmissionScenarioV2 {
                 hbefaKeyWord = "MC";
                 configInputNetworkPath = "../../bikeGemeenteLeuvenWithHbefaType.xml.gz";
                 break;
+            case SA_BASIC_2t:
+                outputScenarioDir = "../../data/intermediate/test/freightEmissions/scenarioBasicSA2t/";
+                vehicleType = FreightVehicleTypeFactory.createDefaultVan("Van2t");
+                vehicleType.getCapacity().setOther(2000);  // 2t
+                hbefaKeyWord = "LCV";
+                configInputNetworkPath = "../../diffusedGemeenteLeuvenWithHbefaType.xml.gz";
+                Scenario scenario_basic_2t = ScenarioUtils.createScenario(ConfigUtils.createConfig());
+                new MatsimNetworkReader(scenario_basic_2t.getNetwork()).readFile("../../data/intermediate/test/freightEmissions/diffusedGemeenteLeuvenWithHbefaType.xml.gz");
+                network = scenario_basic_2t.getNetwork();
+                break;
+            case SA_BASIC_4t:
+                outputScenarioDir = "../../data/intermediate/test/freightEmissions/scenarioBasicSA4t/";
+                vehicleType = FreightVehicleTypeFactory.createDefaultVan("Van4t");
+                vehicleType.getCapacity().setOther(4000);  // 4t
+                hbefaKeyWord = "LCV";
+                configInputNetworkPath = "../../diffusedGemeenteLeuvenWithHbefaType.xml.gz";
+                Scenario scenario_basic_4t = ScenarioUtils.createScenario(ConfigUtils.createConfig());
+                new MatsimNetworkReader(scenario_basic_4t.getNetwork()).readFile("../../data/intermediate/test/freightEmissions/diffusedGemeenteLeuvenWithHbefaType.xml.gz");
+                network = scenario_basic_4t.getNetwork();
+                break;
             case SA_VAN_2t:
                 outputScenarioDir = "../../data/intermediate/test/freightEmissions/scenarioVanSA2t/";
                 vehicleType = FreightVehicleTypeFactory.createDefaultVan("Van2t");
                 vehicleType.getCapacity().setOther(2000);  // 2t
+                hbefaKeyWord = "LCV";
+                configInputNetworkPath = "../../carGemeenteLeuvenWithHbefaType.xml.gz";
+                break;
+            case SA_VAN_4t:
+                outputScenarioDir = "../../data/intermediate/test/freightEmissions/scenarioVanSA4t/";
+                vehicleType = FreightVehicleTypeFactory.createDefaultVan("Van4t");
+                vehicleType.getCapacity().setOther(4000);  // 4t
                 hbefaKeyWord = "LCV";
                 configInputNetworkPath = "../../carGemeenteLeuvenWithHbefaType.xml.gz";
                 break;
@@ -272,7 +302,10 @@ public class RunFreightEmissionScenarioV2 {
         VAN,
         CARGO_BIKE,
         // Sensitivity analysis for loading capacity
+        SA_BASIC_2t,
+        SA_BASIC_4t,
         SA_VAN_2t,
+        SA_VAN_4t,
         SA_CB_80kg,
         SA_CB_100kg,
         SA_CB_150kg,
