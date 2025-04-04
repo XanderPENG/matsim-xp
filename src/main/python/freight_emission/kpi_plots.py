@@ -52,7 +52,7 @@ def plot_multigroup_stat_comparison(
             bin_width = bins[1] - bins[0]
             xmin, xmax = result_summary.min(), result_summary.max()
             print(f'scenario: {scen_kw}; min: {xmin}; max: {xmax}')
-            xmin, xmax = (xmin- (max_val - min_val) * 0.1, xmax + (max_val - min_val) * 0.1)
+            xmin, xmax = (xmin- (max_val - min_val) * 0.05, xmax + (max_val - min_val) * 0.05)
             x = np.linspace(xmin, xmax, 500)
 
             # 对 result_summary 拟合正态分布，并调整曲线高度
