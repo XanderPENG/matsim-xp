@@ -265,7 +265,7 @@ def plot_stat_one_group(
 
 if __name__ == '__main__':
     ''' Some settings '''
-    iter_list = list(range(300, 330))
+    iter_list = list(range(300, 400))
     scenario_kw_list = [
     # 'basic',
     # 'van', 
@@ -298,6 +298,8 @@ if __name__ == '__main__':
                                                      iter_list=iter_list)
     all_scenario_emissions = fea.load_all_scenario_emission_stats(scenario_kw_list=scenario_kw_list+sa_scenario_kw_list, 
                                                                   iter_list=iter_list)
+    print(f'Category of emissions: {list(all_scenario_emissions.values())[0].keys()}')
+
     def plot_main_plots(figure_folder,):
         ''' VKT '''
         metric = 'vkt'
@@ -778,7 +780,8 @@ if __name__ == '__main__':
             plot_multigroup_stat_comparison(
                 result_summary_dict=
                     {scen_kw: np.array(stat[metric]) for scen_kw, stat in sa_scenario_emissions.items()} 
-                    if metric in ['EPI', 'weighted_AQI', pollutants.CO2e]
+                    if metric in ['EPI', 'weighted_AQI', 'PM_total', 'PM2_5_total', 
+                                  pollutants.CO, pollutants.NO2, pollutants.NOx, pollutants.SO2, pollutants.CO2e]
                     else {scen_kw: np.array(stat[metric]) for scen_kw, stat in sa_scenario_stats.items()},
                 config_dict=sa_config_dict,
                 xlabel=metric_name_table_dict[metric],
@@ -798,7 +801,18 @@ if __name__ == '__main__':
     plot_sa_figs_v2(
         sa_scenario_stats=all_scenario_stats,
         sa_scenario_emissions=all_scenario_emissions,
-        metric_name_table_dict=None,
+        metric_name_table_dict={
+                'vkt': 'VKT (km)',
+                'total_transit_time': 'Transit Time (min)',
+                'ton_km_traveled': 'Ton-km traveled (ton·km)',
+                'PM_total': 'PM emissions (g)',
+                'PM2_5_total': 'PM2.5 emissions (g)',
+                pollutants.NOx: 'NOx emissions (g)',
+                pollutants.NO2: 'NO2 emissions (g)',
+                pollutants.SO2: 'SO2 emissions (g)',
+                pollutants.CO: 'CO emissions (g)',
+                pollutants.CO2e: 'WTW CO2-eq emissions (g)',
+            },
         sa_config_dict=sa_kw_color_dict,
         sa_figure_folder=sa_figure_folder,
         only_fitting_curve=True

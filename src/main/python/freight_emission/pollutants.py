@@ -52,6 +52,8 @@ AIR_QUALITY_POLLUTANTS = {CO, NOx, NO2,
                           PM_non_exhaust, PM2_5, PM2_5_non_exhaust,
                           SO2, NH3, Pb, Benzene,
                           HC, NMHC}
+PM_total = {PM_non_exhaust, PM}
+PM2_5_total = {PM2_5, PM2_5_non_exhaust}
 
 EPI_POLLUTANTS = {
                 CO: 2.9,

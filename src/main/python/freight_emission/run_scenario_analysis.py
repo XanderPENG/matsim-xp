@@ -13,7 +13,7 @@ sa_scenario_kw_list = [
     # 'VanSA2t', 'CBSA80kg', 'CBSA100kg', 'CBSA150kg', 'CBSA200kg',
     'VanSA4t', 'BasicSA2t', 'BasicSA4t'
     ]  
-iter_idx_list = list(range(300, 330))
+iter_idx_list = list(range(300, 400))
 
 fea.write_all_events_stats(scenario_kw_list+sa_scenario_kw_list, iter_idx_list)
 
