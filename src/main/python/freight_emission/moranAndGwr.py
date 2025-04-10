@@ -1,6 +1,6 @@
 # Standard library imports
 import os
-
+import logging
 # Data handling and analysis
 import numpy as np
 import pandas as pd
@@ -322,6 +322,10 @@ def classify_data_with_k_colors(data: np.ndarray, color_list: list, n_digit=2, d
     bin_color_dict = {}
     for i, (start, end) in enumerate(zip(bins[:-1], bins[1:])):
         bin_color_dict[(start, end)] = color_list[i]
+
+    print(f'bin_color_dict: {bin_color_dict}')
+    print(f'bins: {bins}')
+    
     return bin_color_dict, bins
 
 def custom_natural_breaks_with_zero_split(data, k=6, color_list=None, subgroup_max_k=4,
@@ -1067,9 +1071,19 @@ def plot_gwr_map(gwr_gdfs: dict, # {scenario: gwr_result_gdf},):
                     dpi=350)
 
 if __name__ == "__main__":
+    ''' Set the logger '''
+    logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S',
+                    handlers=[logging.FileHandler("log.txt"), logging.StreamHandler()]
+                    )
 
+    ''' Set the working directory '''
     # Set the vars to be analyzed
-    dependent_var = "EPI_mean"
+    ''' NOTE: The dependent variable, which could be:
+        'EPI_mean', 'PM_total_mean', 'PM2_5_total_mean', 'NOx_mean', 'CO_mean', 'SO2_mean', 'NO2_mean',
+    '''
+    dependent_var = "PM_total_mean"  
     independent_vars = [
         "intersection_count",
         "network_density",
@@ -1088,9 +1102,21 @@ if __name__ == "__main__":
 
     scenario_geofiles = {}
     for scenario in scenario_types: 
-        scenario_geofiles[scenario] = gpd.read_file(geofile_root + scenario + '_stats_h3Res10.geojson')
+        scenario_geofiles[scenario] = gpd.read_file(geofile_root + scenario + '_stats_h3Res10V2.geojson')
     
-    print(f'columns in the agg-emission geo-file: {scenario_geofiles['Basic'].columns}')
+    print(f'columns in the agg-emission geo-file: {(scenario_geofiles["Basic"]).columns}')
+
+    ''' Check the unit of the dependent variable '''
+    logging.warning(f'The dependent variable is {dependent_var}')
+    logging.info(f'the mean of {dependent_var} in the Basic scenario: {scenario_geofiles["Basic"][dependent_var].mean()}')
+    is_scale = input("Do you want to scale the data? (y/n)")
+    if is_scale.lower() == 'y':
+        scale_level = int(input("Please input the scale level (e.g., 1, 2, 3):"))
+        scale_level = 10 ** scale_level
+        for scenario in scenario_types:
+            scenario_geofiles[scenario][dependent_var] = scenario_geofiles[scenario][dependent_var] * scale_level
+        logging.warning(f'The data is scaled by {scale_level}')
+        logging.info(f'The mean of {dependent_var} in the Basic scenario after scaling: {scenario_geofiles["Basic"][dependent_var].mean()}')
 
     ''' Plot spatial patterns of emissions'''
 
@@ -1108,8 +1134,8 @@ if __name__ == "__main__":
                                     N_size=8,
                                     bg_color=bg_c,
                                     bg_alpha=bg_a,
-                                    # output_dir=emission_spatial_pattern_root,
-                                    # output_filename=scen_kw + '_EPI_Mean_maxP.png'
+                                    output_dir=emission_spatial_pattern_root,
+                                    output_filename=scen_kw + f'_{dependent_var}_maxP.png'
                                     )
     # Only plot the Basic and Van scenarios (as some pollutants are not available for CB) 
     for scen_kw, bg_c, bg_a in zip(['Basic', 'Van'], ['grey', 'blue'], [0.1, 0.04]):
@@ -1123,8 +1149,8 @@ if __name__ == "__main__":
                                     N_size=8,
                                     bg_color=bg_c,
                                     bg_alpha=bg_a,
-                                    # output_dir=emission_spatial_pattern_root,
-                                    # output_filename=scen_kw + '_EPI_Mean.png'
+                                    output_dir=emission_spatial_pattern_root,
+                                    output_filename=scen_kw + f'_{dependent_var}.png'
                                     )
     
     ''' Plot spatial patterns of VKT '''
@@ -1178,16 +1204,16 @@ if __name__ == "__main__":
                         bg_color=_global_color, bg_alpha=_global_alpha, 
                         figsize=(4.2,2.8),
                         is_labels=False,
-                        # output_dir=moran_fig_output_dir, 
-                        # output_filename=f'{scenario}_global_moranI.png'
+                        output_dir=moran_fig_output_dir, 
+                        output_filename=f'{scenario}_{dependent_var}_global_moranI.png'
                         )
         
         ''' Calculate and plot the lisa cluster '''
         cal_and_plot_lisa_clusters(geo_file, dependent_var, 
                                 fig_size=(4, 3.5),
                                 bg_color=_lisa_color, bg_alpha=_lisa_alpha,
-                                # output_dir=moran_fig_output_dir, 
-                                # output_filename=f'{scenario}_lisa_cluster.png',
+                                output_dir=moran_fig_output_dir, 
+                                output_filename=f'{scenario}_{dependent_var}_lisa_cluster.png',
                                 N_size=8, scalebar_size=20, scalebar_fontsize=8,
                                 is_legend=False,
                                 color_dict=lisa_colors
@@ -1217,8 +1243,8 @@ if __name__ == "__main__":
                                 ['IntCnt', 'NetDen', 'DepotDist', 'DepotCnt', 'DegCent', 'CloCent', 'BetCent'],
                                 fig_size=(4, 11),
                                 x_lim=(-5.9,4),
-                                # output_dir=r'../../../../figures/freightEmissions/gwr/',
-                                # output_filename='OLS_coef_std_horizontal.png',
+                                output_dir=r'../../../../figures/freightEmissions/gwr/',
+                                output_filename=f'{dependent_var}_OLS_coef_std_horizontal.png',
                                 coef_fontsize=10,
                                 legend_fontsize=10,
                                 is_xticks=False,
@@ -1266,8 +1292,9 @@ if __name__ == "__main__":
                             north_pad=0.16,
                             scalebar_size=80,
                             scalebar_fontsize=9,
-                            # output_dir=r'../../../../figures/freightEmissions/gwr/naturalBreaksV2/'+scen_kw.lower()+'/',
-                            # output_filename=f'{scen_kw}_{metric_n}.png',
+                            method='natural_breaks',
+                            output_dir=r'../../../../figures/freightEmissions/gwr//' + f'{dependent_var}/naturalBreaks/'+scen_kw.lower()+'/',
+                            output_filename=f'{scen_kw}_{metric_n}.png',
                             is_show=False,
                             is_legend=False,
                             )
