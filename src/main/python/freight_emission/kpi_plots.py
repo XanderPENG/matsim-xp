@@ -139,8 +139,8 @@ def plot_stat_comparison(
     plt.yticks(fontsize=kwargs.get('tick_size', 12))
     plt.tight_layout()
     plt.savefig(figure_folder + filename, dpi=350,
-                bbox_inches='tight', 
-                pad_inches=0,
+                # bbox_inches='tight', 
+                # pad_inches=0,
                 transparent=True)
     # plt.show()
 
@@ -267,19 +267,19 @@ if __name__ == '__main__':
     ''' Some settings '''
     iter_list = list(range(300, 400))
     scenario_kw_list = [
-    # 'basic',
-    # 'van', 
-    # 'cb'
+    'basic',
+    'van', 
+    'cb'
     ]
     sa_kw_color_dict = {
-        'BasicSA2t': ('#B7B7B7', 0.8, 'dotted'),
-        'BasicSA4t': ('#B7B7B7', 0.8, 'dashdot'),
-        'VanSA2t': ('#6184a1', 0.6, 'dotted'),
-        'VanSA4t': ('#6184a1', 0.8, 'dashdot'),
-        'CBSA80kg': ('#e6e5b8', 0.95, 'dotted'),
-        'CBSA100kg': ('#c7cfb7', 0.9, 'dotted'),
-        'CBSA150kg': ('#9dad7f', 0.85, 'dashdot'),
-        'CBSA200kg': ('#819f85', 0.95, 'dashdot'),
+        # 'BasicSA2t': ('#B7B7B7', 0.8, 'dotted'),
+        # 'BasicSA4t': ('#B7B7B7', 0.8, 'dashdot'),
+        # 'VanSA2t': ('#6184a1', 0.6, 'dotted'),
+        # 'VanSA4t': ('#6184a1', 0.8, 'dashdot'),
+        # 'CBSA80kg': ('#e6e5b8', 0.95, 'dotted'),
+        # 'CBSA100kg': ('#c7cfb7', 0.9, 'dotted'),
+        # 'CBSA150kg': ('#9dad7f', 0.85, 'dashdot'),
+        # 'CBSA200kg': ('#819f85', 0.95, 'dashdot'),
     }
     sa_scenario_kw_list = list(sa_kw_color_dict.keys())
     sa_colors = [tup[0] for tup in list(sa_kw_color_dict.values())]
@@ -518,7 +518,7 @@ if __name__ == '__main__':
             figure_folder=figure_folder,
             filename='CO2e.png',
             xlabel='WTW CO2-eq emissions (g)',
-            figure_size=(5.5, 3),
+            figure_size=(13, 3.6),
             is_fitting=True,
         )
 
@@ -647,6 +647,47 @@ if __name__ == '__main__':
             is_fitting=True,
             n_bins=50,
         )
+
+        ''' PM_total'''
+        metric = 'PM_total'
+        plot_stat_comparison(
+            no_policy_summary=np.array(all_scenario_emissions['basic'][metric]),
+            car_summary=np.array(all_scenario_emissions['van'][metric]),
+            bike_summary=np.array(all_scenario_emissions['cb'][metric]),
+            figure_folder=figure_folder,
+            filename='PM_total.png',
+            xlabel='PM emissions (g)',
+            is_fitting=True,
+            figure_size=(5, 2),
+        )
+        # Only compare van and no policy
+        metric = 'PM_total'
+        plot_stat_comparison_two_groups(
+            no_policy_summary=np.array(all_scenario_emissions['basic'][metric]),
+            car_summary=np.array(all_scenario_emissions['van'][metric]),
+            figure_folder=figure_folder,
+            filename='PM_total_van_no_policy.png',
+            xlabel='PM emissions (g)',
+            n_bins=50,
+            is_fitting=True,
+            figure_size=(1.8, 1.1)
+        )
+        # only cb
+        metric = 'PM_total'
+        plot_stat_one_group(
+            result_summary=np.array(all_scenario_emissions['cb'][metric]),
+            figure_folder=figure_folder,
+            filename='PM_total_cb.png',
+            xlabel='PM emissions (g)',
+            color="#A5D6A7",
+            alpha=0.8,
+            figure_size=(1.8, 1.1),
+            is_fitting=True,
+            n_bins=50,
+        )
+
+        ''' PM2_5_total'''
+
     
     def plot_sa_plots(sa_scenario_kw_list, sa_figure_folder, sa_colors, sa_alphas):
         ''' VKT '''
@@ -795,26 +836,26 @@ if __name__ == '__main__':
                 label_size=12,
             )
             
-    # plot_main_plots(figure_folder)
+    plot_main_plots(figure_folder)
     # plot_sa_plots(sa_scenario_kw_list, sa_figure_folder, sa_colors, sa_alphas)
 
-    plot_sa_figs_v2(
-        sa_scenario_stats=all_scenario_stats,
-        sa_scenario_emissions=all_scenario_emissions,
-        metric_name_table_dict={
-                'vkt': 'VKT (km)',
-                'total_transit_time': 'Transit Time (min)',
-                'ton_km_traveled': 'Ton-km traveled (ton·km)',
-                'PM_total': 'PM emissions (g)',
-                'PM2_5_total': 'PM2.5 emissions (g)',
-                pollutants.NOx: 'NOx emissions (g)',
-                pollutants.NO2: 'NO2 emissions (g)',
-                pollutants.SO2: 'SO2 emissions (g)',
-                pollutants.CO: 'CO emissions (g)',
-                pollutants.CO2e: 'WTW CO2-eq emissions (g)',
-            },
-        sa_config_dict=sa_kw_color_dict,
-        sa_figure_folder=sa_figure_folder,
-        only_fitting_curve=True
-    )
+    # plot_sa_figs_v2(
+    #     sa_scenario_stats=all_scenario_stats,
+    #     sa_scenario_emissions=all_scenario_emissions,
+    #     metric_name_table_dict={
+    #             'vkt': 'VKT (km)',
+    #             'total_transit_time': 'Transit Time (min)',
+    #             'ton_km_traveled': 'Ton-km traveled (ton·km)',
+    #             'PM_total': 'PM emissions (g)',
+    #             'PM2_5_total': 'PM2.5 emissions (g)',
+    #             pollutants.NOx: 'NOx emissions (g)',
+    #             pollutants.NO2: 'NO2 emissions (g)',
+    #             pollutants.SO2: 'SO2 emissions (g)',
+    #             pollutants.CO: 'CO emissions (g)',
+    #             pollutants.CO2e: 'WTW CO2-eq emissions (g)',
+    #         },
+    #     sa_config_dict=sa_kw_color_dict,
+    #     sa_figure_folder=sa_figure_folder,
+    #     only_fitting_curve=True
+    # )
     print('Done!')

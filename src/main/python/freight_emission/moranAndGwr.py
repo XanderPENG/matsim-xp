@@ -876,7 +876,7 @@ def plot_scenarios_ols_coef_and_std_horizontal(scenarios_olsModels: dict,  # {sc
             y_val = i + (list(scenarios_olsModels.keys()).index(scenario) - 1) * 0.2
             if c > 0:
                 # 当系数为正时，文本位于条形图右侧
-                ax.text(c + s + 0.5, y_val, f'{new_c}', 
+                ax.text(c + s + kwargs.get("text_offset", 0.5), y_val, f'{new_c}', 
                         ha='left', va='center', 
                         color=scenario_colors[scenario],
                         # rotation=-45,
@@ -884,7 +884,7 @@ def plot_scenarios_ols_coef_and_std_horizontal(scenarios_olsModels: dict,  # {sc
                         fontsize=kwargs.get('coef_fontsize', 10))
             else:
                 # 当系数为负时，文本位于条形图左侧
-                ax.text(c - s - 0.5, y_val, f'{new_c}', 
+                ax.text(c - s - kwargs.get("text_offset", 0.5), y_val, f'{new_c}', 
                         ha='right', va='center', 
                         color=scenario_colors[scenario],
                         # rotation=-45,
@@ -1147,13 +1147,15 @@ if __name__ == "__main__":
                                     scneario_kw=scen_kw,
                                     color_list=['#DADAE8', '#BCBDDA', '#9D9AC4', '#736CAC', '#4D2987'],
                                     method='natural_breaks',
-                                    fig_size=(4.5, 4),
+                                    fig_size=(1.9, 1.7),
                                     print_bins=True,
+                                    north_pad=0.2,
+                                    scalebar_size=50,
                                     N_size=8,
                                     bg_color=bg_c,
                                     bg_alpha=bg_a,
                                     output_dir=emission_spatial_pattern_root,
-                                    output_filename=scen_kw + f'_{dependent_var}.png'
+                                    output_filename=scen_kw + f'_withoutCB_{dependent_var}.png'
                                     )
     
     ''' Plot spatial patterns of VKT '''
@@ -1207,16 +1209,16 @@ if __name__ == "__main__":
                         bg_color=_global_color, bg_alpha=_global_alpha, 
                         figsize=(4.2,2.8),
                         is_labels=False,
-                        output_dir=moran_fig_output_dir, 
-                        output_filename=f'{scenario}_{dependent_var}_global_moranI.png'
+                        output_dir=moran_fig_output_dir+f'{dependent_var}//', 
+                        output_filename=f'{scenario}_global_moranI.png'
                         )
         
         ''' Calculate and plot the lisa cluster '''
         cal_and_plot_lisa_clusters(geo_file, dependent_var, 
                                 fig_size=(4, 3.5),
                                 bg_color=_lisa_color, bg_alpha=_lisa_alpha,
-                                output_dir=moran_fig_output_dir, 
-                                output_filename=f'{scenario}_{dependent_var}_lisa_cluster.png',
+                                output_dir=moran_fig_output_dir+f'{dependent_var}//', 
+                                output_filename=f'{scenario}_lisa_cluster.png',
                                 N_size=8, scalebar_size=20, scalebar_fontsize=8,
                                 is_legend=False,
                                 color_dict=lisa_colors
@@ -1232,7 +1234,7 @@ if __name__ == "__main__":
                                 {'Basic': 'gray', 'Van': 'steelblue', 'CB': '#A5D6A7'},
                                 ['IntCnt', 'NetDen', 'DepotDist', 'DepotCnt', 'DegCent', 'CloCent', 'BetCent'],
                                 fig_size=(13, 3.6),
-                                y_lim=(-6,6),
+                                # y_lim=(-6,6),
                                 # output_dir=r'../../../../figures/freightEmissions/gwr/',
                                 # output_filename='OLS_coef_std.png',
                                 coef_fontsize=10,
@@ -1245,7 +1247,8 @@ if __name__ == "__main__":
                                 {'Basic': 'gray', 'Van': 'steelblue', 'CB': '#A5D6A7'},
                                 ['IntCnt', 'NetDen', 'DepotDist', 'DepotCnt', 'DegCent', 'CloCent', 'BetCent'],
                                 fig_size=(4, 11),
-                                x_lim=(-5.9,4),
+                                text_offset=100,
+                                x_lim=(-3900, 5000),
                                 output_dir=r'../../../../figures/freightEmissions/gwr/',
                                 output_filename=f'{dependent_var}_OLS_coef_std_horizontal.png',
                                 coef_fontsize=10,
@@ -1277,11 +1280,12 @@ if __name__ == "__main__":
             print(f'Filter the incorrect coef for {scenario} {metric_name}') 
 
     # Plot gwr maps        
+    method = 'natural_breaks'
     for scen_kw, bg_c, bg_a in zip(['Basic', 'Van', 'CB'], 
                                ['grey', 'blue', 'g'], 
                                [0.1, 0.05, 0.04]):
         for metric_n in metric_name_list:
-            print(f'{scen_kw} {metric_n}')
+            print(f'Scenario: {scen_kw}; Metric: {metric_n}; Method: {method}')
             plot_gwr_map(gwr_gdfs=fil_scenario_gwr_gdfs,
                         scenario_kw=scen_kw,
                             metric_name=metric_n,
@@ -1295,8 +1299,8 @@ if __name__ == "__main__":
                             north_pad=0.16,
                             scalebar_size=80,
                             scalebar_fontsize=9,
-                            method='natural_breaks',
-                            output_dir=r'../../../../figures/freightEmissions/gwr//' + f'{dependent_var}/naturalBreaks/'+scen_kw.lower()+'/',
+                            method=method,
+                            output_dir=r'../../../../figures/freightEmissions/gwr//' + f'{dependent_var}/{method}/'+scen_kw.lower()+'/',
                             output_filename=f'{scen_kw}_{metric_n}.png',
                             is_show=False,
                             is_legend=False,
