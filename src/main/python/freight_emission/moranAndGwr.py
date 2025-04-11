@@ -1123,19 +1123,22 @@ if __name__ == "__main__":
     c_list = ['#DADAE8', '#BCBDDA', '#9D9AC4', '#736CAC', '#4D2987']
     emission_spatial_pattern_root = r'../../../../figures/freightEmissions/spEmissions//'
     # recommended method: max_p_, quantiles, pretty
+    method = 'max_p_'
     for scen_kw, bg_c, bg_a in zip(scenario_types, ['grey', 'blue', 'lime'], [0.1, 0.04, 0.005]):
         plot_spatial_pattern_emission(geofiles=scenario_geofiles, 
                                     anls_col=dependent_var,
                                     scneario_kw=scen_kw,
                                     color_list=['#DADAE8', '#BCBDDA', '#9D9AC4', '#736CAC', '#4D2987'],
-                                    method='max_p_',
-                                    fig_size=(4.3, 4),
+                                    method=method,
+                                    fig_size=(1.9, 1.7),
                                     print_bins=True,
+                                    north_pad=0.2,
+                                    scalebar_size=50,
                                     N_size=8,
                                     bg_color=bg_c,
                                     bg_alpha=bg_a,
-                                    output_dir=emission_spatial_pattern_root,
-                                    output_filename=scen_kw + f'_{dependent_var}_maxP.png'
+                                    output_dir=emission_spatial_pattern_root + f'{dependent_var}/{method}/',
+                                    output_filename=scen_kw + f'.png'
                                     )
     # Only plot the Basic and Van scenarios (as some pollutants are not available for CB) 
     for scen_kw, bg_c, bg_a in zip(['Basic', 'Van'], ['grey', 'blue'], [0.1, 0.04]):
